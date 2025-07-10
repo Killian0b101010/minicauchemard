@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
+#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/10 15:46:26 by kiteixei         ###   ########.fr        #
+#    Updated: 2025/07/10 21:43:06 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ RM 			= 	rm -f
 
 SRC_DIR 	= 	./src
 SRC 		= 	./src/builtins/echo.c ./src/tokens/tokenizer_utils.c ./src/tokens/tokenizer.c \
-				./src/utils.c ./src/main.c ./src/builtins/cd.c
+				./src/utils.c ./src/main.c ./src/builtins/pwd.c ./src/builtins/env.c \
 
 LIBFT 		= 	./libft/libft.a
 INCLUDES	= 	./includes/pipex.h ./includes/minishell.h ./libft/includes/libft.h

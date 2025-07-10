@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 14:33:13 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/10 21:44:29 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_token	*tokenizer(char *str, int *token_count)
 			t2.index++;
 		if (!str[t2.index])
 			break ;
-		if (str[t2.index] == '"')
+		if (str[t2.index] == '"' || str[t2.index] == '\'')
 			tokenize(str, &t2);
 		else
 			tokenize2(str, &t2);
