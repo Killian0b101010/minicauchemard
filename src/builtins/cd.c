@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 20:05:20 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/10 22:12:56 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,10 @@ void	go_home(char *home)
 	chdir(home);
 }
 
-char *set_env_value(t_envv *env, const char *key, const char *value)
+char	*set_env_value(t_envv *env, const char *key, const char *value)
 {
-	
-	while(env ->envp)
+	while (env->envp)
 	{
-		
 	}
 }
 int	cd(int ac, char **argv, t_envv *env)
@@ -36,7 +34,7 @@ int	cd(int ac, char **argv, t_envv *env)
 	// Plusieurs args
 	if (ac > 2)
 		return (fprintf(stderr, "cd : too many arguments"), 1);
-	//Ancien pwd
+	// Ancien pwd
 	env->old_path = getenv("PWD");
 	// Si sa echoue
 	if (!home)
@@ -46,7 +44,7 @@ int	cd(int ac, char **argv, t_envv *env)
 		go_home(home);
 	// si cd ~
 	if (ac == 2 && ft_strcmp(argv[1], "~") == 0)
-		return(go_home(home),0);
+		return (go_home(home), 0);
 	// execute cd + dossier et verifie que c bien un directory
 	if (ac == 2)
 	{
@@ -55,7 +53,7 @@ int	cd(int ac, char **argv, t_envv *env)
 			chdir(argv[1]);
 			getcwd(buffer, BUFFER_SIZE);
 			env->pwd = ft_strdup(buffer);
-			return(0);
+			return (0);
 		}
 		return (write(stderr, "Not a directory", 16), 1);
 	}
