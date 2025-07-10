@@ -6,25 +6,27 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 22:17:52 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/10 22:21:58 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
-int	cd(int ac, char **argv, t_cd *env)
+int	cd(int ac, char **argv, t_env *env)
 {
+	char	*home;
+
 	home = getenv("HOME");
 	chdir(home);
 }
 
-char	*set_env_value(t_envv *env, const char *key, const char *value)
+char	*set_env_value(t_env *env, const char *key, const char *value)
 {
 	while (env->envp)
 	{
 	}
 }
-int	cd(int ac, char **argv, t_envv *env)
+int	cd(int ac, char **argv, t_env *env)
 {
 	char		buffer[BUFFER_SIZE];
 	char		*home;

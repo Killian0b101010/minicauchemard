@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 22:17:35 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/10 22:22:00 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@
 # include "../libft/includes/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <sys/stat.h>
 typedef struct t_env
 {
 	char			**envp;
 	char			*home_path;
 	char			*old_path;
 	char			*new_path;
+	char			*pwd;
 }					t_env;
 
 typedef enum e_token_type
