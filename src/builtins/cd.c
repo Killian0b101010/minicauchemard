@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 17:32:12 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/11 18:54:09 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 static char	*set_env_value(t_env *env, const char *key)
 {
-	//fonction non finis
 	char	*new_key;
 	char	*new_path;
 	char	cwd[BUFFER_SIZE];
 	int		i;
 
+	// fonction non finis
 	i = 0;
 	if (!getcwd(cwd, BUFFER_SIZE))
 		return (NULL);
