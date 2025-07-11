@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 17:24:35 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/11 23:34:21 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	set_env(t_env *env, char **envp)
 	j = -1;
 	while (envp[i])
 		i++;
-	env->envp = ft_malloc(sizeof(char *) * (i));
+	env->envp = ft_malloc(sizeof(char *) * (i + 1));
 	if (!env->envp)
 		return ;
 	while (++j < i)
