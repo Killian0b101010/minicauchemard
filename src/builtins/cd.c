@@ -6,56 +6,68 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 14:52:56 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/11 16:23:25 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	cd(int ac, char **argv, t_env *env)
+char	*set_env_value(t_env *env, const char *key, char *buffer)
 {
-	char	*home;
+	char	*new_path;
+	char	buffer[BUFFER_SIZE];
 
-	home = getenv("HOME");
-	chdir(home);
+	while (env->envp)
+	{
+		if (ft_strncmp(env->envp, key, 4) == 0)
+		{
+			free(env->envp);
+			set_env(env, env->envp);
+		}
+		else
+			getcwd(buffer, BUFFER_SIZE);
+	}
+	return (env->envp);
 }
 
-// char	*set_env_value(t_env *env, const char *key, const char *value)
-// {
-// 	char	lin;
-// }
+void	cd_bulltins_two(t_env *env)
+{
+	char		*target;
+	char		buffer[BUFFER_SIZE];
+	struct stat	st;
 
-// int	cd(int ac, char **argv, t_env *env)
-// {
-// 	char		buffer[BUFFER_SIZE];
-// 	char		*home;
-// 	struct stat	st;
+	if (target && stat(target, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		if (chdir(target) != 0)
+			return (perror("cd"), 1);
+		if (getcwd(buffer, BUFFER_SIZE))
+			set_env_value(env, "PWD", buffer);
+		return (0);
+	}
+}
 
-// 	home = getenv("HOME");
-// 	// Plusieurs args
-// 	if (ac > 2)
-// 		return (fprintf(stderr, "cd : too many arguments"), 1);
-// 	// Ancien pwd
-// 	env->old_path = getenv("PWD");
-// 	// Si sa echoue
-// 	if (!home)
-// 		return (fprintf(stderr, "cd : HOME not set"), 1);
-// 	// direct le home
-// 	if (ac == 1)
-// 		go_home(home);
-// 	// si cd ~
-// 	if (ac == 2 && ft_strcmp(argv[1], "~") == 0)
-// 		return (go_home(home), 0);
-// 	// execute cd + dossier et verifie que c bien un directory
-// 	if (ac == 2)
-// 	{
-// 		if (stat(argv[1], &st) == 0 && S_ISDIR(st.st_mode))
-// 		{
-// 			chdir(argv[1]);
-// 			getcwd(buffer, BUFFER_SIZE);
-// 			env->pwd = ft_strdup(buffer);
-// 			return (0);
-// 		}
-// 		return (write(stderr, "Not a directory", 16), 1);
-// 	}
-// }
+int	cd_builtin(t_token *tokens, int token_count, t_env *env)
+{
+	char		buffer[BUFFER_SIZE];
+	char		*home;
+	struct stat	st;
+	char		*target;
+
+	home = getenv("HOME");
+	if (!home)
+		return (fprintf(stderr, "cd : HOME not set\n"), 1);
+	// cd sans argument ou cd ~
+	if (token_count == 1 || (token_count >= 2 && ft_strcmp(tokens[1].value,
+				"~") == 0))
+		target = home;
+	else if (token_count >= 2)
+		target = tokens[1].value;
+	if (token_count > 2)
+		return (ft_printf("cd : too many arguments\n"), 1);
+	// sauvegarde de l'ancien PWD
+	if (getcwd(buffer, BUFFER_SIZE))
+		set_env_value(env, "OLDPWD", buffer);
+	// verifie si le chemin est un dossier valide
+	cd_bulltins_two(env);
+	return (write(stderr, "Not a directory", 16), 1);
+}
