@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 18:45:54 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/11 19:00:26 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ int	main(int ac, char **av, char **envp)
 				env_cmd(i, &env, tokens, &t2);
 			if (ft_strcmp(tokens[i].value, "cd") == 0 && (i == 0 || tokens[i
 					- 1].type == PIPE))
-				cd_builtin(&tokens[i], t2.args - i, &env);
+				cd_builtin(&tokens[i], t2.token_count - i, &env);
 			i++;
 		}
 		ft_free(input);
