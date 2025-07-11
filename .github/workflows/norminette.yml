@@ -2,9 +2,9 @@ name: Norminette
 
 on:
   push:
-    branches: [ main, master, dev, yuno, Killian ]
+    branches: [ main, master, dev, doriane, killian ]
   pull_request:
-    branches: [ main, master, dev, yuno, Killian ]
+    branches: [ main, master, dev, doriane, killian ]
 
 jobs:
   norminette:
