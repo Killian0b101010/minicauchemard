@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 22:21:58 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/11 14:10:52 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ int	cd(int ac, char **argv, t_env *env)
 
 char	*set_env_value(t_env *env, const char *key, const char *value)
 {
-	while (env->envp)
-	{
-	}
 }
 int	cd(int ac, char **argv, t_env *env)
 {
