@@ -10,24 +10,24 @@
         "stdlib.h": "c"
     },
     "workbench.colorCustomizations": {
-        "activityBar.activeBackground": "#65c89b",
-        "activityBar.background": "#65c89b",
-        "activityBar.foreground": "#15202b",
-        "activityBar.inactiveForeground": "#15202b99",
-        "activityBarBadge.background": "#945bc4",
-        "activityBarBadge.foreground": "#e7e7e7",
-        "commandCenter.border": "#15202b99",
-        "sash.hoverBorder": "#65c89b",
-        "statusBar.background": "#42b883",
-        "statusBar.foreground": "#15202b",
-        "statusBarItem.hoverBackground": "#359268",
-        "statusBarItem.remoteBackground": "#42b883",
-        "statusBarItem.remoteForeground": "#15202b",
-        "titleBar.activeBackground": "#42b883",
-        "titleBar.activeForeground": "#15202b",
-        "titleBar.inactiveBackground": "#42b88399",
-        "titleBar.inactiveForeground": "#15202b99",
-        "editor.background": "#26262c1a",
+        "activityBar.activeBackground": "#0055A4",         // Bleu
+        "activityBar.background": "#0055A4",               // Bleu
+        "activityBar.foreground": "#ff0000",               // Blanc
+        "activityBar.inactiveForeground": "#FFFFFF99",     // Blanc semi-transparent
+        "activityBarBadge.background": "#EF4135",          // Rouge
+        "activityBarBadge.foreground": "#FFFFFF",          // Blanc
+        "commandCenter.border": "#FFFFFF99",               // Blanc semi-transparent
+        "sash.hoverBorder": "#0055A4",                     // Bleu
+        "statusBar.background": "#EF4135",                 // Rouge
+        "statusBar.foreground": "#ffffff",                 // Blanc
+        "statusBarItem.hoverBackground": "#CC342C",        // Rouge foncé
+        "statusBarItem.remoteBackground": "#EF4135",       // Rouge
+        "statusBarItem.remoteForeground": "#ffffff",       // Blanc
+        "titleBar.activeBackground": "#FFFFFF",            // Blanc
+        "titleBar.activeForeground": "#0055A4",            // Bleu
+        "titleBar.inactiveBackground": "#FFFFFF99",        // Blanc semi-transparent
+        "titleBar.inactiveForeground": "#0055A499",        // Bleu semi-transparent
+        "editor.background": "#0000001a"                   // Fond très léger blanc
     },
-    "peacock.color": "#42b883"
+    "peacock.color": "#0055A4"                             // Bleu
 }

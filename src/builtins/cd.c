@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 18:54:09 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/11 20:03:30 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,5 @@ int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 		cd_bulltins_two(env, target);
 		return (0);
 	}
-	return (write(2, "Not a directory", 16), 1);
+	return (write(2, "cd: no such file or directory: \n", 33), 1);
 }
