@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
 /*   Updated: 2025/07/11 14:10:52 by kiteixei         ###   ########.fr       */
@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	go_home(char *home)
+int	cd(int ac, char **argv, t_env *env)
 {
 	char	*home;
 
@@ -56,5 +56,4 @@ int	cd(int ac, char **argv, t_env *env)
 		}
 		return (write(stderr, "Not a directory", 16), 1);
 	}
-	return (0);
 }
