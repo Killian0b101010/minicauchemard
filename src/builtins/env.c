@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 17:30:22 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/11 17:24:35 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2)
 	int	i;
 
 	i = 0;
-	if (t2->args > index + 1 && tokens[index + 1].type == WORD)
+	if (t2->token_count > index + 1 && tokens[index + 1].type == WORD)
 	{
 		write(2, "env: \'", 7);
 		write(2, tokens[index + 1].value, ft_strlen(tokens[index + 1].value));
