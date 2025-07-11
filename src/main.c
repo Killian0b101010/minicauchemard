@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
 /*   Updated: 2025/07/11 18:45:54 by dnahon           ###   ########.fr       */
@@ -80,7 +80,10 @@ int	main(int ac, char **av, char **envp)
 			add_history(input);
 		tokens = tokenizer(input, &t2.token_count);
 		if (!tokens)
+		{
 			ft_free(input);
+			continue ;
+		}
 		i = 0;
 		while (i < t2.token_count)
 		{
@@ -93,6 +96,9 @@ int	main(int ac, char **av, char **envp)
 			if (ft_strcmp(tokens[i].value, "env") == 0 && (i == 0 || tokens[i
 					- 1].type == PIPE))
 				env_cmd(i, &env, tokens, &t2);
+			if (ft_strcmp(tokens[i].value, "cd") == 0 && (i == 0 || tokens[i
+					- 1].type == PIPE))
+				cd_builtin(&tokens[i], t2.args - i, &env);
 			i++;
 		}
 		ft_free(input);

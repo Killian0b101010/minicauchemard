@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
 /*   Updated: 2025/07/11 17:24:16 by dnahon           ###   ########.fr       */
@@ -18,6 +18,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <sys/stat.h>
+
 typedef struct t_env
 {
 	char			**envp;
@@ -79,6 +80,7 @@ t_token				*tokenizer(char *str, int *token_count);
 int					pwd(t_t2 *t2);
 int					env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2);
 void				set_env(t_env *env, char **envp);
+int					cd_builtin(t_token *tokens, int token_count, t_env *env);
 void				free_cmd_blocks(t_cmd_block *cmds, int block_count);
 char				**build_cmd_args(t_token *tokens, int count);
 int					fill_block(t_cmd_block *block, t_token *tokens, int start,
