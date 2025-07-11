@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 14:44:29 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:46:22 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	cd(int ac, char **argv, t_env *env)
 
 char	*set_env_value(t_env *env, const char *key, const char *value)
 {
+	char line;
 }
 int	cd(int ac, char **argv, t_env *env)
 {
