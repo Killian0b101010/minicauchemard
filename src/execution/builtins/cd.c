@@ -3,52 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 20:03:30 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/14 22:08:52 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 static char	*set_env_value(t_env *env, const char *key)
 {
 	char	*new_key;
 	char	*new_path;
-	char	cwd[BUFFER_SIZE];
+	char	cwd[BUFFER_SIZE_CD];
 	int		i;
 
-	// fonction non finis
-	i = 0;
-	if (!getcwd(cwd, BUFFER_SIZE))
+	i = -1;
+	if (!getcwd(cwd, BUFFER_SIZE_CD))
 		return (NULL);
-	// Creation du path soit old soit PWD?
 	new_key = ft_strjoin(key, "=");
 	if (!new_key)
 		return (NULL);
 	new_path = ft_strjoin(new_key, cwd);
-	free(new_key);
+	ft_free(new_key);
 	if (!new_path)
 		return (NULL);
-	while (env->envp[i])
+	while (env->envp[++i])
 	{
-		// si pwd
 		if (ft_strncmp(env->envp[i], key, ft_strlen(key)) == 0
 			&& env->envp[i][ft_strlen(key)] == '=')
-		{
-			free(env->envp[i]);
-			env->envp[i] = new_path;
-			return (new_path);
-		}
-		i++;
+			return (ft_free(env->envp[i]), env->envp[i] = new_path, new_path);
 	}
 	return (NULL);
 }
 
 static void	cd_bulltins_two(t_env *env, char *target)
 {
-	char		buffer[BUFFER_SIZE];
+	char		buffer[BUFFER_SIZE_CD];
 	struct stat	st;
 
 	if (target && stat(target, &st) == 0 && S_ISDIR(st.st_mode))
@@ -58,7 +50,7 @@ static void	cd_bulltins_two(t_env *env, char *target)
 			perror("cd");
 			return ;
 		}
-		if (getcwd(buffer, BUFFER_SIZE))
+		if (getcwd(buffer, BUFFER_SIZE_CD))
 			set_env_value(env, "PWD");
 		return ;
 	}
@@ -66,7 +58,7 @@ static void	cd_bulltins_two(t_env *env, char *target)
 
 int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 {
-	char		buffer[BUFFER_SIZE];
+	char		buffer[BUFFER_SIZE_CD];
 	char		*home;
 	struct stat	st;
 	char		*target;
@@ -74,7 +66,6 @@ int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 	home = getenv("HOME");
 	if (!home)
 		return (fprintf(stderr, "cd : HOME not set\n"), 1);
-	// cd sans argument ou cd ~
 	if (token_count == 1 || (token_count >= 2 && ft_strcmp(tokens[1].value,
 				"~") == 0))
 		target = home;
@@ -82,10 +73,8 @@ int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 		target = tokens[1].value;
 	if (token_count > 2)
 		return (ft_printf("cd : too many arguments\n"), 1);
-	// sauvegarde de l'ancien PWD
-	if (getcwd(buffer, BUFFER_SIZE))
+	if (getcwd(buffer, BUFFER_SIZE_CD))
 		set_env_value(env, "OLDPWD");
-	// verifie si le chemin est un dossier valide
 	if (target && stat(target, &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		cd_bulltins_two(env, target);

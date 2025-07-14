@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
+#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/11 17:30:17 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/14 19:31:45 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,15 @@ AR 			= 	ar rcs
 RM 			= 	rm -f
 
 SRC_DIR 	= 	./src
-SRC 		= 	./src/builtins/echo.c ./src/tokens/tokenizer_utils.c ./src/tokens/tokenizer.c \
-				./src/utils.c ./src/main.c ./src/builtins/pwd.c ./src/builtins/env.c \
-				./src/builtins/cd.c
+SRC 		= 	./src/core/main.c ./src/core/main_utils.c \
+				./src/execution/execution_utils.c \
+				./src/execution/builtins/echo.c ./src/execution/builtins/pwd.c ./src/execution/builtins/env.c \
+				./src/execution/builtins/cd.c ./src/execution/builtins/export.c ./src/execution/builtins/unset.c \
+				./src/execution/builtins/exec_builtins.c ./src/execution/builtins/exit.c \
+				./src/parsing/tokenizer.c ./src/parsing/tokenizer_utils.c \
+				./src/expansion/expansion.c ./src/expansion/expansion_utils.c ./src/expansion/expansion_utils2.c ./src/expansion/expansion_helpers.c \
+				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \
+				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c
 
 LIBFT 		= 	./libft/libft.a
 INCLUDES	= 	./includes/pipex.h ./includes/minishell.h ./libft/includes/libft.h
