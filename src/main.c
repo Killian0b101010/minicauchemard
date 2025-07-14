@@ -89,6 +89,7 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	set_env(&env, envp);
+	print_minicauchemar();
 	while (1)
 	{
 		t2.env_count = 0;

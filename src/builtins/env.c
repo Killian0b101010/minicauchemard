@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/11 23:34:21 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/12 01:08:33 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	set_env(t_env *env, char **envp)
 		return ;
 	while (++j < i)
 		env->envp[j] = ft_strdup(envp[j]);
+	env->envp[i] = NULL;
 }
 
 int	env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2)
