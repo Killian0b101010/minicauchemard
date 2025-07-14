@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 18:13:54 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/09 21:54:43 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/14 18:29:41 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void				ft_putchar(char c);
 void				ft_putchar_fd(char c, int fd);
 void				ft_putstr_fd(char *str, int fd);
 char				*ft_strcpy(char *dest, const char *src);
+char				*ft_strncpy(char *dest, const char *src, unsigned int n);
 char				*ft_strdup(const char *src);
 int					ft_intlen(int n);
 int					ft_abs(int n);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 void	set_env(t_env *env, char **envp)
 {
@@ -41,14 +41,13 @@ int	env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2)
 		write(2, "\': No such file or directory\n", 30);
 		return (1);
 	}
-	else if (t2->env_count == 0)
+	else
 	{
 		while (env->envp[i])
 		{
 			ft_printf("%s\n", env->envp[i]);
 			i++;
 		}
-		t2->env_count = 1;
 	}
 	return (0);
 }

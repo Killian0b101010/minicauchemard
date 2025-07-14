@@ -10,7 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
+
+static int	is_n_flag(char *str)
+{
+	int	i;
+
+	if (!str || str[0] != '-' || str[1] != 'n')
+		return (0);
+	i = 2;
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int	echo(t_token *tokens, int token_count)
 {
@@ -20,16 +36,15 @@ int	echo(t_token *tokens, int token_count)
 	i = 1;
 	n_flag = 0;
 	while (i < token_count && tokens[i].type == WORD
-		&& tokens[i].value[0] == '-' && tokens[i].value[1] == 'n'
-		&& tokens[i].value[2] == '\0')
+		&& is_n_flag(tokens[i].value))
 	{
 		n_flag = 1;
 		i++;
 	}
 	while (i < token_count && tokens[i].type == WORD)
 	{
-		write(1, tokens[i].value, strlen(tokens[i].value));
-		if (i + 1 < token_count)
+		write(1, tokens[i].value, ft_strlen(tokens[i].value));
+		if (i + 1 < token_count && tokens[i + 1].type == WORD)
 			write(1, " ", 1);
 		i++;
 	}

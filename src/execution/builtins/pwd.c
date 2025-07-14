@@ -10,19 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "../../../includes/minishell.h"
 
 int	pwd(t_t2 *t2)
 {
 	char	cwd[10000];
 
+	(void)t2;
 	if (getcwd(cwd, sizeof(cwd)))
 	{
-		if (t2->pwd_count == 0)
-		{
-			ft_printf("%s\n", cwd);
-			t2->pwd_count = 1;
-		}
+		ft_printf("%s\n", cwd);
 	}
 	else
 		perror("getcwd");

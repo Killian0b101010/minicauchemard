@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:07:11 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 22:22:05 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/14 18:56:04 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,19 @@ t_token_type	get_token_type(char *str)
 
 void	tokenize(char *str, t_t2 *t2)
 {
-	t2->quoted = 1;
-	t((t2->index++, t2->i = 0, 0));
-	while (str[t2->index] && (str[t2->index] != '"' && str[t2->index] != '\''))
+	char	quote_char;
+
+	quote_char = str[t2->index];
+	if (quote_char == '\'')
+		t2->quoted = 1;
+	else
+		t2->quoted = 2;
+	t2->index++;
+	t2->i = 0;
+	while (str[t2->index] && str[t2->index] != quote_char)
 		t2->buff[t2->i++] = str[t2->index++];
 	t2->buff[t2->i] = '\0';
-	if (str[t2->index] == '"' || str[t2->index] == '\'')
+	if (str[t2->index] == quote_char)
 		t2->index++;
 }
 
