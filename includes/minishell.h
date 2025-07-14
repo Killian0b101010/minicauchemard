@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 22:08:39 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/14 22:14:17 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,9 @@ int					setup_heredoc(char *delimiter);
 char				*process_expansion_loop(char *str, t_env *env,
 						int exit_status);
 int					expand_variable_at_position(char *str, t_env *env,
-						int exit_status, int i, char **result);
+						int exit_status, int i);
+char				*get_expanded_variable_value(char *str, t_env *env,
+						int exit_status, int i);
 char				*append_char_to_result(char *result, char c);
 char				*get_variable_value(char *var_name, t_env *env,
 						int exit_status);

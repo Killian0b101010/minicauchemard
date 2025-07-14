@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:30:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 19:21:25 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/14 22:14:50 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,20 @@ char	*get_variable_name(char *str, int start, int *end)
 	ft_strncpy(var_name, str + start, i - start);
 	var_name[i - start] = '\0';
 	return (var_name);
+}
+
+char	*append_char_to_result(char *result, char c)
+{
+	char	*temp;
+
+	temp = ft_malloc(ft_strlen(result) + 2);
+	if (temp)
+	{
+		ft_strcpy(temp, result);
+		temp[ft_strlen(result)] = c;
+		temp[ft_strlen(result) + 1] = '\0';
+		ft_free(result);
+		return (temp);
+	}
+	return (result);
 }

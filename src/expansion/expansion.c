@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:50:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 22:07:21 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/14 22:14:47 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,23 @@ static char	*get_variable_name(char *str, int start, int *end)
 	return (var_name);
 }
 
-char	*append_char_to_result(char *result, char c)
+int	expand_variable_at_position(char *str, t_env *env, int exit_status, int i)
 {
-	char	*temp;
+	char	*var_name;
+	int		end;
 
-	temp = ft_malloc(ft_strlen(result) + 2);
-	if (temp)
+	var_name = get_variable_name(str, i + 1, &end);
+	if (var_name)
 	{
-		ft_strcpy(temp, result);
-		temp[ft_strlen(result)] = c;
-		temp[ft_strlen(result) + 1] = '\0';
-		ft_free(result);
-		return (temp);
+		ft_free(var_name);
+		return (end);
 	}
-	return (result);
+	else
+		return (i + 1);
 }
 
-int	expand_variable_at_position(char *str, t_env *env, int exit_status, int i,
-		char **result)
+char	*get_expanded_variable_value(char *str, t_env *env, int exit_status,
+		int i)
 {
 	char	*var_name;
 	char	*var_value;
@@ -83,14 +82,10 @@ int	expand_variable_at_position(char *str, t_env *env, int exit_status, int i,
 	{
 		var_value = get_variable_value(var_name, env, exit_status);
 		ft_free(var_name);
-		*result = var_value;
-		return (end);
+		return (var_value);
 	}
 	else
-	{
-		*result = create_single_char_string(str, i);
-		return (i + 1);
-	}
+		return (create_single_char_string(str, i));
 }
 
 char	*expand_variables(char *str, t_env *env, int exit_status)
