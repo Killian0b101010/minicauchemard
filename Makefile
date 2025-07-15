@@ -6,7 +6,7 @@
 #    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/14 19:31:45 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/15 17:53:54 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,4 +67,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re
