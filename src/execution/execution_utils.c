@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:37:20 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:41:43 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,6 @@ static int	execute_multiple_blocks(t_cmd_block *blocks, int block_count,
 	execute_piped_commands(blocks, block_count, env);
 	return (1);
 }
-
-
 
 int	process_input_line(char *input, t_env *env)
 {
