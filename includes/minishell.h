@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 22:14:17 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:22:45 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@
 # ifndef BUFFER_SIZE_CD
 #  define BUFFER_SIZE_CD 4096
 # endif
-
-typedef struct t_shell
-{
-	int				exit_status;
-}					t_shell;
 
 typedef struct t_env
 {
@@ -107,31 +102,26 @@ void				exit2(void);
 void				execute_builtin_in_block(t_cmd_block *block, t_env *env);
 void				execute_piped_commands(t_cmd_block *blocks, int block_count,
 						t_env *env);
-char				*expand_variables(char *str, t_env *env, int exit_status);
+char				*expand_variables(char *str, t_env *env);
 void				process_token_expansion(t_token *tokens, int token_count,
-						t_env *env, int exit_status);
+						t_env *env);
 void				restore_fds(int saved_stdin, int saved_stdout);
-int					execute_with_redirections(t_cmd_block *block, t_env *env,
-						int exit_status);
+int					execute_with_redirections(t_cmd_block *block, t_env *env);
 int					execute_builtin_block(t_cmd_block *block, t_env *env);
 int					handle_input_redirection(t_token *tokens, int i);
 int					handle_output_redirection(t_token *tokens, int i);
 int					handle_append_redirection(t_token *tokens, int i);
 int					handle_heredoc_redirection(t_token *tokens, int i);
 int					setup_heredoc(char *delimiter);
-char				*process_expansion_loop(char *str, t_env *env,
-						int exit_status);
-int					expand_variable_at_position(char *str, t_env *env,
-						int exit_status, int i);
-char				*get_expanded_variable_value(char *str, t_env *env,
-						int exit_status, int i);
+char				*process_expansion_loop(char *str, t_env *env);
+int					expand_variable_at_position(char *str, int i);
+char				*get_expanded_variable_value(char *str, t_env *env, int i);
 char				*append_char_to_result(char *result, char c);
-char				*get_variable_value(char *var_name, t_env *env,
-						int exit_status);
+char				*get_variable_value(char *var_name, t_env *env);
 char				*create_single_char_string(char *str, int i);
 char				*get_env_value(char *var_name, t_env *env);
 void				print_minicauchemar(void);
 char				*get_prompt_and_input(void);
-int					process_input_line(char *input, t_env *env, t_shell *shell);
+int					process_input_line(char *input, t_env *env);
 
 #endif

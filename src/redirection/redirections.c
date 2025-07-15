@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 19:04:21 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:22:45 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,13 +104,12 @@ void	restore_fds(int saved_stdin, int saved_stdout)
 	close(saved_stdout);
 }
 
-int	execute_with_redirections(t_cmd_block *block, t_env *env, int exit_status)
+int	execute_with_redirections(t_cmd_block *block, t_env *env)
 {
 	int	saved_stdin;
 	int	saved_stdout;
 	int	result;
 
-	(void)exit_status;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (handle_redirections(block->tokens, block->t2.token_count) == -1)
