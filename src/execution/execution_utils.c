@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 20:30:16 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:41:43 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,50 +33,47 @@ int	execute_builtin_block(t_cmd_block *block, t_env *env)
 		exit2();
 		return (0);
 	}
-	ft_printf("%s: command not found\n", block->tokens[0].value);
 	return (127);
 }
 
-static int	execute_single_block(t_cmd_block *blocks, t_env *env,
-		t_shell *shell)
+static int	execute_single_block(t_cmd_block *blocks, t_env *env)
 {
-	shell->exit_status = execute_with_redirections(&blocks[0], env,
-			shell->exit_status);
+	execute_with_redirections(&blocks[0], env);
 	return (1);
 }
 
 static int	execute_multiple_blocks(t_cmd_block *blocks, int block_count,
-		t_env *env, t_shell *shell)
+		t_env *env)
 {
 	execute_piped_commands(blocks, block_count, env);
-	shell->exit_status = 0;
 	return (1);
 }
 
-int	process_input_line(char *input, t_env *env, t_shell *shell)
+int	process_input_line(char *input, t_env *env)
 {
 	t_token		*tokens;
 	t_cmd_block	*blocks;
 	t_t2		t2;
 	int			block_count;
 
-	t2.env_count = 0;
-	t2.pwd_count = 0;
+	if (is_empty_input(input))
+		return (1);
+	t((t2.env_count = 0, t2.pwd_count = 0, 0));
 	tokens = tokenizer(input, &t2.token_count);
-	if (!tokens)
-		return (0);
-	process_token_expansion(tokens, t2.token_count, env, shell->exit_status);
+	if (!tokens || t2.token_count == 0)
+	{
+		if (tokens)
+			free_tokens(tokens, t2.token_count);
+		return (1);
+	}
+	process_token_expansion(tokens, t2.token_count, env);
 	blocks = split_into_blocks(tokens, t2, &block_count);
 	if (!blocks)
-	{
-		free_tokens(tokens, t2.token_count);
-		return (0);
-	}
+		return (free_tokens(tokens, t2.token_count), 0);
 	if (block_count == 1)
-		execute_single_block(blocks, env, shell);
+		execute_single_block(blocks, env);
 	else
-		execute_multiple_blocks(blocks, block_count, env, shell);
+		execute_multiple_blocks(blocks, block_count, env);
 	free_cmd_blocks(blocks, block_count);
-	free_tokens(tokens, t2.token_count);
-	return (1);
+	return (free_tokens(tokens, t2.token_count), 1);
 }

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:07:11 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 18:56:04 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:31:08 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	tokenize(char *str, t_t2 *t2)
 		t2->quoted = 2;
 	t2->index++;
 	t2->i = 0;
-	while (str[t2->index] && str[t2->index] != quote_char)
+	while (str[t2->index] && str[t2->index] != quote_char && t2->i < 1023)
 		t2->buff[t2->i++] = str[t2->index++];
 	t2->buff[t2->i] = '\0';
 	if (str[t2->index] == quote_char)
@@ -64,7 +64,7 @@ void	tokenize2(char *str, t_t2 *t2)
 {
 	t((t2->quoted = 0, t2->i = 0, 0));
 	while (str[t2->index] && !is_space(str[t2->index]) && (str[t2->index] != '"'
-			&& str[t2->index] != '\''))
+			&& str[t2->index] != '\'') && t2->i < 1023)
 		t2->buff[t2->i++] = str[t2->index++];
 	t2->buff[t2->i] = '\0';
 }

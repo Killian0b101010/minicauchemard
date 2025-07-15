@@ -24,11 +24,6 @@
 #  define BUFFER_SIZE_CD 4096
 # endif
 
-typedef struct t_shell
-{
-	int				exit_status;
-}					t_shell;
-
 typedef struct t_env
 {
 	char			**envp;
@@ -61,7 +56,7 @@ typedef struct t2
 	int				index;
 	int				i;
 	int				j;
-	char			buff[10000];
+	char			buff[1024];
 	int				quoted;
 	int				token_count;
 	int				pwd_count;
@@ -108,31 +103,28 @@ void				exit2(void);
 void				execute_builtin_in_block(t_cmd_block *block, t_env *env);
 void				execute_piped_commands(t_cmd_block *blocks, int block_count,
 						t_env *env);
-char				*expand_variables(char *str, t_env *env, int exit_status);
+char				*expand_variables(char *str, t_env *env);
 void				process_token_expansion(t_token *tokens, int token_count,
-						t_env *env, int exit_status);
+						t_env *env);
 void				restore_fds(int saved_stdin, int saved_stdout);
-int					execute_with_redirections(t_cmd_block *block, t_env *env,
-						int exit_status);
+int					execute_with_redirections(t_cmd_block *block, t_env *env);
 int					execute_builtin_block(t_cmd_block *block, t_env *env);
 int					handle_input_redirection(t_token *tokens, int i);
 int					handle_output_redirection(t_token *tokens, int i);
 int					handle_append_redirection(t_token *tokens, int i);
 int					handle_heredoc_redirection(t_token *tokens, int i);
 int					setup_heredoc(char *delimiter);
-char				*process_expansion_loop(char *str, t_env *env,
-						int exit_status);
+char				*process_expansion_loop(char *str, t_env *env);
 int					expand_variable_at_position(char *str, int i);
-char				*get_expanded_variable_value(char *str, t_env *env,
-						int exit_status, int i);
+char				*get_expanded_variable_value(char *str, t_env *env, int i);
 char				*append_char_to_result(char *result, char c);
-char				*get_variable_value(char *var_name, t_env *env,
-						int exit_status);
+char				*get_variable_value(char *var_name, t_env *env);
 char				*create_single_char_string(char *str, int i);
 char				*get_env_value(char *var_name, t_env *env);
 void				print_minicauchemar(void);
 char				*get_prompt_and_input(void);
-int					process_input_line(char *input, t_env *env, t_shell *shell);
+int					process_input_line(char *input, t_env *env);
+int					is_empty_input(char *input);
 void				ft_handler(int sig);
 
 #endif
