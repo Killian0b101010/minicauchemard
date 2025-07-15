@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 19:03:12 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:37:22 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,20 @@ char	**build_cmd_args(t_token *tokens, int count)
 	}
 	args[j] = NULL;
 	return (args);
+}
+
+int	is_empty_input(char *input)
+{
+	int i;
+
+	if (!input)
+		return (1);
+	i = 0;
+	while (input[i])
+	{
+		if (!is_space(input[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

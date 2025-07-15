@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:22:45 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:37:29 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct t2
 	int				index;
 	int				i;
 	int				j;
-	char			buff[10000];
+	char			buff[1024];
 	int				quoted;
 	int				token_count;
 	int				pwd_count;
@@ -123,5 +123,6 @@ char				*get_env_value(char *var_name, t_env *env);
 void				print_minicauchemar(void);
 char				*get_prompt_and_input(void);
 int					process_input_line(char *input, t_env *env);
+int					is_empty_input(char *input);
 
 #endif

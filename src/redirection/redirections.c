@@ -6,19 +6,12 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:22:45 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:23:39 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <fcntl.h>
-
-typedef struct s_redirection
-{
-	t_token_type	type;
-	char			*filename;
-	int				fd;
-}					t_redirection;
 
 static char	*get_heredoc_input(char *delimiter)
 {
