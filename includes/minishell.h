@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:37:29 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 17:46:10 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../libft/includes/libft.h"
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <sys/stat.h>
 
 # ifndef BUFFER_SIZE_CD
@@ -124,5 +125,6 @@ void				print_minicauchemar(void);
 char				*get_prompt_and_input(void);
 int					process_input_line(char *input, t_env *env);
 int					is_empty_input(char *input);
+void				ft_handler(int sig);
 
 #endif

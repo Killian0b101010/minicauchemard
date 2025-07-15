@@ -3,7 +3,7 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
+#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
 #    Updated: 2025/07/15 17:53:54 by dnahon           ###   ########.fr        #
@@ -27,7 +27,8 @@ SRC 		= 	./src/core/main.c ./src/core/main_utils.c \
 				./src/parsing/tokenizer.c ./src/parsing/tokenizer_utils.c \
 				./src/expansion/expansion.c ./src/expansion/expansion_utils.c ./src/expansion/expansion_utils2.c ./src/expansion/expansion_helpers.c \
 				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \
-				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c
+				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c \
+				./src/signal/handler.c 
 
 LIBFT 		= 	./libft/libft.a
 INCLUDES	= 	./includes/pipex.h ./includes/minishell.h ./libft/includes/libft.h
