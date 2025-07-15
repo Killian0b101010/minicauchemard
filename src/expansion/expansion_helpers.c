@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_helpers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 22:14:17 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 16:16:51 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ char	*process_expansion_loop(char *str, t_env *env, int exit_status)
 		if (str[i] == '$' && str[i + 1] && is_expandable_char(str[i + 1]))
 		{
 			var_part = get_expanded_variable_value(str, env, exit_status, i);
-			i = expand_variable_at_position(str, env, exit_status, i);
+			i = expand_variable_at_position(str, i);
 			temp = ft_strjoin(result, var_part);
 			ft_free(result);
 			ft_free(var_part);

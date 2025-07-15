@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:50:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 22:14:47 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 16:00:55 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*get_variable_name(char *str, int start, int *end)
 	return (var_name);
 }
 
-int	expand_variable_at_position(char *str, t_env *env, int exit_status, int i)
+int	expand_variable_at_position(char *str, int i)
 {
 	char	*var_name;
 	int		end;
