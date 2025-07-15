@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 19:27:49 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/15 20:34:27 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,5 +126,7 @@ char				*get_prompt_and_input(void);
 int					process_input_line(char *input, t_env *env);
 int					is_empty_input(char *input);
 void				ft_handler(int sig);
-void				ft_handler2(int sig);
+void				setup_interactive_signals(void);
+void				setup_child_signals(void);
+
 #endif

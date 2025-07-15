@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 19:25:40 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/15 20:35:24 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ char	*get_prompt_and_input(void)
 	getcwd(cwd, sizeof(cwd));
 	prompt = ft_strjoin("minicauchemar:", cwd);
 	prompt = ft_strjoin(prompt, "$ ");
-	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, ft_handler2);
 	input = readline(prompt);
 	ft_free(prompt);
 	return (input);

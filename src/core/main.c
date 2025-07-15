@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:22:45 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/15 20:32:44 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static void	initialize_shell(t_env *env, char **envp)
 {
 	set_env(env, envp);
+	setup_interactive_signals();
 	print_minicauchemar();
 }
 

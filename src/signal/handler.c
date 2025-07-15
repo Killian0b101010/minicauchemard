@@ -13,10 +13,15 @@ void	ft_handler(int sig)
 	rl_on_new_line();
 	rl_redisplay();
 }
-void	ft_handler2(int sig)
+
+void	setup_interactive_signals(void)
 {
-	(void)sig;
-	rl_replace_line("", 0);
-	rl_redisplay();
-	return ;
+	signal(SIGINT, ft_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	setup_child_signals(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }
