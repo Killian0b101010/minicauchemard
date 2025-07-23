@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 20:34:27 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 17:09:32 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,12 @@ typedef struct t2
 	int				j;
 	char			buff[1024];
 	int				quoted;
+	int				single_quotes;
+	int				double_quotes;
 	int				token_count;
 	int				pwd_count;
 	int				env_count;
+	int				color;
 }					t_t2;
 
 typedef struct s_cmd_block
@@ -69,6 +72,16 @@ typedef struct s_cmd_block
 	t_token			*tokens;
 	t_t2			t2;
 }					t_cmd_block;
+
+static inline void	put_color_char(char c, int r, int g, int b)
+{
+	ft_printf("\e[1;38;2;%i;%i;%im%c\e[m", r, g, b, c);
+}
+
+static inline int	get_color(int i, int len)
+{
+	return (76 + (180. * (float)i / (float)len));
+}
 
 int					echo(t_token *tokens, int token_count);
 void				t(int a);
@@ -85,7 +98,7 @@ int					expand_tokens(t_token **tokens, int *capacity);
 t_token				*tokenizer(char *str, int *token_count);
 int					pwd(t_t2 *t2);
 int					env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2);
-void				set_env(t_env *env, char **envp);
+void				ft_set_env(t_env *env, char **envp);
 int					cd_builtin(t_token *tokens, int token_count, t_env *env);
 void				free_cmd_blocks(t_cmd_block *cmds, int block_count);
 char				**build_cmd_args(t_token *tokens, int count);
@@ -97,7 +110,8 @@ void				print_cmd_blocks(t_cmd_block *blocks, int block_count);
 int					is_builtin(char *cmd);
 int					exec_builtins(t_token *tokens, int token_count, t_env *env,
 						t_t2 *t2);
-int					export(t_env *env, t_token *tokens, int token_count);
+int					export_builtin(t_env *env, t_token *tokens,
+						int token_count);
 int					unset(t_env *env, t_token *tokens, int token_count);
 void				exit2(void);
 void				execute_builtin_in_block(t_cmd_block *block, t_env *env);
@@ -128,5 +142,10 @@ int					is_empty_input(char *input);
 void				ft_handler(int sig);
 void				setup_interactive_signals(void);
 void				setup_child_signals(void);
+int					count_quotes(char *str, int *single_quotes,
+						int *double_quotes);
+int					getnewcolor(void);
+char				*ft_strjoin_free(char *s1, char *s2);
+char				*join_itoa_free(char *str, int num);
 
 #endif

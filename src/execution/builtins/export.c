@@ -6,23 +6,11 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:51:49 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 18:56:07 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 15:39:35 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
-
-static void	print_all_exports(t_env *env)
-{
-	int	i;
-
-	i = 0;
-	while (env->envp[i])
-	{
-		ft_printf("declare -x %s\n", env->envp[i]);
-		i++;
-	}
-}
 
 static int	find_var_index(t_env *env, char *var_name)
 {
@@ -75,10 +63,7 @@ static int	process_export_variable(t_env *env, char *var_value)
 	int	var_index;
 
 	if (ft_strchr(var_value, '=') == NULL)
-	{
-		ft_printf("export: '%s': not a valid identifier\n", var_value);
 		return (0);
-	}
 	var_index = find_var_index(env, var_value);
 	if (var_index >= 0)
 	{
@@ -93,15 +78,10 @@ static int	process_export_variable(t_env *env, char *var_value)
 	return (0);
 }
 
-int	export(t_env *env, t_token *tokens, int token_count)
+int	export_builtin(t_env *env, t_token *tokens, int token_count)
 {
 	int	i;
 
-	if (token_count < 2)
-	{
-		print_all_exports(env);
-		return (0);
-	}
 	i = 1;
 	while (i < token_count)
 	{

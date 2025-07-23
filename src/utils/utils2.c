@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 18:56:05 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 15:39:58 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	execute_builtin_in_block(t_cmd_block *block, t_env *env)
 	else if (ft_strcmp(cmd, "cd") == 0)
 		cd_builtin(block->tokens, block->t2.token_count, env);
 	else if (ft_strcmp(cmd, "export") == 0)
-		export(env, block->tokens, block->t2.token_count);
+		export_builtin(env, block->tokens, block->t2.token_count);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		unset(env, block->tokens, block->t2.token_count);
 	else if (ft_strcmp(cmd, "exit") == 0)
