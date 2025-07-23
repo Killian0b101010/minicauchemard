@@ -6,11 +6,11 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 22:22:07 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/14 19:03:14 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	t(int a)
 {
@@ -49,4 +49,20 @@ void	print_syntax_error(char *value)
 	write(2, "minishell: syntax error near unexpected token '", 48);
 	write(2, value, ft_strlen(value));
 	write(2, "'\n", 2);
+}
+
+int	count_pipes(t_token *tokens, int token_count)
+{
+	int	i;
+	int	pipes;
+
+	i = 0;
+	pipes = 0;
+	while (i < token_count)
+	{
+		if (tokens[i].type == PIPE)
+			pipes++;
+		i++;
+	}
+	return (pipes);
 }

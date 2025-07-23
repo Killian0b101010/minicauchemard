@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/13 12:48:37 by dnahon            #+#    #+#             */
-/*   Updated: 2025/05/15 14:17:55 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/11 23:20:08 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char	*ft_uitoa(unsigned int n)
 	if (!str)
 		return (NULL);
 	str[len] = '\0';
-	while (len-- > (n < 0))
+	while (len-- > (nb < 0))
 	{
 		str[len] = (nb % 10) + '0';
 		nb = nb / 10;

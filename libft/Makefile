@@ -6,7 +6,7 @@
 #    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/06 17:04:07 by dnahon            #+#    #+#              #
-#    Updated: 2025/06/27 15:42:36 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/14 18:29:42 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ SRC = ./src/libft/get_next_line/get_next_line.c \
 	./src/libft/str/compare/ft_is_palindrome.c ./src/libft/str/compare/ft_strcmp.c \
 	./src/libft/str/compare/ft_strncmp.c ./src/libft/str/concat/ft_strcat.c \
 	./src/libft/str/concat/ft_strlcat.c ./src/libft/str/concat/ft_strncat.c \
-	./src/libft/str/copy/ft_strcpy.c ./src/libft/str/copy/ft_strdup.c \
+	./src/libft/str/copy/ft_strcpy.c ./src/libft/str/copy/ft_strncpy.c ./src/libft/str/copy/ft_strdup.c \
 	./src/libft/str/copy/ft_strlcpy.c ./src/libft/str/info/ft_strlen.c \
 	./src/libft/str/info/ft_strnlen.c ./src/libft/str/modify/ft_strrev.c \
 	./src/libft/str/modify/ft_strjoin.c ./src/libft/str/modify/ft_substr.c \
