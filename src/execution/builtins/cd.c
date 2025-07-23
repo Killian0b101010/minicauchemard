@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 18:10:02 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 19:13:52 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ static void	cd_bulltins_two(t_env *env, char *target)
 		return ;
 	}
 }
-
+// int	cd_test(t_env *env, int token_count)
+// {
+// 	if(token_count == 2 && ft_strcmp(token[i]))
+// }
 int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 {
 	char		buffer[BUFFER_SIZE_CD];
@@ -67,7 +70,8 @@ int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 	if (!home)
 		return (fprintf(stderr, "cd : HOME not set\n"), 1);
 	if (token_count == 1 || (token_count >= 2 && ft_strcmp(tokens[1].value,
-				"~") == 0))
+				"~") == 0) || (token_count >= 2 && ft_strcmp(tokens[1].value,
+				"--") == 0))
 		target = home;
 	else if (token_count == 2)
 		target = tokens[1].value;
