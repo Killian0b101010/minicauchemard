@@ -6,18 +6,18 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/28 14:46:38 by dnahon            #+#    #+#             */
-/*   Updated: 2025/06/06 16:14:10 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 18:57:49 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/libft.h"
 
-void	ft_lstadd_front(t_list **lst, t_list *new)
+void	ft_lstadd_front(t_list **lst, t_list *new_lst)
 {
-	if (!lst || !new)
+	if (!lst || !new_lst)
 		return ;
-	new->next = *lst;
-	*lst = new;
+	new_lst->next = *lst;
+	*lst = new_lst;
 }
 
 /* int	main(void)

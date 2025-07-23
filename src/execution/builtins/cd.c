@@ -73,7 +73,7 @@ int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 				"~") == 0) || (token_count >= 2 && ft_strcmp(tokens[1].value,
 				"--") == 0))
 		target = home;
-	else if (token_count >= 2)
+	else if (token_count == 2)
 		target = tokens[1].value;
 	if (token_count > 2)
 		return (ft_printf("cd : too many arguments\n"), 1);

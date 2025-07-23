@@ -67,9 +67,11 @@ fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean all
-valgrind: ($NAME)
-	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell...$(RESET)"
-	valgrind -q --suppressions=$(PWD)/ignore --trace-children=yes \
+
+valgrind: $(NAME)
+	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell..."
+	valgrind -q --suppressions=./ignore --trace-children=yes \
 		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
 		./minishell
-.PHONY: all clean fclean re
+		
+.PHONY: all clean fclean re valgrind

@@ -3,15 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 17:09:11 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 18:54:53 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+ * Affiche un texte avec un dégradé de couleurs pour créer un effet visuel.
+ *
+ * Cette fonction applique un dégradé de couleurs RGB sur un tableau de chaînes
+ * pour créer un effet visuel attrayant lors de l'affichage:
+ * - Calcule la largeur maximale du texte
+ * - Applique des couleurs dégradées caractère par caractère
+ * - Utilise les codes ANSI pour l'affichage coloré
+ *
+ * Parameters :
+ * - text - Tableau de chaînes à afficher avec effet de dégradé
+ *
+ * Return : Aucun (void)
+ */
 void	put_gradient(const char **text)
 {
 	int				i;
@@ -36,6 +50,20 @@ void	put_gradient(const char **text)
 	}
 }
 
+/**
+ * Affiche le logo ASCII "minicauchemar" avec des couleurs dégradées.
+ *
+ * Cette fonction affiche le titre du programme en art ASCII avec un effet
+ * de dégradé coloré pour améliorer l'expérience visuelle au démarrage:
+ * - Définit le texte ASCII du logo "minicauchemar"
+ * - Applique l'effet de dégradé via put_gradient()
+ * - Améliore l'interface utilisateur du shell
+ *
+ * Parameters :
+ * - Aucun
+ *
+ * Return : Aucun (void)
+ */
 void	print_minicauchemar(void)
 {
 	const char	*str[14];
@@ -57,6 +85,26 @@ void	print_minicauchemar(void)
 	put_gradient(str);
 }
 
+/**
+
+
+ * Construit une chaîne de prompt avec des couleurs
+ * dégradées pour chaque caractère.
+ *
+ * Cette fonction transforme un prompt brute en prompt coloré en appliquant
+ * des codes ANSI pour créer un effet de dégradé visuel:
+ * - Parcourt chaque caractère du prompt brut
+ * - Génère des codes couleur ANSI personnalisés
+ * - Assemble la chaîne finale avec les codes de couleur
+ * - Libère la mémoire des variables temporaires
+ *
+ * Parameters :
+ * - raw - Chaîne de prompt brute sans couleurs
+ * - i - Index de départ pour la boucle
+ * - variable - Variable pour les valeurs de couleur
+ *
+ * Return : Chaîne de prompt colorée avec des codes ANSI
+ */
 char	*build_gradient_prompt(const char *raw, int i, char *variable)
 {
 	char	*result;
@@ -86,6 +134,21 @@ char	*build_gradient_prompt(const char *raw, int i, char *variable)
 	return (ft_free(variable), result);
 }
 
+/**
+ * Génère et affiche le prompt du shell, puis lit l'entrée utilisateur.
+ *
+ * Cette fonction gère l'interface interactive du shell en créant un prompt
+ * personnalisé et coloré qui inclut le répertoire de travail actuel:
+ * - Récupère le répertoire de travail courant
+ * - Construit le prompt avec le nom du shell et le chemin
+ * - Applique l'effet de dégradé coloré
+ * - Utilise readline pour capturer l'entrée utilisateur
+ *
+ * Parameters :
+ * - Aucun
+ *
+ * Return : Chaîne contenant la commande saisie par l'utilisateur
+ */
 char	*get_prompt_and_input(void)
 {
 	char		cwd[10000];
@@ -105,6 +168,21 @@ char	*get_prompt_and_input(void)
 	return (input);
 }
 
+/**
+ * Génère une nouvelle couleur pour le prompt en cyclant à travers une palette.
+ *
+ * Cette fonction utilise une palette prédéfinie de couleurs et retourne
+ * une nouvelle couleur à chaque appel pour varier l'apparence du prompt:
+ * - Utilise une variable statique pour mémoriser l'état
+ * - Cycle à travers un tableau de 12 couleurs prédéfinies
+ * - Retourne à la première couleur après la dernière
+ * - Assure une variation visuelle continue
+ *
+ * Parameters :
+ * - Aucun
+ *
+ * Return : Valeur entière représentant une couleur RGB
+ */
 int	getnewcolor(void)
 {
 	static int	nuance = 0;
