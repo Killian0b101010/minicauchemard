@@ -6,12 +6,30 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 15:39:58 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 19:10:27 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+ * Remplit un bloc de commande avec les tokens et arguments correspondants.
+ *
+ * Cette fonction initialise un bloc de commande en copiant les tokens
+ * et en construisant le tableau d'arguments:
+ * - Construit les arguments avec build_cmd_args()
+ * - Alloue la mémoire pour les tokens du bloc
+ * - Copie chaque token (valeur, type, quoted) dans le bloc
+ * - Met à jour le compteur de tokens du bloc
+ *
+ * Parameters :
+ * - block - Bloc de commande à remplir
+ * - tokens - Tableau source des tokens
+ * - start - Index de début dans le tableau de tokens
+ * - end - Index de fin dans le tableau de tokens
+ *
+ * Return : 1 en cas de succès, 0 si échec d'allocation
+ */
 int	fill_block(t_cmd_block *block, t_token *tokens, int start, int end)
 {
 	int	k;
@@ -33,6 +51,23 @@ int	fill_block(t_cmd_block *block, t_token *tokens, int start, int end)
 	return (1);
 }
 
+/**
+ * Divise un tableau de tokens en blocs de commandes séparés par des pipes.
+ *
+ * Cette fonction analyse les tokens pour créer des blocs de commandes
+ * indépendants, chacun correspondant à une commande dans un pipeline:
+ * - Compte les pipes pour déterminer le nombre de blocs
+ * - Alloue la mémoire pour tous les blocs
+ * - Remplit chaque bloc avec ses tokens correspondants
+ * - Gère les erreurs d'allocation avec nettoyage automatique
+ *
+ * Parameters :
+ * - tokens - Tableau des tokens à diviser
+ * - t2 - Structure contenant le nombre de tokens
+ * - block_count - Pointeur vers le nombre de blocs créés
+ *
+ * Return : Tableau de blocs de commandes ou NULL si échec
+ */
 t_cmd_block	*split_into_blocks(t_token *tokens, t_t2 t2, int *block_count)
 {
 	t_cmd_block	*blocks;

@@ -6,7 +6,7 @@
 #    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/23 17:11:13 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/23 17:46:42 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,9 +67,11 @@ fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean all
-valgrind: $(EXEC)
-	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell...$(RESET)"
-	valgrind -q --suppressions=$(PWD)/ignore --trace-children=yes \
+
+valgrind: $(NAME)
+	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell..."
+	valgrind -q --suppressions=./ignore --trace-children=yes \
 		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
 		./minishell
-.PHONY: all clean fclean re
+		
+.PHONY: all clean fclean re valgrind

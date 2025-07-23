@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/21 10:57:02 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 18:10:02 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 	if (token_count == 1 || (token_count >= 2 && ft_strcmp(tokens[1].value,
 				"~") == 0))
 		target = home;
-	else if (token_count >= 2)
+	else if (token_count == 2)
 		target = tokens[1].value;
 	if (token_count > 2)
 		return (ft_printf("cd : too many arguments\n"), 1);

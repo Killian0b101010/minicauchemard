@@ -6,11 +6,28 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 16:10:33 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 18:53:59 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+/**
+
+ * Initialise l'environnement du shell avec les variables
+ * d'environnement et les signaux.
+ *
+ * Cette fonction configure l'environnement initial du minishell en:
+ * - Initialisant les variables d'environnement
+ * - Configurant les gestionnaires de signaux
+ * - Affichant le message de bienvenue
+ *
+ * Parameters :
+ * - env  - Structure contenant les variables d'environnement
+ * - envp - Variables d'environnement du système
+ *
+ * Return : Aucun (void)
+ */
 
 static void	initialize_shell(t_env *env, char **envp)
 {
@@ -19,6 +36,12 @@ static void	initialize_shell(t_env *env, char **envp)
 	print_minicauchemar();
 }
 
+/**
+ * Boucle principale du shell qui lit et traite les commandes utilisateur.
+ *
+ * Parameters : env - Structure contenant les variables d'environnement
+ * Return : Aucun (void)
+ */
 static void	shell_main_loop(t_env *env)
 {
 	char	*input;
@@ -39,6 +62,18 @@ static void	shell_main_loop(t_env *env)
 	}
 }
 
+/**
+ * Fonction principale qui initialise et exécute le minishell.
+ *
+ * Cette fonction est le point d'entrée du programme. Elle initialise
+ * l'environnement du shell et lance la boucle principale d'exécution.
+ *
+ * Parameters : ac - Nombre d'arguments (non utilisé)
+ *              av - Tableau des arguments (non utilisé)
+ *              envp - Variables d'environnement du système
+ *
+ * Return : 0 en cas de succès
+ */
 int	main(int ac, char **av, char **envp)
 {
 	t_env	env;

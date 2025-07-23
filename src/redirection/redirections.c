@@ -6,13 +6,28 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:23:39 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 19:11:44 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 #include <fcntl.h>
 
+/**
+ * Lit l'entrée utilisateur pour un heredoc jusqu'au délimiteur spécifié.
+ *
+ * Cette fonction collecte les lignes d'entrée pour un heredoc (<<)
+ * jusqu'à ce que le délimiteur soit rencontré:
+ * - Utilise readline() avec un prompt "> "
+ * - Concatène chaque ligne avec un retour à la ligne
+ * - S'arrête quand le délimiteur exact est trouvé
+ * - Gère l'EOF (Ctrl+D) comme fin d'entrée
+ *
+ * Parameters :
+ * - delimiter - Chaîne de délimiteur pour terminer l'entrée
+ *
+ * Return : Chaîne contenant tout l'input du heredoc ou NULL si erreur
+ */
 static char	*get_heredoc_input(char *delimiter)
 {
 	char	*input;
@@ -40,6 +55,23 @@ static char	*get_heredoc_input(char *delimiter)
 	return (input);
 }
 
+/**
+
+ * Configure un pipe pour simuler un heredoc
+ * et retourne le descripteur de lecture.
+ *
+ * Cette fonction met en place l'infrastructure nécessaire pour un heredoc
+ * en créant un pipe et en y écrivant l'entrée collectée:
+ * - Crée un pipe pour simuler un fichier d'entrée
+ * - Collecte l'input du heredoc avec get_heredoc_input()
+ * - Écrit l'input dans le pipe
+ * - Ferme l'extrémité d'écriture et retourne celle de lecture
+ *
+ * Parameters :
+ * - delimiter - Délimiteur pour terminer l'entrée du heredoc
+ *
+ * Return : Descripteur de fichier pour la lecture ou -1 si erreur
+ */
 int	setup_heredoc(char *delimiter)
 {
 	int		pipe_fd[2];
@@ -60,6 +92,23 @@ int	setup_heredoc(char *delimiter)
 	return (pipe_fd[0]);
 }
 
+/**
+ * Traite tous les types de redirections présents dans les tokens.
+ *
+ * Cette fonction parcourt les tokens pour identifier et configurer
+ * toutes les redirections nécessaires:
+ * - Gère les redirections d'entrée (<)
+ * - Gère les redirections de sortie (>)
+ * - Gère les redirections en mode append (>>)
+ * - Gère les heredocs (<<)
+ * - S'arrête à la première erreur rencontrée
+ *
+ * Parameters :
+ * - tokens - Tableau des tokens à analyser
+ * - token_count - Nombre total de tokens
+ *
+ * Return : 0 en cas de succès, -1 si erreur
+ */
 static int	handle_redirections(t_token *tokens, int token_count)
 {
 	int	i;
@@ -97,6 +146,23 @@ void	restore_fds(int saved_stdin, int saved_stdout)
 	close(saved_stdout);
 }
 
+/**
+ * Exécute une commande en gérant les redirections et restaure l'état original.
+ *
+ * Cette fonction coordonne l'exécution d'une commande avec ses redirections
+ * tout en préservant l'environnement du shell:
+ * - Sauvegarde les descripteurs stdin/stdout originaux
+ * - Configure toutes les redirections nécessaires
+ * - Exécute la commande (built-in ou externe)
+ * - Restaure l'état original des descripteurs
+ * - Gère les erreurs de redirection
+ *
+ * Parameters :
+ * - block - Bloc de commande contenant tokens et arguments
+ * - env - Structure d'environnement pour l'exécution
+ *
+ * Return : Code de retour de la commande ou 1 si erreur de redirection
+ */
 int	execute_with_redirections(t_cmd_block *block, t_env *env)
 {
 	int	saved_stdin;

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:41:32 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 19:12:05 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,24 @@ void	free_cmd_blocks(t_cmd_block *cmds, int block_count)
 	ft_free(cmds);
 }
 
+/**
+
+ * Construit un tableau d'arguments à partir
+ * des tokens en filtrant les redirections.
+ *
+ * Cette fonction extrait uniquement les mots (WORD) des tokens pour créer
+ * un tableau d'arguments exécutable:
+ * - Ignore les tokens de redirection et leurs fichiers associés
+ * - Ne conserve que les tokens de type WORD
+ * - Duplique chaque argument avec ft_strdup()
+ * - Termine le tableau par NULL pour compatibilité execve()
+ *
+ * Parameters :
+ * - tokens - Tableau des tokens à analyser
+ * - count - Nombre total de tokens
+ *
+ * Return : Tableau d'arguments terminé par NULL ou NULL si échec
+ */
 char	**build_cmd_args(t_token *tokens, int count)
 {
 	char	**args;

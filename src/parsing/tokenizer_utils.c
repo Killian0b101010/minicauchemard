@@ -6,12 +6,28 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:07:11 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:31:08 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 18:53:36 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+ * Libère la mémoire allouée pour un tableau de tokens.
+ *
+ * Cette fonction nettoie proprement la mémoire utilisée par les tokens
+ * en libérant chaque élément individuellement puis le tableau:
+ * - Parcourt tous les tokens du tableau
+ * - Libère la mémoire de chaque valeur de token
+ * - Libère le tableau de tokens lui-même
+ * - Évite les fuites mémoire dans le parsing
+ *
+ * Parameters :
+ * - tokens - Tableau de tokens à libérer
+ * - count - Nombre de tokens dans le tableau
+ *
+ * Return : Aucun (void)
+ */
 void	free_tokens(t_token *tokens, int count)
 {
 	int	i;
@@ -25,6 +41,21 @@ void	free_tokens(t_token *tokens, int count)
 	ft_free(tokens);
 }
 
+/**
+ * Détermine le type d'un token basé sur sa valeur textuelle.
+ *
+ * Cette fonction analyse une chaîne de caractères et retourne le type
+ * de token correspondant selon la syntaxe du shell:
+ * - Identifie les opérateurs de redirection (<, >, >>, <<)
+ * - Reconnaît les pipes (|)
+ * - Détecte les erreurs de syntaxe (caractères spéciaux mal formés)
+ * - Classe tout le reste comme des mots (WORD)
+ *
+ * Parameters :
+ * - str - Chaîne de caractères à analyser
+ *
+ * Return : Type de token correspondant (enum t_token_type)
+ */
 t_token_type	get_token_type(char *str)
 {
 	if (ft_strcmp(str, "|") == 0)

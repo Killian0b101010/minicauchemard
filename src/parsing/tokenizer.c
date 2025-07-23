@@ -6,12 +6,28 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 15:44:06 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 19:10:29 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
+/**
+ * Agrandit dynamiquement le tableau de tokens en doublant sa capacité.
+ *
+ * Cette fonction gère l'expansion dynamique du tableau de tokens lorsque
+ * la capacité initiale est atteinte:
+ * - Double la capacité du tableau
+ * - Réalloue la mémoire avec realloc2()
+ * - Copie les données existantes dans le nouveau tableau
+ * - Met à jour le pointeur et la capacité
+ *
+ * Parameters :
+ * - tokens - Pointeur vers le tableau de tokens à agrandir
+ * - capacity - Pointeur vers la capacité actuelle (sera modifiée)
+ *
+ * Return : 1 en cas de succès, 0 si échec d'allocation
+ */
 int	expand_tokens(t_token **tokens, int *capacity)
 {
 	t_token	*new_tokens;
@@ -30,6 +46,23 @@ int	expand_tokens(t_token **tokens, int *capacity)
 	return (1);
 }
 
+/**
+ * Fonction principale de tokenisation qui analyse une ligne de commande.
+ *
+ * Cette fonction transforme une chaîne de caractères en tableau de tokens
+ * pour le parsing du shell:
+ * - Ignore les espaces blancs entre les tokens
+ * - Gère les guillemets simples et doubles
+ * - Identifie les opérateurs et mots
+ * - Agrandit dynamiquement le tableau si nécessaire
+ * - Retourne le nombre total de tokens créés
+ *
+ * Parameters :
+ * - str - Chaîne de caractères à tokeniser
+ * - token_count - Pointeur vers le compteur de tokens (sera modifié)
+ *
+ * Return : Tableau de tokens alloué dynamiquement ou NULL si échec
+ */
 t_token	*tokenizer(char *str, int *token_count)
 {
 	t_token	*tokens;
@@ -59,6 +92,23 @@ t_token	*tokenizer(char *str, int *token_count)
 	return (tokens);
 }
 
+/**
+ * Vérifie l'équilibrage des guillemets dans une chaîne de caractères.
+ *
+ * Cette fonction analyse une chaîne pour s'assurer que tous les guillemets
+ * sont correctement fermés:
+ * - Compte les guillemets simples et doubles séparément
+ * - Vérifie que chaque type de guillemet est en nombre pair
+ * - Affiche une erreur de syntaxe si des guillemets ne sont pas fermés
+ * - Essentiel pour la validation de l'entrée utilisateur
+ *
+ * Parameters :
+ * - str - Chaîne de caractères à analyser
+ * - single_quotes - Pointeur vers le compteur de guillemets simples
+ * - double_quotes - Pointeur vers le compteur de guillemets doubles
+ *
+ * Return : 1 si les guillemets sont équilibrés, 0 sinon
+ */
 int	count_quotes(char *str, int *single_quotes, int *double_quotes)
 {
 	int	i;
