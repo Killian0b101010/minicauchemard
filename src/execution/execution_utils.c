@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:41:43 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 15:53:07 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	execute_builtin_block(t_cmd_block *block, t_env *env)
 	if (ft_strcmp(block->tokens[0].value, "cd") == 0)
 		return (cd_builtin(block->tokens, block->t2.token_count, env));
 	if (ft_strcmp(block->tokens[0].value, "export") == 0)
-		return (export(env, block->tokens, block->t2.token_count));
+		return (export_builtin(env, block->tokens, block->t2.token_count));
 	if (ft_strcmp(block->tokens[0].value, "unset") == 0)
 		return (unset(env, block->tokens, block->t2.token_count));
 	if (ft_strcmp(block->tokens[0].value, "exit") == 0)
@@ -49,6 +49,15 @@ static int	execute_multiple_blocks(t_cmd_block *blocks, int block_count,
 	return (1);
 }
 
+int	verify_input(char *input, t_t2 t2)
+{
+	if (is_empty_input(input))
+		return (0);
+	if (!count_quotes(input, &t2.single_quotes, &t2.double_quotes))
+		return (0);
+	return (1);
+}
+
 int	process_input_line(char *input, t_env *env)
 {
 	t_token		*tokens;
@@ -56,9 +65,9 @@ int	process_input_line(char *input, t_env *env)
 	t_t2		t2;
 	int			block_count;
 
-	if (is_empty_input(input))
-		return (1);
 	t((t2.env_count = 0, t2.pwd_count = 0, 0));
+	if (!verify_input(input, t2))
+		return (0);
 	tokens = tokenizer(input, &t2.token_count);
 	if (!tokens || t2.token_count == 0)
 	{

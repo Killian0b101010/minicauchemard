@@ -1,39 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handler.c                                          :+:      :+:    :+:   */
+/*   main_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 16:40:25 by dnahon           ###   ########.fr       */
+/*   Created: 2025/07/23 17:08:52 by dnahon            #+#    #+#             */
+/*   Updated: 2025/07/23 17:09:42 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static void	ft_write_rl(int sig)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
-	(void)sig;
-	write(1, "\n", 1);
+	char	*joined;
+
+	joined = ft_strjoin(s1, s2);
+	ft_free(s1);
+	return (joined);
 }
 
-void	ft_handler(int sig)
+char	*join_itoa_free(char *str, int num)
 {
-	ft_write_rl(sig);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-}
+	char	*num_str;
+	char	*result;
 
-void	setup_interactive_signals(void)
-{
-	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	setup_child_signals(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	num_str = ft_itoa(num);
+	result = ft_strjoin_free(str, num_str);
+	ft_free(num_str);
+	return (result);
 }

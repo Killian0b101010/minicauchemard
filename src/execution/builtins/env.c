@@ -6,13 +6,13 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/12 01:08:33 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 16:07:40 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-void	set_env(t_env *env, char **envp)
+void	ft_set_env(t_env *env, char **envp)
 {
 	int	i;
 	int	j;

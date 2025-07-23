@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:45:09 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/14 17:50:24 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/23 15:39:44 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	exec_builtins(t_token *tokens, int token_count, t_env *env, t_t2 *t2)
 	if (ft_strcmp(cmd, "pwd") == 0)
 		return (pwd(t2));
 	if (ft_strcmp(cmd, "export") == 0)
-		return (export(env, tokens, token_count));
+		return (export_builtin(env, tokens, token_count));
 	if (ft_strcmp(cmd, "unset") == 0)
 		return (unset(env, tokens, token_count));
 	if (ft_strcmp(cmd, "env") == 0)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
+#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/15 21:10:28 by kiteixei         ###   ########.fr        #
+#    Updated: 2025/07/23 17:11:13 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ AR 			= 	ar rcs
 RM 			= 	rm -f
 
 SRC_DIR 	= 	./src
-SRC 		= 	./src/core/main.c ./src/core/main_utils.c \
+SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
 				./src/execution/execution_utils.c \
 				./src/execution/builtins/echo.c ./src/execution/builtins/pwd.c ./src/execution/builtins/env.c \
 				./src/execution/builtins/cd.c ./src/execution/builtins/export.c ./src/execution/builtins/unset.c \
