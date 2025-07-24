@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:50:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:19:22 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/24 18:44:14 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,47 @@ char	*get_expanded_variable_value(char *str, t_env *env, int i)
 		return (create_single_char_string(str, i));
 }
 
-char	*expand_variables(char *str, t_env *env)
+/**
+
+ * Expanse les occurrences de $? dans une chaîne
+ * avec la valeur actuelle de g_exit_status.
+ *
+ * Cette fonction traite spécifiquement l'expansion de $? :
+ * - Recherche toutes les occurrences de "$?"
+ * - Les remplace par la valeur actuelle de g_exit_status
+ * - Gère correctement l'allocation mémoire
+ * - Retourne une nouvelle chaîne avec les substitutions
+ *
+ * Parameters :
+ * - str - Chaîne d'origine pouvant contenir des "$?"
+ *
+ * Return : Nouvelle chaîne avec $? expansé ou NULL si erreur
+ */
+char	*expand_exit_status_in_string(char *str)
 {
+	char	*result;
+	char	*temp;
+	char	*exit_str;
+	int		i;
+	int		len;
+
 	if (!str)
 		return (NULL);
-	return (process_expansion_loop(str, env));
+	t((result = ft_strdup(""), exit_str = ft_itoa(g_exit_status), i = 0,
+			len = ft_strlen(str), 0));
+	while (i < len)
+	{
+		if (str[i] == '$' && i + 1 < len && str[i + 1] == '?')
+			t((temp = ft_strjoin(result, exit_str), ft_free(result),
+					result = temp, i += 2, 0));
+		else
+		{
+			temp = ft_malloc(ft_strlen(result) + 2);
+			ft_strcpy(temp, result);
+			temp[ft_strlen(result)] = str[i];
+			temp[ft_strlen(result) + 1] = '\0';
+			t((ft_free(result), result = temp, i++, 0));
+		}
+	}
+	return (ft_free(exit_str), result);
 }
