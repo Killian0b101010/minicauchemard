@@ -6,13 +6,14 @@
 #    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/24 21:30:56 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/24 21:43:46 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= 	minishell
 CC 			= 	cc
 CFLAGS 		= 	-g3 -O0 -Wall -Wextra -Werror
+DEBUGFLAGS	= 	-g3 -O0 -Wall -Wextra -Werror -fsanitize=address -fsanitize=undefined -fsanitize=leak
 
 LDFLAGS		= 	-lreadline -Llibft -lft
 AR 			= 	ar rcs
@@ -68,10 +69,17 @@ fclean: clean
 
 re: fclean all
 
+debug: $(OBJ)
+	@$(MAKE) -C libft --no-print-directory
+	@echo "$(YELLOW)Building $(NC)$(NAME) $(YELLOW)with debug flags"
+	@$(CC) $(DEBUGFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
+
 valgrind: $(NAME)
 	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell..."
 	valgrind -q --suppressions=./ignore --trace-children=yes \
 		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
 		./minishell
 		
-.PHONY: all clean fclean re valgrind
+
+
+.PHONY: all clean fclean re debug valgrind
