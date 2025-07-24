@@ -174,6 +174,7 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	if (handle_redirections(block->tokens, block->t2.token_count) == -1)
 	{
 		restore_fds(saved_stdin, saved_stdout);
+		g_exit_status = 1;
 		return (1);
 	}
 	if (is_builtin(block->tokens[0].value))
@@ -182,6 +183,7 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	{
 		ft_printf("%s: command not found\n", block->tokens[0].value);
 		result = 127;
+		g_exit_status = 127;
 	}
 	restore_fds(saved_stdin, saved_stdout);
 	return (result);

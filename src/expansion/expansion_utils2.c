@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:19:22 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/24 20:01:58 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,11 @@ char	*create_single_char_string(char *str, int i)
 		temp[1] = '\0';
 	}
 	return (temp);
+}
+
+char	*expand_variables(char *str, t_env *env)
+{
+	if (!str)
+		return (NULL);
+	return (process_expansion_loop(str, env));
 }

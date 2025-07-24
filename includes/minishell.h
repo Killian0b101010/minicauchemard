@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 17:09:32 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/24 18:48:52 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #  define BUFFER_SIZE_CD 4096
 # endif
 
+extern int			g_exit_status;
 typedef struct t_env
 {
 	char			**envp;
@@ -135,6 +136,7 @@ char				*append_char_to_result(char *result, char c);
 char				*get_variable_value(char *var_name, t_env *env);
 char				*create_single_char_string(char *str, int i);
 char				*get_env_value(char *var_name, t_env *env);
+char				*expand_exit_status_in_string(char *str);
 void				print_minicauchemar(void);
 char				*get_prompt_and_input(void);
 int					process_input_line(char *input, t_env *env);
@@ -147,5 +149,6 @@ int					count_quotes(char *str, int *single_quotes,
 int					getnewcolor(void);
 char				*ft_strjoin_free(char *s1, char *s2);
 char				*join_itoa_free(char *str, int num);
+int					verify_input(char *input, t_t2 t2);
 
 #endif
