@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 18:54:53 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/24 18:54:33 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,17 +117,17 @@ char	*build_gradient_prompt(const char *raw, int i, char *variable)
 	while (raw[++i])
 	{
 		rgb = get_color(i, len);
-		ansi = ft_strjoin("\e[1;38;2;", "");
+		ansi = ft_strdup("\001\e[1;38;2;");
 		ansi = join_itoa_free(ansi, rgb);
 		ansi = ft_strjoin_free(ansi, ";");
 		ansi = ft_strjoin_free(ansi, variable);
 		ansi = ft_strjoin_free(ansi, ";");
 		ansi = join_itoa_free(ansi, 255);
-		ansi = ft_strjoin_free(ansi, "m");
+		ansi = ft_strjoin_free(ansi, "m\002");
 		char_str[0] = raw[i];
 		char_str[1] = '\0';
 		ansi = ft_strjoin_free(ansi, char_str);
-		ansi = ft_strjoin_free(ansi, "\e[0m");
+		ansi = ft_strjoin_free(ansi, "\001\e[0m\002");
 		result = ft_strjoin_free(result, ansi);
 		ft_free(ansi);
 	}

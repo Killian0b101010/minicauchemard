@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
+#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/23 17:46:48 by kiteixei         ###   ########.fr        #
+#    Updated: 2025/07/24 21:43:46 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= 	minishell
 CC 			= 	cc
 CFLAGS 		= 	-g3 -O0 -Wall -Wextra -Werror
+DEBUGFLAGS	= 	-g3 -O0 -Wall -Wextra -Werror -fsanitize=address -fsanitize=undefined -fsanitize=leak
 
 LDFLAGS		= 	-lreadline -Llibft -lft
 AR 			= 	ar rcs
@@ -20,7 +21,7 @@ RM 			= 	rm -f
 
 SRC_DIR 	= 	./src
 SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
-				./src/execution/execution_utils.c \
+				./src/execution/execution_utils.c ./src/execution/execution_utils2.c\
 				./src/execution/builtins/echo.c ./src/execution/builtins/pwd.c ./src/execution/builtins/env.c \
 				./src/execution/builtins/cd.c ./src/execution/builtins/export.c ./src/execution/builtins/unset.c \
 				./src/execution/builtins/exec_builtins.c ./src/execution/builtins/exit.c \
@@ -68,10 +69,17 @@ fclean: clean
 
 re: fclean all
 
+debug: $(OBJ)
+	@$(MAKE) -C libft --no-print-directory
+	@echo "$(YELLOW)Building $(NC)$(NAME) $(YELLOW)with debug flags"
+	@$(CC) $(DEBUGFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
+
 valgrind: $(NAME)
 	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell..."
 	valgrind -q --suppressions=./ignore --trace-children=yes \
 		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
 		./minishell
 		
-.PHONY: all clean fclean re valgrind
+
+
+.PHONY: all clean fclean re debug valgrind
