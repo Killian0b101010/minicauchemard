@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 19:10:27 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/26 20:47:46 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ void	execute_builtin_in_block(t_cmd_block *block, t_env *env)
 	else if (ft_strcmp(cmd, "exit") == 0)
 		exit2();
 	else
-		ft_printf("%s: command not found\n", cmd);
+		return ;
 }
 
 void	execute_piped_commands(t_cmd_block *blocks, int block_count, t_env *env)

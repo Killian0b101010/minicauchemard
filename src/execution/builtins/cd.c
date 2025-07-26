@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 21:32:42 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/24 21:50:34 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ static void	cd_bulltins_two(t_env *env, char *target)
 		return ;
 	}
 }
-
 int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 {
 	char		buffer[BUFFER_SIZE_CD];

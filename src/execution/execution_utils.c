@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 18:46:07 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/26 22:28:36 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,13 @@ int	execute_builtin_block(t_cmd_block *block, t_env *env)
 	return (g_exit_status = result, result);
 }
 
-static int	execute_single_block(t_cmd_block *blocks, t_env *env)
-{
-	int	result;
+// static int	execute_single_block(t_cmd_block *blocks, t_env *env)
+// {
+// 	int	result;
 
-	result = execute_with_redirections(&blocks[0], env);
-	return (result);
-}
+// 	result = execute_with_redirections(&blocks[0], env);
+// 	return (result);
+// }
 
 static int	execute_multiple_blocks(t_cmd_block *blocks, int block_count,
 		t_env *env)
@@ -129,9 +129,13 @@ int	process_input_line(char *input, t_env *env)
 	if (!blocks)
 		return (free_tokens(tokens, t2.token_count), 0);
 	if (block_count == 1)
-		execute_single_block(blocks, env);
+	{
+		execute_cmd_one(blocks, env);
+	}
 	else
+	{
 		execute_multiple_blocks(blocks, block_count, env);
-	free_cmd_blocks(blocks, block_count);
+		free_cmd_blocks(blocks, block_count);
+	}
 	return (free_tokens(tokens, t2.token_count), 1);
 }

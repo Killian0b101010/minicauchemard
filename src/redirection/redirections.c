@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 19:11:44 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/26 20:54:06 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,7 @@ void	restore_fds(int saved_stdin, int saved_stdout)
  *
  * Return : Code de retour de la commande ou 1 si erreur de redirection
  */
+
 int	execute_with_redirections(t_cmd_block *block, t_env *env)
 {
 	int	saved_stdin;

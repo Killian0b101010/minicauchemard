@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
+#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/24 21:43:46 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/26 19:55:48 by kiteixei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
 				./src/expansion/expansion.c ./src/expansion/expansion_utils.c ./src/expansion/expansion_utils2.c ./src/expansion/expansion_helpers.c \
 				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \
 				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c \
-				./src/signal/handler.c 
+				./src/signal/handler.c ./src/execution/execute_commands.c \
+				./src/pipex/path.c
 
 LIBFT 		= 	./libft/libft.a
 INCLUDES	= 	./includes/pipex.h ./includes/minishell.h ./libft/includes/libft.h
