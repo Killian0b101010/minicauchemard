@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:53:10 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/08 19:59:22 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/28 21:10:06 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,7 @@ void	t(int a)
 	(void)a;
 }
 
-void	close2(int fd)
-{
-	if (fd >= 2)
-		close(fd);
-}
+
 
 void	init_here_doc(int ac, char **av, t_fd *fd)
 {

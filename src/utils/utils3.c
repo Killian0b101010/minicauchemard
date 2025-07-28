@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 19:12:05 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/28 21:10:16 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,10 @@ int	is_empty_input(char *input)
 		i++;
 	}
 	return (1);
+}
+
+void	close2(int fd)
+{
+	if (fd >= 2)
+		close(fd);
 }

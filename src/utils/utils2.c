@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/26 20:47:46 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:45:30 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,42 +120,5 @@ void	print_cmd_blocks(t_cmd_block *blocks, int block_count)
 		while (++j < blocks[i].t2.token_count)
 			printf("[%s] ", blocks[i].tokens[j].value);
 		printf("\n\n");
-	}
-}
-
-void	execute_builtin_in_block(t_cmd_block *block, t_env *env)
-{
-	char	*cmd;
-
-	if (!block->tokens || block->t2.token_count == 0)
-		return ;
-	cmd = block->tokens[0].value;
-	if (ft_strcmp(cmd, "pwd") == 0)
-		pwd(&block->t2);
-	else if (ft_strcmp(cmd, "echo") == 0)
-		echo(block->tokens, block->t2.token_count);
-	else if (ft_strcmp(cmd, "env") == 0)
-		env_cmd(0, env, block->tokens, &block->t2);
-	else if (ft_strcmp(cmd, "cd") == 0)
-		cd_builtin(block->tokens, block->t2.token_count, env);
-	else if (ft_strcmp(cmd, "export") == 0)
-		export_builtin(env, block->tokens, block->t2.token_count);
-	else if (ft_strcmp(cmd, "unset") == 0)
-		unset(env, block->tokens, block->t2.token_count);
-	else if (ft_strcmp(cmd, "exit") == 0)
-		exit2();
-	else
-		return ;
-}
-
-void	execute_piped_commands(t_cmd_block *blocks, int block_count, t_env *env)
-{
-	int	i;
-
-	i = 0;
-	while (i < block_count)
-	{
-		execute_builtin_in_block(&blocks[i], env);
-		i++;
 	}
 }

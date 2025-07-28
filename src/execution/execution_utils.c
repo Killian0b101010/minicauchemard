@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/26 22:28:36 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:42:35 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 /**
  * Expanse les variables $? dans tous les tokens WORD du bloc de commande.
@@ -129,11 +130,10 @@ int	process_input_line(char *input, t_env *env)
 	if (!blocks)
 		return (free_tokens(tokens, t2.token_count), 0);
 	if (block_count == 1)
-	{
-		execute_cmd_one(blocks, env);
-	}
+		execute_with_redirections(blocks, env);
 	else
 	{
+		// execute_multiple_cmd(blocks, env);
 		execute_multiple_blocks(blocks, block_count, env);
 		free_cmd_blocks(blocks, block_count);
 	}

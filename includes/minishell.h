@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/26 21:24:58 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/28 20:45:23 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,8 @@ char				*ft_strjoin_free(char *s1, char *s2);
 char				*join_itoa_free(char *str, int num);
 int					verify_input(char *input, t_t2 t2);
 void				execute_cmd_one(t_cmd_block *block, t_env *env);
-void				exec_loop_one(t_cmd_block *block, t_env *env);
-void				fork_loop_one(t_cmd_block *block, t_env *env);
+void				exec_loop_one(t_cmd_block *block, t_env *env, int i);
+void				fork_loop_one(t_cmd_block *block, t_env *env, int i);
+void				execute_multiple_cmd(t_cmd_block *block, t_env *env);
 
 #endif

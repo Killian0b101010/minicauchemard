@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 21:14:29 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/28 21:09:43 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,11 @@
  */
 void	exit2(void)
 {
+	int	i;
+
+	i = 0;
+	while (i < 1024)
+		close2(i++);
+	rl_clear_history();
 	exit(g_exit_status);
 }
