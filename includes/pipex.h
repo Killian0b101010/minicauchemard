@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:10:17 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/26 19:53:59 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:25:48 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct t_ex
 	char	*full_cmd;
 	int		errcode;
 
+
 }			t_data;
 
 void		t(int a);
@@ -49,8 +50,8 @@ void		open_files(char *infile, char *outfile, t_fd *fd);
 pid_t		child_process(int i, char **av, char **envp, t_fd *fd);
 void		execute_cmd(char *cmd, char **envp);
 void		exec_loop(char *cmd, char **envp, t_data *ex);
-char		**get_path(char **envp);
 int			is_abs_path(char *cmd);
+char		**get_path(char **envp);
 char		*get_absolute_path(char *cmd, char *path);
 void		if_negative_fd(int i, t_fd *fd);
 void		close_files(t_fd *fd);

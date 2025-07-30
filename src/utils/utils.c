@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 19:24:54 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/29 22:19:15 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,27 +39,27 @@ int	is_space(char c)
  *
  * Return : Pointeur vers le nouveau bloc mémoire ou NULL si échec
  */
-void	*realloc2(void *ptr, size_t old_size, size_t new_size)
-{
-	void	*new_ptr;
+// void	*realloc2(void *ptr, size_t old_size, size_t new_size)
+// {
+// 	void	*new_ptr;
 
-	if (!ptr)
-		return (ft_malloc(new_size));
-	if (new_size == 0)
-	{
-		ft_free(ptr);
-		return (NULL);
-	}
-	new_ptr = ft_malloc(new_size);
-	if (!new_ptr)
-		return (NULL);
-	if (old_size < new_size)
-		ft_memcpy(new_ptr, ptr, old_size);
-	else
-		ft_memcpy(new_ptr, ptr, new_size);
-	ft_free(ptr);
-	return (new_ptr);
-}
+// 	if (!ptr)
+// 		return (ft_malloc(new_size));
+// 	if (new_size == 0)
+// 	{
+// 		ft_free(ptr);
+// 		return (NULL);
+// 	}
+// 	new_ptr = ft_malloc(new_size);
+// 	if (!new_ptr)
+// 		return (NULL);
+// 	if (old_size < new_size)
+// 		ft_memcpy(new_ptr, ptr, old_size);
+// 	else
+// 		ft_memcpy(new_ptr, ptr, new_size);
+// 	ft_free(ptr);
+// 	return (new_ptr);
+// }
 
 void	print_syntax_error(char *value)
 {

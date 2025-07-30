@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 20:01:58 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/29 06:44:27 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,16 @@ char	*get_variable_value(char *var_name, t_env *env)
 
 	temp = get_env_value(var_name, env);
 	if (temp)
-		return (ft_strdup(temp));
+		return (ft_strdup_arena(env->arena,temp));
 	else
-		return (ft_strdup(""));
+		return (ft_strdup_arena(env->arena,""));
 }
 
-char	*create_single_char_string(char *str, int i)
+char	*create_single_char_string(t_arena *arena,char *str, int i)
 {
 	char	*temp;
 
-	temp = ft_malloc(2);
+	temp = arena_alloc(arena,2);
 	if (temp)
 	{
 		temp[0] = str[i];

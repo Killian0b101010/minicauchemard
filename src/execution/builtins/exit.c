@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 21:14:29 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 05:08:57 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
  *
  * Return : N/A (la fonction ne retourne jamais)
  */
-void	exit2(void)
+void	exit2(t_env *env)
 {
+	free_arena(env->arena);
 	exit(g_exit_status);
 }

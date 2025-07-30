@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 21:32:14 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 05:08:09 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,8 @@ static void	shell_main_loop(t_env *env)
 			add_history(input);
 		if (!process_input_line(input, env))
 		{
-			ft_free(input);
 			continue ;
 		}
-		ft_free(input);
 	}
 }
 
@@ -79,9 +77,14 @@ static void	shell_main_loop(t_env *env)
 int	main(int ac, char **av, char **envp)
 {
 	t_env	env;
+	t_arena	*arena;
 
 	(void)ac;
 	(void)av;
+	arena = arena_init(64);
+	if (!arena)
+		return (1);
+	env.arena = arena;
 	initialize_shell(&env, envp);
 	shell_main_loop(&env);
 	return (0);

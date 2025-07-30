@@ -6,13 +6,13 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:56:08 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 21:50:34 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/30 05:11:25 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
-static char	*set_env_value(t_env *env, const char *key)
+static char	*set_env_value(t_env *env, char *key)
 {
 	char	*new_key;
 	char	*new_path;
@@ -22,18 +22,17 @@ static char	*set_env_value(t_env *env, const char *key)
 	i = -1;
 	if (!getcwd(cwd, BUFFER_SIZE_CD))
 		return (NULL);
-	new_key = ft_strjoin(key, "=");
+	new_key = ft_strjoin_arena(env->arena, key, "=");
 	if (!new_key)
 		return (NULL);
-	new_path = ft_strjoin(new_key, cwd);
-	ft_free(new_key);
+	new_path = ft_strjoin_arena(env->arena, new_key, cwd);
 	if (!new_path)
 		return (NULL);
 	while (env->envp[++i])
 	{
 		if (ft_strncmp(env->envp[i], key, ft_strlen(key)) == 0
 			&& env->envp[i][ft_strlen(key)] == '=')
-			return (ft_free(env->envp[i]), env->envp[i] = new_path, new_path);
+			return (env->envp[i] = new_path, new_path);
 	}
 	return (NULL);
 }

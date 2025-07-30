@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 18:55:14 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/29 06:18:35 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	ft_set_env(t_env *env, char **envp)
 	j = -1;
 	while (envp[i])
 		i++;
-	env->envp = ft_malloc(sizeof(char *) * (i + 1));
+	env->envp = arena_alloc(env->arena, (i + 1) * sizeof(char *));
 	if (!env->envp)
 		return ;
 	while (++j < i)
-		env->envp[j] = ft_strdup(envp[j]);
+		env->envp[j] = ft_strdup_arena(env->arena, envp[j]);
 	env->envp[i] = NULL;
 }
 

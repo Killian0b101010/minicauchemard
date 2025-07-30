@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:51:49 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 19:11:15 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/29 06:23:08 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	add_new_var(t_env *env, char *var)
 	count = 0;
 	while (env->envp[count])
 		count++;
-	new_envp = ft_malloc(sizeof(char *) * (count + 2));
+	new_envp = arena_alloc(env -> arena, (count + 2) * sizeof(char *));
 	if (!new_envp)
 		return (1);
 	i = 0;
@@ -84,9 +84,8 @@ static int	add_new_var(t_env *env, char *var)
 		new_envp[i] = env->envp[i];
 		i++;
 	}
-	new_envp[count] = ft_strdup(var);
+	new_envp[count] = ft_strdup_arena(env-> arena,var);
 	new_envp[count + 1] = NULL;
-	ft_free(env->envp);
 	env->envp = new_envp;
 	return (0);
 }
@@ -115,10 +114,7 @@ static int	process_export_variable(t_env *env, char *var_value)
 		return (0);
 	var_index = find_var_index(env, var_value);
 	if (var_index >= 0)
-	{
-		ft_free(env->envp[var_index]);
-		env->envp[var_index] = ft_strdup(var_value);
-	}
+		env->envp[var_index] = ft_strdup_arena(env->arena,var_value);
 	else
 	{
 		if (add_new_var(env, var_value) != 0)

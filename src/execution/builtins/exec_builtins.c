@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:45:09 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 15:39:44 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 04:01:12 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	exec_builtins(t_token *tokens, int token_count, t_env *env, t_t2 *t2)
 		return (env_cmd(0, env, tokens, t2));
 	if (ft_strcmp(cmd, "exit") == 0)
 	{
-		exit2();
+		exit2(env);
 		return (0);
 	}
 	return (1);

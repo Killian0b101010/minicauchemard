@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:43:47 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 19:10:52 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/29 06:24:51 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static int	remove_env_var(t_env *env, char *var_name, int *env_size)
 			k++;
 		if (env->envp[j][k] == '=' && var_name[k] == '\0')
 		{
-			ft_free(env->envp[j]);
 			while (j < *env_size - 1)
 			{
 				env->envp[j] = env->envp[j + 1];

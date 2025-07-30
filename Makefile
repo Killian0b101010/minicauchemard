@@ -6,7 +6,7 @@
 #    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/26 19:55:48 by kiteixei         ###   ########.fr        #
+#    Updated: 2025/07/30 06:13:28 by kiteixei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
 				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \
 				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c \
 				./src/signal/handler.c ./src/execution/execute_commands.c \
-				./src/pipex/path.c
+				./src/pipex/path.c ./src/malloc/arena_collector.c \
+				./src/malloc/split_arena.c ./src/malloc/utils_arena.c \
 
 LIBFT 		= 	./libft/libft.a
 INCLUDES	= 	./includes/pipex.h ./includes/minishell.h ./libft/includes/libft.h
@@ -77,7 +78,7 @@ debug: $(OBJ)
 
 valgrind: $(NAME)
 	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell..."
-	valgrind -q --suppressions=./ignore --trace-children=yes \
+	valgrind -q -s --suppressions=./ignore --trace-children=yes \
 		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
 		./minishell
 		
