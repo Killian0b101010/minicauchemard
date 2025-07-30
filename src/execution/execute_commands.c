@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/30 22:22:01 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 23:25:44 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,5 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 			execve(block->full_cmd, block->args, env->envp);
 		}
 		waitpid(pid, NULL, 0);
-		ft_free(block->full_cmd);
 	}
 }
