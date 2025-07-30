@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 22:22:31 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 22:27:36 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,4 +134,5 @@ int	process_input_line(char *input, t_env *env)
 		execute_multiple_blocks(blocks, block_count, env);
 		return (1);
 	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 #    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/30 22:16:45 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/30 22:36:05 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,13 @@ SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
 				./src/execution/builtins/echo.c ./src/execution/builtins/pwd.c ./src/execution/builtins/env.c \
 				./src/execution/builtins/cd.c ./src/execution/builtins/export.c ./src/execution/builtins/unset.c \
 				./src/execution/builtins/exec_builtins.c ./src/execution/builtins/exit.c \
-				./src/execution/path.c ./src/execution/execute_commands.c \
+				./src/execution/execute_commands.c ./src/execution/path.c\
 				./src/parsing/tokenizer.c ./src/parsing/tokenizer_utils.c \
 				./src/expansion/expansion.c ./src/expansion/expansion_utils.c ./src/expansion/expansion_utils2.c ./src/expansion/expansion_helpers.c \
 				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \
 				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c \
-				./src/signal/handler.c ./src/execution/execute_commands.c \
-				./src/pipex/path.c ./src/malloc/arena_collector.c \
+				./src/signal/handler.c \
+				./src/malloc/arena_collector.c \
 				./src/malloc/split_arena.c ./src/malloc/utils_arena.c \
 
 LIBFT 		= 	./libft/libft.a
