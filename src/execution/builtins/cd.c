@@ -54,6 +54,7 @@ static void	cd_bulltins_two(t_env *env, char *target)
 		return ;
 	}
 }
+
 int	cd_builtin(t_token *tokens, int token_count, t_env *env)
 {
 	char		buffer[BUFFER_SIZE_CD];

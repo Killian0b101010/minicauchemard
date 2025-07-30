@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 05:08:57 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:23:38 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,15 @@
  *
  * Return : N/A (la fonction ne retourne jamais)
  */
+
 void	exit2(t_env *env)
 {
+	int	i;
+
+	i = 0;
+	while (i < 1024)
+		close2(i++);
 	free_arena(env->arena);
+	rl_clear_history();
 	exit(g_exit_status);
 }

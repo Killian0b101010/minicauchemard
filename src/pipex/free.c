@@ -6,11 +6,18 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/04 17:54:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/08 19:59:22 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/29 18:17:04 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../../includes/pipex.h"
+
+void	ft_error(char *cmd)
+{
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": command not found\n", 21);
+	exit(127);
+}
 
 void	close_unused_pipes(t_fd *fd, int i)
 {

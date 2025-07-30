@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
+#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/30 06:13:28 by kiteixei         ###   ########.fr        #
+#    Updated: 2025/07/30 22:16:45 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
 				./src/execution/builtins/echo.c ./src/execution/builtins/pwd.c ./src/execution/builtins/env.c \
 				./src/execution/builtins/cd.c ./src/execution/builtins/export.c ./src/execution/builtins/unset.c \
 				./src/execution/builtins/exec_builtins.c ./src/execution/builtins/exit.c \
+				./src/execution/path.c ./src/execution/execute_commands.c \
 				./src/parsing/tokenizer.c ./src/parsing/tokenizer_utils.c \
 				./src/expansion/expansion.c ./src/expansion/expansion_utils.c ./src/expansion/expansion_utils2.c ./src/expansion/expansion_helpers.c \
 				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \

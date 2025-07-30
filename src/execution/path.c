@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:44:19 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 05:28:10 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:22:38 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 #include "../../includes/minishell.h"
 int	is_abs_path(char *cmd)
 {
-	return ((ft_strncmp(&cmd[0], "/", 1)) == 0);
+	return (((ft_strncmp(&cmd[0], "/", 1)) == 0) || ((ft_strncmp(&cmd[0], "./",
+					2)) == 0));
 }
 
 char	**get_path(char **envp)

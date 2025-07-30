@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 04:01:18 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:24:30 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	fill_block(t_arena *arena, t_cmd_block *block, t_token *tokens, int start,
 	k = -1;
 	while (++k < count)
 	{
-		block->tokens[k].value = ft_strdup_arena(arena,tokens[start + k].value);
+		block->tokens[k].value = ft_strdup_arena(arena, tokens[start
+				+ k].value);
 		block->tokens[k].type = tokens[start + k].type;
 		block->tokens[k].quoted = tokens[start + k].quoted;
 	}
@@ -79,6 +80,7 @@ t_cmd_block	*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 
 	*block_count = count_pipes(tokens, t2.token_count) + 1;
 	blocks = arena_alloc(arena, *block_count * sizeof(t_cmd_block));
+	t2.block_count = *block_count;
 	if (!blocks)
 		return (NULL);
 	t((i = 0, j = 0, start = 0, 0));
@@ -86,7 +88,7 @@ t_cmd_block	*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 	{
 		if (i == t2.token_count || tokens[i].type == PIPE)
 		{
-			if (!fill_block(arena,&blocks[j], tokens, start, i))
+			if (!fill_block(arena, &blocks[j], tokens, start, i))
 				return (NULL);
 			if (i < t2.token_count)
 				tokens[i].value = NULL;
@@ -122,42 +124,5 @@ void	print_cmd_blocks(t_cmd_block *blocks, int block_count)
 		while (++j < blocks[i].t2.token_count)
 			printf("[%s] ", blocks[i].tokens[j].value);
 		printf("\n\n");
-	}
-}
-
-void	execute_builtin_in_block(t_cmd_block *block, t_env *env)
-{
-	char	*cmd;
-
-	if (!block->tokens || block->t2.token_count == 0)
-		return ;
-	cmd = block->tokens[0].value;
-	if (ft_strcmp(cmd, "pwd") == 0)
-		pwd(&block->t2);
-	else if (ft_strcmp(cmd, "echo") == 0)
-		echo(block->tokens, block->t2.token_count);
-	else if (ft_strcmp(cmd, "env") == 0)
-		env_cmd(0, env, block->tokens, &block->t2);
-	else if (ft_strcmp(cmd, "cd") == 0)
-		cd_builtin(block->tokens, block->t2.token_count, env);
-	else if (ft_strcmp(cmd, "export") == 0)
-		export_builtin(env, block->tokens, block->t2.token_count);
-	else if (ft_strcmp(cmd, "unset") == 0)
-		unset(env, block->tokens, block->t2.token_count);
-	else if (ft_strcmp(cmd, "exit") == 0)
-		exit2(env);
-	else
-		return ;
-}
-
-void	execute_piped_commands(t_cmd_block *blocks, int block_count, t_env *env)
-{
-	int	i;
-
-	i = 0;
-	while (i < block_count)
-	{
-		execute_builtin_in_block(&blocks[i], env);
-		i++;
 	}
 }

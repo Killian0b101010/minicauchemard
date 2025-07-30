@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 05:10:24 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/30 22:24:01 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	*get_heredoc_input(t_arena *arena, char *delimiter)
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			if (line)
-			break ;
+				break ;
 		}
 		temp = ft_strjoin_arena(arena, input, line);
 		input = ft_strjoin_arena(arena, temp, "\n");
@@ -166,23 +166,20 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	int	saved_stdout;
 	int	result;
 
+	result = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
 	if (handle_redirections(env->arena, block->tokens, block->t2.token_count) ==
 		-1)
 	{
-		restore_fds(saved_stdin, saved_stdout);
+		block->is_here_doc = 1;
 		g_exit_status = 1;
 		return (1);
 	}
 	if (is_builtin(block->tokens[0].value))
 		result = execute_builtin_block(block, env);
 	else
-	{
-		ft_printf("%s: command not found\n", block->tokens[0].value);
-		result = 127;
-		g_exit_status = 127;
-	}
+		execute_cmd_one(block, env);
 	restore_fds(saved_stdin, saved_stdout);
 	return (result);
 }
