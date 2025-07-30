@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/28 15:44:54 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 03:13:48 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ int			g_exit_status = 0;
 
 static void	initialize_shell(t_env *env, char **envp)
 {
+	env->home_path = NULL;
+	env->old_path = NULL;
+	env->new_path = NULL;
+	env->pwd = NULL;
 	ft_set_env(env, envp);
 	setup_interactive_signals();
 	print_minicauchemar();
@@ -63,6 +67,20 @@ static void	shell_main_loop(t_env *env)
 		ft_free(input);
 	}
 }
+
+// t_cmd_block	*heredoc_setter(t_cmd_block *blocks)
+// {
+// 	static t_cmd_block	*block = NULL;
+
+// 	if (!blocks)
+// 		return (block);
+// 	else
+// 	{
+// 		block = blocks;
+// 		return (block);
+// 	}
+// 	return (NULL);
+// }
 
 /**
  * Fonction principale qui initialise et exécute le minishell.

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/27 20:03:25 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 04:30:36 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,86 +24,135 @@
 // 	}
 // }
 
-void	execute_multiple_cmd(t_cmd_block *block, t_env *env)
-{
-	int	i;
+// void	ft_error(char *cmd)
+// {
+// 	write(2, cmd, ft_strlen(cmd));
+// 	write(2, ": command not found\n", 21);
+// 	exit(127);
+// }
 
-	i = -1;
-	while (block[++i].args[0])
-	{
-		if (!block[i].args || !block[i].args[0])
-			return (write(2, "Error\n", 6), (void)0);
-		block[i].path = get_path(env->envp);
-		if (!block[i].path)
-			exit((write(2, "Error\n", 6), -1));
-		block[i].i = 0;
-		block[i].flag_access = 0;
-		if (is_builtin(block[i].tokens[0].value))
-			return (execute_builtin_block(block, env),
-				ft_free_split(block[i].path), (void)0);
-		else
-		{
-			while (block[i].path[block[i].i] && block[i].flag_access == 0)
-				exec_loop_one(block, env, i);
-		}
-		if (block[i].flag_access == 0)
-		{
-			write(2, block[i].args[0], ft_strlen(block[i].args[0]));
-			write(2, ": Command not found\n", 21);
-			g_exit_status = 127;
-		}
-		t((ft_free_split(block[i].args), ft_free_split(block[i].path), 0));
-	}
+// void	close_unused_pipes(t_fd *fd, int i)
+// {
+// 	if (i > 0)
+// 	{
+// 		close2(fd->pipefd[i - 1][0]);
+// 		close2(fd->pipefd[i - 1][1]);
+// 	}
+// }
+
+// void	cleanup_and_exit(t_fd *fd, int code)
+// {
+// 	close_all_fds(fd);
+// 	free_all(fd);
+// 	exit(code);
+// }
+
+// void	if_negative_fd(int i, t_fd *fd)
+// {
+// 	if (i == 0 && fd->fd_in == -1)
+// 		cleanup_and_exit(fd, 1);
+// 	if (i == fd->cmd_count - 1 && fd->fd_out == -1)
+// 		cleanup_and_exit(fd, 1);
+// }
+
+// pid_t	child_process(int i, char **av, char **envp, t_fd *fd)
+// {
+// 	pid_t	pid;
+// 	int		j;
+
+// 	t((j = 0, pid = fork(), 0));
+// 	if (pid == 0)
+// 	{
+// 		if_negative_fd(i, fd);
+// 		t((dup2(fd->pipefd[i - 1][0], 0), dup2(fd->pipefd[i][1], 1), 0));
+// 		while (j < fd->cmd_count - 1)
+// 			t((close2(fd->pipefd[j][0]), close2(fd->pipefd[j++][1]), 0));
+// 		close_files(fd);
+// 		if (av[i + fd->cmd_start] && av[i + fd->cmd_start][0])
+// 			t((execute_cmd(av[i + fd->cmd_start], envp), free_all(fd),
+// 					ft_error(av[i + fd->cmd_start]), 0));
+// 		else
+// 			t((close_all_fds(fd), free_all(fd), ft_error(av[i + 2]), 0));
+// 	}
+// 	return (pid);
+// }
+
+// void	execute_multiple_cmd(t_cmd_block *block, t_env *env)
+// {
+// 	if (!block->args || !block->args[0])
+// 		return (write(2, "Error\n", 6), (void)0);
+// 	block->path = get_path(env->envp);
+// 	if (!block->path)
+// 		exit((write(2, "Error\n", 6), -1));
+// 	block->i = 0;
+// 	block->flag_access = 0;
+// 	if (is_builtin(block->tokens[0].value))
+// 		return (execute_builtin_block(block, env), ft_free_split(block->path),
+// 			(void)0);
+// 	else
+// 	{
+// 		while (block->path[block->i] && block->flag_access == 0)
+// 			exec_loop_one(block, env);
+// 	}
+// 	if (block->flag_access == 0)
+// 		write(2, "Command not found\n", 18);
+// 	t((ft_free_split(block->args), ft_free_split(block->path), 0));
+// }
+
+void	if_nopath(char *str)
+{
+	write(1, str, ft_strlen(str));
+	write(1, ": No such file or directory\n", 29);
 }
 
 void	execute_cmd_one(t_cmd_block *block, t_env *env)
 {
-	int	i;
-
-	i = 0;
-	if (!block[0].args || !block[0].args[0])
+	if (!block->args[0] && block->is_here_doc == 0)
+		return ;
+	if ((!block->args || !block->args[0]))
 		return (write(2, "Error\n", 6), (void)0);
-	block[0].path = get_path(env->envp);
-	if (!block[0].path)
-		exit((write(2, "Error\n", 6), -1));
-	block[0].i = 0;
-	block[0].flag_access = 0;
-	if (is_builtin(block[0].tokens[0].value))
-		return (execute_builtin_block(block, env), ft_free_split(block[0].path),
+	block->path = get_path(env->envp);
+	if (!block->path)
+		return (if_nopath(block->args[0]), (void)0);
+	block->i = 0;
+	block->flag_access = 0;
+	block->is_here_doc = 0;
+	if (is_builtin(block->tokens[0].value))
+		return (execute_builtin_block(block, env), ft_free_split(block->path),
 			(void)0);
 	else
 	{
-		while (block[0].path[block[0].i] && block[0].flag_access == 0)
-			exec_loop_one(block, env, i);
+		while (block->path[block->i] && block->flag_access == 0)
+			exec_loop_one(block, env);
 	}
-	if (block[0].flag_access == 0)
+	if (block->flag_access == 0)
 	{
-		write(2, block[0].args[0], ft_strlen(block[0].args[0]));
-		write(2, ": Command not found\n", 21);
+		write(2, block->args[0], ft_strlen(block->args[0]));
+		write(2, ": command not found\n", 21);
 		g_exit_status = 127;
 	}
-	t((ft_free_split(block[0].args), ft_free_split(block[0].path), 0));
+	t((ft_free_split(block->args), ft_free_split(block->path), 0));
 }
 
-void	exec_loop_one(t_cmd_block *block, t_env *env, int i)
+void	exec_loop_one(t_cmd_block *block, t_env *env)
 {
-	if (is_abs_path(block[i].args[0]))
+	if (is_abs_path(block->args[0]) && ft_strlen(block->args[0]) > 1)
 	{
-		if (access(block[i].args[0], X_OK) == 0)
+		if (access(block->args[0], X_OK) == 0)
 		{
-			block[i].full_cmd = ft_strdup(block[i].args[0]);
-			return (block[i].flag_access = 1, fork_loop_one(block, env, i));
+			block->full_cmd = ft_strdup(block->args[0]);
+			return (block->flag_access = 1, fork_loop_one(block, env));
 		}
 	}
 	else
 	{
-		block[i].cmd_path = ft_strjoin(block[i].path[block[i].i], "/");
-		block[i].full_cmd = ft_strjoin(block[i].cmd_path, block[i].args[0]);
-		ft_free(block[i].cmd_path);
-		if (access(block[i].full_cmd, X_OK) == 0)
-			return (block[i].flag_access = 1, fork_loop_one(block, env, i));
+		block->cmd_path = ft_strjoin(block->path[block->i], "/");
+		block->full_cmd = ft_strjoin(block->cmd_path, block->args[0]);
+		ft_free(block->cmd_path);
+		if (access(block->full_cmd, X_OK) == 0)
+			return (block->flag_access = 1, fork_loop_one(block, env));
 	}
-	block[i].i++;
+	block->i++;
 }
 
 int	is_executable_file(const char *path)
@@ -122,16 +171,19 @@ int	is_executable_file(const char *path)
 	return (0); // Pas trouvé ou pas exécutable
 }
 
-void	fork_loop_one(t_cmd_block *block, t_env *env, int i)
+void	fork_loop_one(t_cmd_block *block, t_env *env)
 {
 	pid_t	pid;
 	int		stat_result;
 
-	stat_result = is_executable_file(block[i].full_cmd);
+	stat_result = is_executable_file(block->full_cmd);
 	if (stat_result == 2)
 	{
+		if (block->args[0][0] == '\0')
+			return (write(2, "minicauchemar: Command '' not found\n", 37),
+				(void)0);
 		write(2, "minicauchemar: ", 16);
-		write(2, block[i].args[0], ft_strlen(block[i].args[0]));
+		write(2, block->args[0], ft_strlen(block->args[0]));
 		write(2, ": Is a directory\n", 17);
 		return ;
 	}
@@ -140,9 +192,9 @@ void	fork_loop_one(t_cmd_block *block, t_env *env, int i)
 		pid = fork();
 		if (pid == 0)
 		{
-			execve(block[i].full_cmd, block[i].args, env->envp);
+			execve(block->full_cmd, block->args, env->envp);
 		}
 		waitpid(pid, NULL, 0);
-		ft_free(block[i].full_cmd);
+		ft_free(block->full_cmd);
 	}
 }

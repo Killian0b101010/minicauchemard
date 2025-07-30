@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 18:46:10 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/27 16:09:09 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 03:40:26 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	execute_builtin_in_block(t_cmd_block *block, t_env *env)
 	else if (ft_strcmp(cmd, "unset") == 0)
 		unset(env, block->tokens, block->t2.token_count);
 	else if (ft_strcmp(cmd, "exit") == 0)
-		exit2();
+		exit2(env);
 	else
 		return ;
 }

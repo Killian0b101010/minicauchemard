@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/28 20:45:23 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 21:54:30 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct t2
 	int				token_count;
 	int				pwd_count;
 	int				env_count;
+	int				block_count;
 	int				color;
 }					t_t2;
 
@@ -75,7 +76,10 @@ typedef struct s_cmd_block
 	char			*cmd_path;
 	char			*full_cmd;
 	char			**path;
+	int				**pipefd;
+	int				*pid;
 	int				flag_access;
+	int				is_here_doc;
 	int				i;
 	t_token			*tokens;
 	t_t2			t2;
@@ -121,7 +125,7 @@ int					exec_builtins(t_token *tokens, int token_count, t_env *env,
 int					export_builtin(t_env *env, t_token *tokens,
 						int token_count);
 int					unset(t_env *env, t_token *tokens, int token_count);
-void				exit2(void);
+void				exit2(t_env *env);
 void				execute_builtin_in_block(t_cmd_block *block, t_env *env);
 void				execute_piped_commands(t_cmd_block *blocks, int block_count,
 						t_env *env);
@@ -158,8 +162,10 @@ char				*ft_strjoin_free(char *s1, char *s2);
 char				*join_itoa_free(char *str, int num);
 int					verify_input(char *input, t_t2 t2);
 void				execute_cmd_one(t_cmd_block *block, t_env *env);
-void				exec_loop_one(t_cmd_block *block, t_env *env, int i);
-void				fork_loop_one(t_cmd_block *block, t_env *env, int i);
+void				exec_loop_one(t_cmd_block *block, t_env *env);
+void				fork_loop_one(t_cmd_block *block, t_env *env);
 void				execute_multiple_cmd(t_cmd_block *block, t_env *env);
+void				if_nopath(char *str);
 
+// t_cmd_block			*heredoc_setter(t_cmd_block *blocks);
 #endif

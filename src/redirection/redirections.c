@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/28 21:06:07 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 02:55:02 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,10 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	result = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
+	block->is_here_doc = 0;
 	if (handle_redirections(block->tokens, block->t2.token_count) == -1)
 	{
+		block->is_here_doc = 1;
 		g_exit_status = 1;
 		return (1);
 	}

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/28 21:09:43 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 03:40:58 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@
  *
  * Return : N/A (la fonction ne retourne jamais)
  */
-void	exit2(void)
+
+void	exit2(t_env *env)
 {
 	int	i;
 

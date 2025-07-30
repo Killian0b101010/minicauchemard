@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/28 20:45:30 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/29 22:59:02 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_cmd_block	*split_into_blocks(t_token *tokens, t_t2 t2, int *block_count)
 	int			start;
 
 	*block_count = count_pipes(tokens, t2.token_count) + 1;
+	t2.block_count = *block_count;
 	blocks = ft_malloc(sizeof(t_cmd_block) * (*block_count));
 	if (!blocks)
 		return (NULL);
