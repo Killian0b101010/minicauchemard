@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/30 04:30:36 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 22:22:01 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,15 +111,14 @@ void	execute_cmd_one(t_cmd_block *block, t_env *env)
 		return ;
 	if ((!block->args || !block->args[0]))
 		return (write(2, "Error\n", 6), (void)0);
-	block->path = get_path(env->envp);
+	block->path = get_path_arena(env->arena, env->envp);
 	if (!block->path)
 		return (if_nopath(block->args[0]), (void)0);
 	block->i = 0;
 	block->flag_access = 0;
 	block->is_here_doc = 0;
 	if (is_builtin(block->tokens[0].value))
-		return (execute_builtin_block(block, env), ft_free_split(block->path),
-			(void)0);
+		return (execute_builtin_block(block, env), (void)0);
 	else
 	{
 		while (block->path[block->i] && block->flag_access == 0)
@@ -131,7 +130,6 @@ void	execute_cmd_one(t_cmd_block *block, t_env *env)
 		write(2, ": command not found\n", 21);
 		g_exit_status = 127;
 	}
-	t((ft_free_split(block->args), ft_free_split(block->path), 0));
 }
 
 void	exec_loop_one(t_cmd_block *block, t_env *env)
@@ -140,15 +138,16 @@ void	exec_loop_one(t_cmd_block *block, t_env *env)
 	{
 		if (access(block->args[0], X_OK) == 0)
 		{
-			block->full_cmd = ft_strdup(block->args[0]);
+			block->full_cmd = ft_strdup_arena(env->arena, block->args[0]);
 			return (block->flag_access = 1, fork_loop_one(block, env));
 		}
 	}
 	else
 	{
-		block->cmd_path = ft_strjoin(block->path[block->i], "/");
-		block->full_cmd = ft_strjoin(block->cmd_path, block->args[0]);
-		ft_free(block->cmd_path);
+		block->cmd_path = ft_strjoin_arena(env->arena, block->path[block->i],
+				"/");
+		block->full_cmd = ft_strjoin_arena(env->arena, block->cmd_path,
+				block->args[0]);
 		if (access(block->full_cmd, X_OK) == 0)
 			return (block->flag_access = 1, fork_loop_one(block, env));
 	}
@@ -173,8 +172,8 @@ int	is_executable_file(const char *path)
 
 void	fork_loop_one(t_cmd_block *block, t_env *env)
 {
-	pid_t	pid;
-	int		stat_result;
+	pid_t pid;
+	int stat_result;
 
 	stat_result = is_executable_file(block->full_cmd);
 	if (stat_result == 2)

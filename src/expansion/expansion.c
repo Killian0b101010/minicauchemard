@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:50:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/24 18:44:14 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 03:34:40 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*get_env_value(char *var_name, t_env *env)
 	return (NULL);
 }
 
-static char	*get_variable_name(char *str, int start, int *end)
+static char	*get_variable_name(t_arena *arena, char *str, int start, int *end)
 {
 	int		i;
 	char	*var_name;
@@ -42,7 +42,7 @@ static char	*get_variable_name(char *str, int start, int *end)
 	*end = i;
 	if (i == start)
 		return (NULL);
-	var_name = ft_malloc(i - start + 1);
+	var_name = arena_alloc(arena, i - start + 1);
 	if (!var_name)
 		return (NULL);
 	ft_strncpy(var_name, str + start, i - start);
@@ -50,15 +50,14 @@ static char	*get_variable_name(char *str, int start, int *end)
 	return (var_name);
 }
 
-int	expand_variable_at_position(char *str, int i)
+int	expand_variable_at_position(t_arena *arena, char *str, int i)
 {
 	char	*var_name;
 	int		end;
 
-	var_name = get_variable_name(str, i + 1, &end);
+	var_name = get_variable_name(arena, str, i + 1, &end);
 	if (var_name)
 	{
-		ft_free(var_name);
 		return (end);
 	}
 	else
@@ -71,15 +70,14 @@ char	*get_expanded_variable_value(char *str, t_env *env, int i)
 	char	*var_value;
 	int		end;
 
-	var_name = get_variable_name(str, i + 1, &end);
+	var_name = get_variable_name(env->arena, str, i + 1, &end);
 	if (var_name)
 	{
 		var_value = get_variable_value(var_name, env);
-		ft_free(var_name);
 		return (var_value);
 	}
 	else
-		return (create_single_char_string(str, i));
+		return (create_single_char_string(env->arena, str, i));
 }
 
 /**
@@ -98,7 +96,7 @@ char	*get_expanded_variable_value(char *str, t_env *env, int i)
  *
  * Return : Nouvelle chaîne avec $? expansé ou NULL si erreur
  */
-char	*expand_exit_status_in_string(char *str)
+char	*expand_exit_status_in_string(t_arena *arena, char *str)
 {
 	char	*result;
 	char	*temp;
@@ -108,21 +106,21 @@ char	*expand_exit_status_in_string(char *str)
 
 	if (!str)
 		return (NULL);
-	t((result = ft_strdup(""), exit_str = ft_itoa(g_exit_status), i = 0,
-			len = ft_strlen(str), 0));
+	t((result = ft_strdup_arena(arena, ""), exit_str = ft_itoa_arena(arena,g_exit_status),
+			i = 0, len = ft_strlen(str), 0));
 	while (i < len)
 	{
 		if (str[i] == '$' && i + 1 < len && str[i + 1] == '?')
-			t((temp = ft_strjoin(result, exit_str), ft_free(result),
-					result = temp, i += 2, 0));
+			t((temp = ft_strjoin_arena(arena, result, exit_str), result = temp,
+					i += 2, 0));
 		else
 		{
-			temp = ft_malloc(ft_strlen(result) + 2);
+			temp = arena_alloc(arena, (ft_strlen(result) + 2));
 			ft_strcpy(temp, result);
 			temp[ft_strlen(result)] = str[i];
 			temp[ft_strlen(result) + 1] = '\0';
-			t((ft_free(result), result = temp, i++, 0));
+			t((result = temp, i++, 0));
 		}
 	}
-	return (ft_free(exit_str), result);
+	return (result);
 }

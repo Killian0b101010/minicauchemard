@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 03:40:58 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 22:36:58 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ void	exit2(t_env *env)
 	while (i < 1024)
 		close2(i++);
 	rl_clear_history();
+	free_arena(env->arena);
 	exit(g_exit_status);
 }

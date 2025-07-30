@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/15 17:19:22 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 00:03:33 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*process_expansion_loop(char *str, t_env *env)
 	char	*var_part;
 	int		i;
 
-	result = ft_strdup("");
+	result = ft_strdup_arena(env->arena, "");
 	if (!result)
 		return (NULL);
 	i = 0;
@@ -33,14 +33,12 @@ char	*process_expansion_loop(char *str, t_env *env)
 		if (str[i] == '$' && str[i + 1] && is_expandable_char(str[i + 1]))
 		{
 			var_part = get_expanded_variable_value(str, env, i);
-			i = expand_variable_at_position(str, i);
-			temp = ft_strjoin(result, var_part);
-			ft_free(result);
-			ft_free(var_part);
+			i = expand_variable_at_position(env->arena, str, i);
+			temp = ft_strjoin_arena(env->arena, result, var_part);
 			result = temp;
 		}
 		else
-			result = append_char_to_result(result, str[i++]);
+			result = append_char_to_result(env->arena,result, str[i++]);
 	}
 	return (result);
 }
@@ -58,7 +56,6 @@ void	process_token_expansion(t_token *tokens, int token_count, t_env *env)
 			expanded = expand_variables(tokens[i].value, env);
 			if (expanded)
 			{
-				ft_free(tokens[i].value);
 				tokens[i].value = expanded;
 			}
 		}

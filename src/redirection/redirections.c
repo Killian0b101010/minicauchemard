@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 02:55:02 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 22:24:01 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@
  *
  * Return : Chaîne contenant tout l'input du heredoc ou NULL si erreur
  */
-static char	*get_heredoc_input(char *delimiter)
+static char	*get_heredoc_input(t_arena *arena, char *delimiter)
 {
 	char	*input;
 	char	*line;
 	char	*temp;
 
-	input = ft_strdup("");
+	input = ft_strdup_arena(arena, "");
 	if (!input)
 		return (NULL);
 	while (1)
@@ -43,14 +43,10 @@ static char	*get_heredoc_input(char *delimiter)
 		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
 			if (line)
-				ft_free(line);
-			break ;
+				break ;
 		}
-		temp = ft_strjoin(input, line);
-		ft_free(input);
-		input = ft_strjoin(temp, "\n");
-		ft_free(temp);
-		ft_free(line);
+		temp = ft_strjoin_arena(arena, input, line);
+		input = ft_strjoin_arena(arena, temp, "\n");
 	}
 	return (input);
 }
@@ -72,14 +68,14 @@ static char	*get_heredoc_input(char *delimiter)
  *
  * Return : Descripteur de fichier pour la lecture ou -1 si erreur
  */
-int	setup_heredoc(char *delimiter)
+int	setup_heredoc(t_arena *arena, char *delimiter)
 {
 	int		pipe_fd[2];
 	char	*input;
 
 	if (pipe(pipe_fd) == -1)
 		return (-1);
-	input = get_heredoc_input(delimiter);
+	input = get_heredoc_input(arena, delimiter);
 	if (!input)
 	{
 		close(pipe_fd[0]);
@@ -88,7 +84,6 @@ int	setup_heredoc(char *delimiter)
 	}
 	write(pipe_fd[1], input, ft_strlen(input));
 	close(pipe_fd[1]);
-	ft_free(input);
 	return (pipe_fd[0]);
 }
 
@@ -109,7 +104,8 @@ int	setup_heredoc(char *delimiter)
  *
  * Return : 0 en cas de succès, -1 si erreur
  */
-static int	handle_redirections(t_token *tokens, int token_count)
+static int	handle_redirections(t_arena *arena, t_token *tokens,
+		int token_count)
 {
 	int	i;
 
@@ -132,7 +128,7 @@ static int	handle_redirections(t_token *tokens, int token_count)
 				return (-1);
 		}
 		else if (tokens[i].type == HEREDOC && i + 1 < token_count)
-			if (handle_heredoc_redirection(tokens, i) == -1)
+			if (handle_heredoc_redirection(arena, tokens, i) == -1)
 				return (-1);
 	}
 	return (0);
@@ -173,8 +169,8 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	result = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-	block->is_here_doc = 0;
-	if (handle_redirections(block->tokens, block->t2.token_count) == -1)
+	if (handle_redirections(env->arena, block->tokens, block->t2.token_count) ==
+		-1)
 	{
 		block->is_here_doc = 1;
 		g_exit_status = 1;

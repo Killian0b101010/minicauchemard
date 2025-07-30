@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 21:54:25 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 22:27:36 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
  *
  * Return : Aucun (void)
  */
-static void	expand_exit_status_in_block(t_cmd_block *block)
+static void	expand_exit_status_in_block(t_arena *arena, t_cmd_block *block)
 {
 	int		i;
 	char	*expanded;
@@ -38,12 +38,10 @@ static void	expand_exit_status_in_block(t_cmd_block *block)
 	{
 		if (block->tokens[i].type == WORD)
 		{
-			expanded = expand_exit_status_in_string(block->tokens[i].value);
+			expanded = expand_exit_status_in_string(arena,
+					block->tokens[i].value);
 			if (expanded)
-			{
-				ft_free(block->tokens[i].value);
 				block->tokens[i].value = expanded;
-			}
 		}
 		i++;
 	}
@@ -73,7 +71,7 @@ int	execute_builtin_block(t_cmd_block *block, t_env *env)
 
 	if (!block->tokens || block->t2.token_count == 0)
 		return (1);
-	expand_exit_status_in_block(block);
+	expand_exit_status_in_block(env->arena, block);
 	if (ft_strcmp(block->tokens[0].value, "pwd") == 0)
 		result = pwd(&block->t2);
 	else if (ft_strcmp(block->tokens[0].value, "echo") == 0)
@@ -110,32 +108,31 @@ static int	execute_multiple_blocks(t_cmd_block *blocks, int block_count,
 
 int	process_input_line(char *input, t_env *env)
 {
-	t_token		*tokens;
-	t_cmd_block	*blocks;
-	t_t2		t2;
-	int			block_count;
+	t_token *tokens;
+	t_cmd_block *blocks;
+	t_t2 t2;
+	int block_count;
 
 	t((t2.env_count = 0, t2.pwd_count = 0, 0));
 	if (!verify_input(input, t2))
 		return (0);
-	tokens = tokenizer(input, &t2.token_count);
+	tokens = tokenizer(env->arena, input, &t2.token_count);
 	if (!tokens || t2.token_count == 0)
 	{
 		if (tokens)
-			free_tokens(tokens, t2.token_count);
-		return (1);
+			return (1);
 	}
 	process_token_expansion(tokens, t2.token_count, env);
-	blocks = split_into_blocks(tokens, t2, &block_count);
+	blocks = split_into_blocks(env->arena, tokens, t2, &block_count);
 	if (!blocks)
-		return (free_tokens(tokens, t2.token_count), 0);
+		return (0);
 	if (block_count == 1)
 		execute_with_redirections(blocks, env);
 	else
 	{
 		// execute_multiple_cmd(blocks, env);
 		execute_multiple_blocks(blocks, block_count, env);
-		free_cmd_blocks(blocks, block_count);
+		return (1);
 	}
-	return (free_tokens(tokens, t2.token_count), 1);
+	return (1);
 }

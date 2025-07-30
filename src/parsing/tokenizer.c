@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/23 19:10:29 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 01:58:21 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,19 @@
  *
  * Return : 1 en cas de succès, 0 si échec d'allocation
  */
-int	expand_tokens(t_token **tokens, int *capacity)
+int	expand_tokens(t_arena *arena, t_token **tokens, int *capacity)
 {
 	t_token	*new_tokens;
 	int		old_capacity;
+	int		i;
 
 	old_capacity = *capacity;
 	*capacity *= 2;
-	new_tokens = realloc2(*tokens, sizeof(t_token) * old_capacity,
-			sizeof(t_token) * (*capacity));
+	new_tokens = arena_alloc(arena, sizeof(t_token) * (*capacity));
 	if (!new_tokens)
-	{
-		ft_free(*tokens);
 		return (0);
-	}
+	for (i = 0; i < old_capacity; i++)
+		new_tokens[i] = (*tokens)[i];
 	*tokens = new_tokens;
 	return (1);
 }
@@ -63,7 +62,7 @@ int	expand_tokens(t_token **tokens, int *capacity)
  *
  * Return : Tableau de tokens alloué dynamiquement ou NULL si échec
  */
-t_token	*tokenizer(char *str, int *token_count)
+t_token	*tokenizer(t_arena *arena, char *str, int *token_count)
 {
 	t_token	*tokens;
 	t_t2	t2;
@@ -71,7 +70,7 @@ t_token	*tokenizer(char *str, int *token_count)
 
 	capacity = 10;
 	t((t2.index = 0, t2.i = 0, t2.j = 0, 0));
-	tokens = ft_malloc(sizeof(t_token) * capacity);
+	tokens = arena_alloc(arena, (capacity) * sizeof(t_token));
 	if (!tokens)
 		return (NULL);
 	while (str[t2.index])
@@ -84,9 +83,9 @@ t_token	*tokenizer(char *str, int *token_count)
 			tokenize(str, &t2);
 		else
 			tokenize2(str, &t2);
-		if (t2.j >= capacity && !expand_tokens(&tokens, &capacity))
+		if (t2.j >= capacity && !expand_tokens(arena, &tokens, &capacity))
 			return (NULL);
-		tokenize3(tokens, &t2);
+		tokenize3(arena, tokens, &t2);
 	}
 	*token_count = t2.j;
 	return (tokens);

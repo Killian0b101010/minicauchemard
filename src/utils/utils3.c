@@ -6,24 +6,24 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/28 21:10:16 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 22:24:34 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	free_cmd_blocks(t_cmd_block *cmds, int block_count)
-{
-	int	i;
+// void	free_cmd_blocks(t_cmd_block *cmds, int block_count)
+// {
+// 	int	i;
 
-	i = -1;
-	while (++i < block_count)
-	{
-		ft_free_split(cmds[i].args);
-		ft_free(cmds[i].tokens);
-	}
-	ft_free(cmds);
-}
+// 	i = -1;
+// 	while (++i < block_count)
+// 	{
+// 		ft_free_split(cmds[i].args);
+// 		ft_free(cmds[i].tokens);
+// 	}
+// 	ft_free(cmds);
+// }
 
 /**
 
@@ -43,13 +43,13 @@ void	free_cmd_blocks(t_cmd_block *cmds, int block_count)
  *
  * Return : Tableau d'arguments terminé par NULL ou NULL si échec
  */
-char	**build_cmd_args(t_token *tokens, int count)
+char	**build_cmd_args(t_arena *arena, t_token *tokens, int count)
 {
 	char	**args;
 	int		i;
 	int		j;
 
-	args = ft_malloc(sizeof(char *) * (count + 1));
+	args = arena_alloc(arena, (count + 1) * sizeof(char *));
 	if (!args)
 		return (NULL);
 	i = 0;
@@ -64,7 +64,7 @@ char	**build_cmd_args(t_token *tokens, int count)
 			continue ;
 		}
 		if (tokens[i].type == WORD)
-			args[j++] = ft_strdup(tokens[i].value);
+			args[j++] = ft_strdup_arena(arena,tokens[i].value);
 		i++;
 	}
 	args[j] = NULL;

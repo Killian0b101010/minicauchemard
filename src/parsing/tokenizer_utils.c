@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:07:11 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/28 19:51:50 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/30 22:23:48 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ void	tokenize2(char *str, t_t2 *t2)
 	t2->buff[t2->i] = '\0';
 }
 
-void	tokenize3(t_token *tokens, t_t2 *t2)
+void	tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2)
 {
-	tokens[t2->j].value = ft_strdup(t2->buff);
+	tokens[t2->j].value = ft_strdup_arena(arena,t2->buff);
 	tokens[t2->j].quoted = t2->quoted;
 	if (t2->quoted)
 		tokens[t2->j].type = WORD;
