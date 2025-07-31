@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
 /*   Updated: 2025/07/31 16:31:01 by dnahon           ###   ########.fr       */
@@ -110,7 +110,10 @@ void	execute_cmd_one(t_cmd_block *block, t_env *env)
 	if (!block->args[0] && block->is_here_doc == 0)
 		return ;
 	if ((!block->args || !block->args[0]))
-		return (write(2, "Error\n", 6), (void)0);
+		return (write(2, "Error\n", 7), (void)0);
+	block->path = get_path_arena(env->arena, env->envp);
+	if (!block->args || !block->args[0])
+		return (write(2, "Error\n", 7), (void)0);
 	block->path = get_path_arena(env->arena, env->envp);
 	if (!block->path)
 		return (if_nopath(block->args[0]), (void)0);
@@ -160,14 +163,12 @@ int	is_executable_file(const char *path)
 
 	if (stat(path, &s) == 0)
 	{
-		// C'est un dossier ? => interdit !
 		if (S_ISDIR(s.st_mode))
-			return (2); // Is a directory
-		// C'est un exécutable ?
+			return (2);
 		if ((s.st_mode & S_IXUSR) && !S_ISDIR(s.st_mode))
-			return (1); // C'est exécutable
+			return (1);
 	}
-	return (0); // Pas trouvé ou pas exécutable
+	return (0);
 }
 
 void	fork_loop_one(t_cmd_block *block, t_env *env)

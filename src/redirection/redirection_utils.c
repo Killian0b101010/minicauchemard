@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 02:24:58 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/31 04:49:06 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,11 +127,11 @@ int	handle_append_redirection(t_token *tokens, int i)
  *
  * Return : 0 en cas de succès, -1 si erreur
  */
-int	handle_heredoc_redirection(t_arena *arena, t_token *tokens, int i)
+int	handle_heredoc_redirection(t_env *env,t_arena *arena, t_token *tokens, int i)
 {
 	int	fd;
 
-	fd = setup_heredoc(arena,tokens[i + 1].value);
+	fd = setup_heredoc(env,arena,tokens[i + 1].value);
 	if (fd == -1)
 		return (-1);
 	dup2(fd, STDIN_FILENO);

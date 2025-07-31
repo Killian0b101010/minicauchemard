@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
+#    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/30 22:36:05 by dnahon           ###   ########.fr        #
+#    Updated: 2025/07/31 03:25:36 by kiteixei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,9 +79,10 @@ debug: $(OBJ)
 
 valgrind: $(NAME)
 	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell..."
-	valgrind -q -s --suppressions=./ignore --trace-children=yes \
+	valgrind -q --suppressions=./ignore --trace-children=yes \
 		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
 		./minishell
+
 		
 
 
