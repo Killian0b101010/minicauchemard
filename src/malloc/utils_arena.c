@@ -10,14 +10,14 @@ char	*ft_strdup_arena(t_arena *arena, char const *src)
 		return (NULL);
 	return (ft_strcpy(dest, src));
 }
+
 char	*ft_strjoin_arena(t_arena *arena, char *s1, char *s2)
 {
 	char			*str;
 	unsigned int	i;
 	unsigned int	j;
 
-	i = 0;
-	j = 0;
+	free((i = 0, j = 0, NULL));
 	if (!s1 && !s2)
 		return (NULL);
 	else if (!s1)
@@ -28,18 +28,13 @@ char	*ft_strjoin_arena(t_arena *arena, char *s1, char *s2)
 	if (!str)
 		return (NULL);
 	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
+		t((str[i] = s1[i], i++, 0));
 	while (s2[j])
-	{
-		str[i + j] = s2[j];
-		j++;
-	}
+		t((str[i + j] = s2[j], j++, 0));
 	str[i + j] = '\0';
 	return (str);
 }
+
 static size_t	ft_nblen(int n)
 {
 	int	len;
@@ -53,7 +48,7 @@ static size_t	ft_nblen(int n)
 	return (len);
 }
 
-char	*ft_itoa_arena(t_arena *arena,int n)
+char	*ft_itoa_arena(t_arena *arena, int n)
 {
 	long	nb;
 	int		len;
@@ -61,7 +56,7 @@ char	*ft_itoa_arena(t_arena *arena,int n)
 
 	nb = n;
 	len = ft_nblen(n);
-	str = arena_alloc(arena,len + 1);
+	str = arena_alloc(arena, len + 1);
 	if (!str)
 		return (NULL);
 	str[len] = '\0';
@@ -77,6 +72,7 @@ char	*ft_itoa_arena(t_arena *arena,int n)
 	}
 	return (str);
 }
+
 void	*ft_realloc_arena(void *ptr, size_t old_size, size_t new_size)
 {
 	void	*new_ptr;
@@ -93,11 +89,12 @@ void	*ft_realloc_arena(void *ptr, size_t old_size, size_t new_size)
 		return (NULL);
 	if (old_size > new_size)
 		old_size = new_size;
-	ft_memcpy(new_ptr, ptr, old_size); 
+	ft_memcpy(new_ptr, ptr, old_size);
 	free(ptr);
 	return (new_ptr);
 }
-char	**get_path_arena(t_arena *arena,char **envp)
+
+char	**get_path_arena(t_arena *arena, char **envp)
 {
 	ssize_t	i;
 	char	**path;
@@ -107,7 +104,7 @@ char	**get_path_arena(t_arena *arena,char **envp)
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
-			path = ft_split_arena(arena,envp[i] + 5, ':');
+			path = ft_split_arena(arena, envp[i] + 5, ':');
 			if (!path)
 				return (NULL);
 			return (path);

@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/28 04:38:22 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/30 04:04:21 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/31 00:30:44 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,18 +27,17 @@ void	*safe_malloc(void **ptr, size_t size)
 	}
 	return (*ptr);
 }
+
 t_arena	*arena_init(size_t initial_capacity)
 {
 	t_arena	*arena;
 
 	arena = NULL;
-	// Initialise l'arene
 	if (!safe_malloc((void **)&arena, sizeof(t_arena)))
 	{
 		ft_putstr_fd("Failed to allocate arena \n", 2);
 		exit(1);
 	}
-	// On creer un espace initial pour les block de memoire
 	arena->arena_memory = malloc(initial_capacity * sizeof(void *));
 	if (!arena->arena_memory)
 	{
@@ -46,7 +45,6 @@ t_arena	*arena_init(size_t initial_capacity)
 		free(arena);
 		return (NULL);
 	}
-	// Initialisation des variable pour la gestion de la memoire
 	arena->capacity = initial_capacity;
 	arena->actual_size = 0;
 	arena->size = 0;
@@ -56,23 +54,30 @@ t_arena	*arena_init(size_t initial_capacity)
 void	*arena_alloc(t_arena *arena, size_t size_block)
 {
 	void	*block;
+	size_t	new_capacity;
+	void	**tmp;
+	size_t	old_size_bytes;
+	size_t	new_size_bytes;
 
-	// Allocation du block memoire pour stocker mon malloc en fonction de size_block
 	block = malloc(size_block);
 	if (!block)
 		return (NULL);
-	// J'incremente mon actual_size pour check si ja
 	if (arena->actual_size == arena->capacity)
 	{
-		arena->capacity *= 2;
-		arena->arena_memory = realloc(arena->arena_memory, arena->capacity
-				* sizeof(void *));
-		if (!arena->arena_memory)
-			return (NULL);
+		if (arena->capacity == 0)
+			new_capacity = 1;
+		else
+			new_capacity = arena->capacity * 2;
+		old_size_bytes = arena->actual_size * sizeof(void *);
+		new_size_bytes = new_capacity * sizeof(void *);
+		tmp = ft_realloc_arena(arena->arena_memory, old_size_bytes,
+				new_size_bytes);
+		if (!tmp)
+			return (free(block), NULL);
+		t((arena->arena_memory = tmp, arena->capacity = new_capacity, 0));
 	}
 	arena->arena_memory[arena->actual_size] = block;
-	arena->actual_size++;
-	return (block);
+	return (arena->actual_size++, block);
 }
 
 void	free_arena(t_arena *arena)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/30 22:22:01 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/31 03:27:44 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,8 +112,12 @@ void	execute_cmd_one(t_cmd_block *block, t_env *env)
 	if ((!block->args || !block->args[0]))
 		return (write(2, "Error\n", 6), (void)0);
 	block->path = get_path_arena(env->arena, env->envp);
+	if (!block->args || !block->args[0])
+		return (write(2, "testt\n", 7), (void)0);
+	block->path = get_path_arena(env->arena,env->envp);
 	if (!block->path)
 		return (if_nopath(block->args[0]), (void)0);
+		exit((write(2, "test\n", 6), -1));
 	block->i = 0;
 	block->flag_access = 0;
 	block->is_here_doc = 0;
