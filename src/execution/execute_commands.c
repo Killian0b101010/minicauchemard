@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/30 23:25:44 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/31 16:31:01 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,6 +188,7 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 	}
 	if (stat_result == 1)
 	{
+		g_exit_status = 0;
 		pid = fork();
 		if (pid == 0)
 		{

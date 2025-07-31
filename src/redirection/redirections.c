@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 22:24:01 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/31 19:35:35 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,27 @@
  */
 static char	*get_heredoc_input(t_arena *arena, char *delimiter)
 {
-	char	*input;
-	char	*line;
-	char	*temp;
+	char		*input;
+	char		*line;
+	char		*temp;
+	static int	n_line = 0;
 
 	input = ft_strdup_arena(arena, "");
 	if (!input)
 		return (NULL);
 	while (1)
 	{
+		n_line++;
 		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
+		if (!line)
 		{
-			if (line)
-				break ;
+			ft_printf("minicauchemar : warning: here-document at line");
+			ft_printf(" %d delimited by end-of-file (wanted `%s\')\n", n_line,
+				delimiter);
+			break ;
 		}
+		if (ft_strcmp(line, delimiter) == 0)
+			break ;
 		temp = ft_strjoin_arena(arena, input, line);
 		input = ft_strjoin_arena(arena, temp, "\n");
 	}
@@ -169,6 +175,7 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	result = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
+	block->is_here_doc = 0;
 	if (handle_redirections(env->arena, block->tokens, block->t2.token_count) ==
 		-1)
 	{
