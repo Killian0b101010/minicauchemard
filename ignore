@@ -18,3 +18,8 @@
    Memcheck:Leak
    obj:/bin/*
 }
+{
+   readline leak
+   Memcheck:Leak
+   fun:readline
+}

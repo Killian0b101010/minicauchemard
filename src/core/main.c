@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 03:26:47 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/31 05:17:03 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	shell_main_loop(t_env *env)
 	{
 		input = get_prompt_and_input();
 		if (!input)
-			break ;
+			exit2(env);
 		if (input)
 			add_history(input);
 		if (!process_input_line(input, env))
@@ -99,7 +99,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	arena = arena_init(1);
+	arena = arena_init(42);
 	if (!arena)
 		return (1);
 	env.arena = arena;
