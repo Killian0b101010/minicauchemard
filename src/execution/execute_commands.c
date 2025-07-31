@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/31 16:31:01 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/31 22:47:25 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <new>
 
 // void	execute_piped_commands(t_cmd_block *blocks, int block_count, t_env *env)
 // {
@@ -173,8 +174,8 @@ int	is_executable_file(const char *path)
 
 void	fork_loop_one(t_cmd_block *block, t_env *env)
 {
-	pid_t pid;
-	int stat_result;
+	pid_t	pid;
+	int		stat_result;
 
 	stat_result = is_executable_file(block->full_cmd);
 	if (stat_result == 2)
