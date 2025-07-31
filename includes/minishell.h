@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 04:56:44 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/31 22:19:50 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,8 @@ int					handle_redirections(t_env *env, t_arena *arena,
 int					handle_input_redirection(t_token *tokens, int i);
 int					handle_output_redirection(t_token *tokens, int i);
 int					handle_append_redirection(t_token *tokens, int i);
-int					handle_heredoc_redirection(t_env *env, t_arena *arena,t_token *tokens, int i);
+int					handle_heredoc_redirection(t_env *env, t_arena *arena,
+						t_token *tokens, int i);
 int					setup_heredoc(t_env *env, t_arena *arena, char *delimiter);
 char				*process_expansion_loop(char *str, t_env *env);
 int					expand_variable_at_position(t_arena *arena, char *str,

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 20:54:00 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/31 22:19:43 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ void	restore_fds(int saved_stdin, int saved_stdout)
 {
 	dup2(saved_stdin, STDIN_FILENO);
 	dup2(saved_stdout, STDOUT_FILENO);
-	close(saved_stdin);
-	close(saved_stdout);
+	close2(saved_stdin);
+	close2(saved_stdout);
 }
 
 /**
@@ -169,13 +169,12 @@ void	restore_fds(int saved_stdin, int saved_stdout)
 
 int	execute_with_redirections(t_cmd_block *block, t_env *env)
 {
-	int	saved_stdin;
-	int	saved_stdout;
 	int	result;
+	int	saved_std[2];
 
 	result = 0;
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
+	saved_std[0] = dup(STDIN_FILENO);
+	saved_std[1] = dup(STDOUT_FILENO);
 	block->is_here_doc = 0;
 	if (handle_redirections(env, env->arena, block->tokens,
 			block->t2.token_count) == -1)
@@ -187,10 +186,7 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	if (is_builtin(block->tokens[0].value))
 		result = execute_builtin_block(block, env);
 	else
-	{
-		block->is_here_doc = 0;
 		execute_cmd_one(block, env);
-	}
-	restore_fds(saved_stdin, saved_stdout);
+	restore_fds(saved_std[0], saved_std[1]);
 	return (result);
 }
