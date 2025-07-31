@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 19:35:35 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/31 20:54:00 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char	*get_heredoc_input(t_env *env, t_arena *arena, char *delimiter)
 		return (NULL);
 	while (1)
 	{
-    n_line++;
+		n_line++;
 		line = readline("heredoc> ");
 		if (!line)
 		{
@@ -176,11 +176,9 @@ int	execute_with_redirections(t_cmd_block *block, t_env *env)
 	result = 0;
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
-  block->is_here_doc = 0;
+	block->is_here_doc = 0;
 	if (handle_redirections(env, env->arena, block->tokens,
 			block->t2.token_count) == -1)
-	if (handle_redirections(env->arena, block->tokens, block->t2.token_count) ==
-		-1)
 	{
 		block->is_here_doc = 1;
 		g_exit_status = 1;
