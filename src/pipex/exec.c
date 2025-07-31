@@ -6,18 +6,11 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 13:29:30 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 17:58:51 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/29 18:17:00 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/pipex.h"
-
-void	ft_error(char *cmd)
-{
-	write(2, cmd, ft_strlen(cmd));
-	write(2, ": command not found\n", 21);
-	exit(127);
-}
 
 void	execute_cmd(char *cmd, char **envp)
 {

@@ -6,29 +6,33 @@
 #    By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/07/15 21:10:28 by kiteixei         ###   ########.fr        #
+#    Updated: 2025/07/31 03:25:36 by kiteixei         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME 		= 	minishell
 CC 			= 	cc
 CFLAGS 		= 	-g3 -O0 -Wall -Wextra -Werror
+DEBUGFLAGS	= 	-g3 -O0 -Wall -Wextra -Werror -fsanitize=address -fsanitize=undefined -fsanitize=leak
 
 LDFLAGS		= 	-lreadline -Llibft -lft
 AR 			= 	ar rcs
 RM 			= 	rm -f
 
 SRC_DIR 	= 	./src
-SRC 		= 	./src/core/main.c ./src/core/main_utils.c \
-				./src/execution/execution_utils.c \
+SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
+				./src/execution/execution_utils.c ./src/execution/execution_utils2.c\
 				./src/execution/builtins/echo.c ./src/execution/builtins/pwd.c ./src/execution/builtins/env.c \
 				./src/execution/builtins/cd.c ./src/execution/builtins/export.c ./src/execution/builtins/unset.c \
 				./src/execution/builtins/exec_builtins.c ./src/execution/builtins/exit.c \
+				./src/execution/execute_commands.c ./src/execution/path.c\
 				./src/parsing/tokenizer.c ./src/parsing/tokenizer_utils.c \
 				./src/expansion/expansion.c ./src/expansion/expansion_utils.c ./src/expansion/expansion_utils2.c ./src/expansion/expansion_helpers.c \
 				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \
 				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c \
-				./src/signal/handler.c 
+				./src/signal/handler.c \
+				./src/malloc/arena_collector.c \
+				./src/malloc/split_arena.c ./src/malloc/utils_arena.c \
 
 LIBFT 		= 	./libft/libft.a
 INCLUDES	= 	./includes/pipex.h ./includes/minishell.h ./libft/includes/libft.h
@@ -67,9 +71,19 @@ fclean: clean
 	@$(RM) $(NAME)
 
 re: fclean all
-valgrind: $(EXEC)
-	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell...$(RESET)"
-	valgrind -q --suppressions=$(PWD)/ignore --trace-children=yes \
+
+debug: $(OBJ)
+	@$(MAKE) -C libft --no-print-directory
+	@echo "$(YELLOW)Building $(NC)$(NAME) $(YELLOW)with debug flags"
+	@$(CC) $(DEBUGFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
+
+valgrind: $(NAME)
+	@echo "$(YELLOW)🔍 Lancement de Valgrind sur ./minishell..."
+	valgrind -q --suppressions=./ignore --trace-children=yes \
 		--leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes \
 		./minishell
-.PHONY: all clean fclean re
+
+		
+
+
+.PHONY: all clean fclean re debug valgrind

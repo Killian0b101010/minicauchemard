@@ -6,12 +6,27 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:02:44 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/10 18:46:57 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/07/28 20:29:01 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
 
+/**
+ * Vérifie si une chaîne représente le flag -n pour la commande echo.
+ *
+ * Cette fonction détermine si l'argument passé est un flag -n valide
+ * qui supprime le retour à la ligne final dans echo:
+ * - Vérifie que la chaîne commence par "-n"
+ * - S'assure que tous les caractères suivants sont 'n'
+ * - Respecte le comportement standard de echo
+ * - Gère les cas comme -nnn, -nnnn, etc.
+ *
+ * Parameters :
+ * - str - Chaîne à vérifier pour le flag -n
+ *
+ * Return : 1 si c'est un flag -n valide, 0 sinon
+ */
 static int	is_n_flag(char *str)
 {
 	int	i;
@@ -28,6 +43,22 @@ static int	is_n_flag(char *str)
 	return (1);
 }
 
+/**
+ * Implémente la commande built-in echo du shell.
+ *
+ * Cette fonction reproduit le comportement de la commande echo standard
+ * en affichant les arguments passés avec support du flag -n:
+ * - Détecte et traite les flags -n pour supprimer le retour à la ligne
+ * - Affiche tous les arguments séparés par des espaces
+ * - Ajoute un retour à la ligne final sauf si -n est présent
+ * - Ignore les tokens qui ne sont pas des mots
+ *
+ * Parameters :
+ * - tokens - Tableau des tokens de la commande
+ * - token_count - Nombre total de tokens
+ *
+ * Return : 0 en cas de succès
+ */
 int	echo(t_token *tokens, int token_count)
 {
 	int	i;
