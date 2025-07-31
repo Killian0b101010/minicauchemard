@@ -6,11 +6,12 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 05:16:46 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/07/31 20:42:31 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <stdio.h>
 
 /**
  * Affiche un texte avec un dégradé de couleurs pour créer un effet visuel.
@@ -158,6 +159,7 @@ char	*get_prompt_and_input(void)
 	static int	var = 0;
 
 	getcwd(cwd, sizeof(cwd));
+	input = NULL;
 	raw_prompt = ft_strjoin("minicauchemar:", cwd);
 	raw_prompt = ft_strjoin_free(raw_prompt, "$ ");
 	var = getnewcolor();
