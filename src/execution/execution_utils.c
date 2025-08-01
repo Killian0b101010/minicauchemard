@@ -6,12 +6,12 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
+/*   Updated: 2025/08/01 02:22:22 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
 #include <stdio.h>
-
+#include "../../includes/minishell.h"
 /**
 
  * Exécute une commande built-in en identifiant
@@ -95,9 +95,9 @@ int	process_input_line(char *input, t_env *env)
 		execute_with_redirections(blocks, env);
 	else
 	{
-		// execute_multiple_cmd(blocks, env);
 		execute_multiple_blocks(blocks, block_count, env);
 		return (1);
 	}
 	return (1);
 }
+

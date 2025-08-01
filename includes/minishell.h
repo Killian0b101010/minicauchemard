@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 22:19:50 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/01 04:58:23 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,7 @@ void				*ft_realloc_arena(void *ptr, size_t old_size,
 						size_t new_size);
 void				execute_multiple_cmd(t_cmd_block *block, t_env *env);
 void				if_nopath(char *str);
+int					init_bc_no_env(t_env *env);
 
 // t_cmd_block			*heredoc_setter(t_cmd_block *blocks);
 #endif
