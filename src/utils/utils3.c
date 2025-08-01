@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 22:24:34 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/01 19:17:32 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	**build_cmd_args(t_arena *arena, t_token *tokens, int count)
 			continue ;
 		}
 		if (tokens[i].type == WORD)
-			args[j++] = ft_strdup_arena(arena,tokens[i].value);
+			args[j++] = ft_strdup_arena(arena, tokens[i].value);
 		i++;
 	}
 	args[j] = NULL;

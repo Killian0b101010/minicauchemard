@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:30:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/29 06:51:43 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:04:33 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*get_variable_name(t_arena *arena, char *str, int start, int *end)
 	if (str[i] == '?')
 	{
 		*end = i + 1;
-		return (ft_strdup_arena(arena,"?"));
+		return (ft_strdup_arena(arena, "?"));
 	}
 	while (str[i] && (ft_isalnum(str[i]) || str[i] == '_'))
 		i++;

@@ -3,14 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 06:51:32 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 23:40:09 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+
+int	get_shlvl_index(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "SHLVL=", 6) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+static char	*increment_shlvl(t_arena *arena, char *shlvl_var)
+{
+	int		value;
+	char	*new_value_str;
+	char	*new_shlvl;
+
+	value = ft_atoi(shlvl_var + 6);
+	value++;
+	new_value_str = ft_itoa_arena(arena, value);
+	new_shlvl = ft_strjoin_arena(arena, "SHLVL=", new_value_str);
+	return (new_shlvl);
+}
 
 /**
  * Initialise l'environnement du shell en copiant les variables système.
@@ -28,21 +55,32 @@
  *
  * Return : Aucun (void)
  */
+
 void	ft_set_env(t_env *env, char **envp)
 {
 	int	i;
 	int	j;
+	int	shlvl_index;
 
-	i = 0;
-	j = -1;
+	t((i = 0, j = -1, 0));
 	while (envp[i])
 		i++;
-	env->envp = arena_alloc(env->arena, (i + 1) * sizeof(char *));
+	shlvl_index = get_shlvl_index(envp);
+	env->envp = arena_alloc(env->arena, (i + 2) * sizeof(char *));
 	if (!env->envp)
 		return ;
 	while (++j < i)
-		env->envp[j] = ft_strdup_arena(env->arena, envp[j]);
-	env->envp[i] = NULL;
+	{
+		if (j == shlvl_index)
+			env->envp[j] = increment_shlvl(env->arena, envp[j]);
+		else
+			env->envp[j] = ft_strdup_arena(env->arena, envp[j]);
+	}
+	if (shlvl_index == -1)
+		t((env->envp[i] = ft_strdup_arena(env->arena, "SHLVL=1"), env->envp[i
+				+ 1] = NULL, 0));
+	else
+		env->envp[i] = NULL;
 }
 
 /**
@@ -110,7 +148,7 @@ int	init_bc_no_env(t_env *env)
 	i = 0;
 	while (env->envp[i])
 	{
-		printf("%s\n", env->envp[i]);
+		ft_printf("%s\n", env->envp[i]);
 		i++;
 	}
 	return (0);

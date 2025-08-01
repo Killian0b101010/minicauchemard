@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 13:10:17 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 05:25:48 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 18:56:55 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ typedef struct t_ex
 	ssize_t	i;
 	char	*full_cmd;
 	int		errcode;
-
 
 }			t_data;
 

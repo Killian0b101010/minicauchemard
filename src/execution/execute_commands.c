@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/01 02:09:56 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 21:09:05 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,9 @@
 
 void	if_nopath(char *str)
 {
-	write(1, str, ft_strlen(str));
-	write(1, ": No such file or directory\n", 29);
+	write(2, str, ft_strlen(str));
+	write(2, ": No such file or directory\n", 29);
+	g_exit_status = 127;
 }
 
 void	execute_cmd_one(t_cmd_block *block, t_env *env)
@@ -111,7 +112,6 @@ void	execute_cmd_one(t_cmd_block *block, t_env *env)
 		return ;
 	if ((!block->args || !block->args[0]))
 		return (write(2, "Error\n", 7), (void)0);
-	block->path = get_path_arena(env->arena, env->envp);
 	if (!block->args || !block->args[0])
 		return (write(2, "Error\n", 7), (void)0);
 	block->path = get_path_arena(env->arena, env->envp);
