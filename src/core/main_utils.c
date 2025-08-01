@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 20:42:31 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/01 23:51:23 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,22 +152,35 @@ char	*build_gradient_prompt(const char *raw, int i, char *variable)
  */
 char	*get_prompt_and_input(void)
 {
-	char		cwd[10000];
-	char		*raw_prompt;
-	char		*styled_prompt;
-	char		*input;
 	static int	var = 0;
+	int			isactive_shell;
+	t_prompt	prompt;
 
-	getcwd(cwd, sizeof(cwd));
-	input = NULL;
-	raw_prompt = ft_strjoin("minicauchemar:", cwd);
-	raw_prompt = ft_strjoin_free(raw_prompt, "$ ");
-	var = getnewcolor();
-	styled_prompt = build_gradient_prompt(raw_prompt, -1, ft_itoa(var));
-	ft_free(raw_prompt);
-	input = readline(styled_prompt);
-	ft_free(styled_prompt);
-	return (input);
+	getcwd(prompt.cwd, sizeof(prompt.cwd));
+	prompt.input = NULL;
+	prompt.raw_prompt = ft_strjoin("minicauchemar:", prompt.cwd);
+	prompt.raw_prompt = ft_strjoin_free(prompt.raw_prompt, "$ ");
+	prompt.term = getenv("TERM");
+	isactive_shell = 2;
+	is_active_shell(&isactive_shell);
+	if (prompt.term && ft_strncmp(prompt.term, "(null)", 6) != 0)
+	{
+		var = getnewcolor();
+		prompt.styled_prompt = build_gradient_prompt(prompt.raw_prompt, -1,
+				ft_itoa(var));
+		prompt.input = readline(prompt.styled_prompt);
+		isactive_shell = 1;
+		is_active_shell(&isactive_shell);
+		ft_free(prompt.styled_prompt);
+	}
+	else
+	{
+		prompt.input = readline(prompt.raw_prompt);
+		isactive_shell = 1;
+		is_active_shell(&isactive_shell);
+	}
+	ft_free(prompt.raw_prompt);
+	return (prompt.input);
 }
 
 /**

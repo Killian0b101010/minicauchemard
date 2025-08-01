@@ -6,12 +6,14 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 21:32:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/05/15 13:49:45 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/01 17:47:15 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 char	*ft_strchr(const char *str, int c)
 {
+	if (!*str)
+		return (0);
 	while (*str)
 	{
 		if (*str == (unsigned char)c)

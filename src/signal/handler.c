@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 20:54:06 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/01 23:53:27 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,18 @@
 
 void	ft_handler(int sig)
 {
+	int	*active_shell;
+
 	(void)sig;
 	g_exit_status = 130;
-	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	active_shell = is_active_shell(NULL);
+	if (*active_shell == 2)
+	{
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 /**

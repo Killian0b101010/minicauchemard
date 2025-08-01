@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_realloc.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 23:56:31 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 21:46:03 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 18:59:30 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	*ft_realloc(void *ptr, size_t size)
 {
-	void *new_ptr;
+	void	*new_ptr;
 
 	if (!ptr)
 		return (ft_malloc(size));

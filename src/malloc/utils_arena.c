@@ -1,15 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils_arena.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/01 19:07:26 by dnahon            #+#    #+#             */
+/*   Updated: 2025/08/01 19:07:58 by dnahon           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
-
-char	*ft_strdup_arena(t_arena *arena, char const *src)
-{
-	char	*dest;
-
-	dest = NULL;
-	dest = arena_alloc(arena, ft_strlen(src) + 1);
-	if (!dest)
-		return (NULL);
-	return (ft_strcpy(dest, src));
-}
 
 char	*ft_strjoin_arena(t_arena *arena, char *s1, char *s2)
 {

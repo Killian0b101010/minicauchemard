@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 23:54:15 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/01 19:06:12 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ static char	*get_heredoc_input(t_env *env, t_arena *arena, char *delimiter)
 		return (NULL);
 	while (1)
 	{
-		n_line++;
-		line = readline("heredoc> ");
+		t((n_line++, line = readline("heredoc> "), 0));
 		if (!line)
 		{
 			ft_printf("minicauchemar : warning: here-document at line");
