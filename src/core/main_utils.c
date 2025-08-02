@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 23:51:23 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/02 21:33:29 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,13 +174,9 @@ char	*get_prompt_and_input(void)
 		ft_free(prompt.styled_prompt);
 	}
 	else
-	{
-		prompt.input = readline(prompt.raw_prompt);
-		isactive_shell = 1;
-		is_active_shell(&isactive_shell);
-	}
-	ft_free(prompt.raw_prompt);
-	return (prompt.input);
+		t((prompt.input = readline(prompt.raw_prompt), isactive_shell = 1,
+				is_active_shell(&isactive_shell), 0));
+	return (ft_free(prompt.raw_prompt), prompt.input);
 }
 
 /**

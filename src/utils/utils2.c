@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 19:23:13 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/02 18:04:02 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ t_cmd_block	*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 		int *block_count)
 {
 	t_cmd_block	*blocks;
+	int			i;
 	int			j;
 
 	*block_count = count_pipes(tokens, t2.token_count) + 1;
@@ -81,20 +82,19 @@ t_cmd_block	*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 	t2.block_count = *block_count;
 	if (!blocks)
 		return (NULL);
-	t((blocks->split_blocks_i = 0, j = 0, blocks->split_blocks_start = 0, 0));
-	while (blocks->split_blocks_i <= t2.token_count)
+	t((i = 0, j = 0, 0));
+	blocks[j].split_blocks_start = 0;
+	while (i <= t2.token_count)
 	{
-		if (blocks->split_blocks_i == t2.token_count
-			|| tokens[blocks->split_blocks_i].type == PIPE)
+		if (i == t2.token_count || tokens[i].type == PIPE)
 		{
+			blocks[j].split_blocks_i = i;
 			if (!fill_block(arena, &blocks[j], tokens))
 				return (NULL);
-			if (blocks->split_blocks_i < t2.token_count)
-				tokens[blocks->split_blocks_i].value = NULL;
-			blocks->split_blocks_i = blocks->split_blocks_i + 1;
-			j++;
+			if (i < t2.token_count)
+				t((j++, blocks[j].split_blocks_start = i + 1, 0));
 		}
-		blocks->split_blocks_i++;
+		i++;
 	}
 	return (blocks);
 }

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 23:54:44 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/02 19:32:41 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,17 @@ typedef struct t2
 	int				color;
 }					t_t2;
 
+typedef struct t_fd
+{
+	int				fd_in;
+	int				fd_out;
+	int				**pipefd;
+	int				cmd_count;
+	int				*pid;
+	int				cmd_start;
+
+}					t_fd;
+
 typedef struct s_cmd_block
 {
 	char			**args;
@@ -98,6 +109,7 @@ typedef struct s_cmd_block
 	int				split_blocks_i;
 	t_token			*tokens;
 	t_t2			t2;
+	t_fd			*fd;
 }					t_cmd_block;
 
 typedef struct s_prompt_input
@@ -210,5 +222,7 @@ void				if_nopath(char *str);
 int					init_bc_no_env(t_env *env);
 int					get_shlvl_index(char **envp);
 int					*is_active_shell(int *value);
+void				if_negative_fd(int i, t_fd *fd);
+void				close_files(t_fd *fd);
 
 #endif
