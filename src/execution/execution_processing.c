@@ -1,0 +1,106 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_processing.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
+/*   Updated: 2025/08/03 20:59:59 by dnahon           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../includes/minishell.h"
+
+void	execute_cmd2(t_cmd_block *blocks, t_env *env)
+{
+	if (!blocks->args[0] && blocks->is_here_doc == 0)
+		exit(0);
+	if ((!blocks->args || !blocks->args[0]))
+		exit((write(2, "Error\n", 7), 1));
+	if (!blocks->args || !blocks->args[0])
+		exit((write(2, "Error\n", 7), 1));
+	blocks->path = get_path_arena(env->arena, env->envp);
+	if (!blocks->path)
+		exit((if_nopath(blocks->args[0]), 127));
+	t((blocks->i = 0, blocks->flag_access = 0, blocks->is_here_doc = 0, 0));
+	while (blocks->path[blocks->i])
+		exec_loop_one(blocks, env);
+	flagaccesscheck(blocks);
+	exit(0);
+}
+
+void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
+		int i)
+{
+	int	status;
+
+	blocks->fd = arena_alloc(env->arena, sizeof(t_fd));
+	if (!blocks->fd)
+		return ;
+	blocks->fd->cmd_count = block_count;
+	blocks->t2.block_count = block_count;
+	init_pipex(env->arena, blocks, blocks->t2, blocks->fd);
+	while (++i < block_count)
+	{
+		blocks->fd->pid[i] = child_process2(i, blocks, env);
+		close_unused_pipes(blocks->fd, i);
+	}
+	close_all_fds(blocks->fd);
+	i = 0;
+	while (i < block_count)
+	{
+		if (blocks->fd->pid[i] != -1)
+		{
+			waitpid(blocks->fd->pid[i], &status, 0);
+			if (WIFEXITED(status))
+				g_exit_status = WEXITSTATUS(status);
+		}
+		i++;
+	}
+}
+
+int	process_input_line(char *input, t_env *env)
+{
+	t_token		*tokens;
+	t_cmd_block	*blocks;
+	t_t2		t2;
+	int			i;
+	int			block_count;
+
+	i = -1;
+	if (!verify_input(input, t2))
+		return (0);
+	input = expand_exit_status_in_string(env->arena, input);
+	tokens = tokenizer(env->arena, input, &t2.token_count);
+	if (!tokens || t2.token_count == 0)
+	{
+		if (tokens)
+			return (1);
+	}
+	process_token_expansion(tokens, t2.token_count, env);
+	blocks = split_into_blocks(env->arena, tokens, t2, &block_count);
+	process_commands(blocks, env, block_count, i);
+	return (1);
+}
+
+int	is_executable_file(const char *path)
+{
+	struct stat	s;
+
+	if (stat(path, &s) == 0)
+	{
+		if (S_ISDIR(s.st_mode))
+			return (2);
+		if ((s.st_mode & S_IXUSR) && !S_ISDIR(s.st_mode))
+			return (1);
+	}
+	return (0);
+}
+
+void	if_nopath(char *str)
+{
+	write(2, str, ft_strlen(str));
+	write(2, ": No such file or directory\n", 29);
+	g_exit_status = 127;
+}

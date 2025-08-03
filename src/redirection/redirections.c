@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/02 19:32:38 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 20:18:22 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,46 +146,4 @@ void	restore_fds(int saved_stdin, int saved_stdout)
 	dup2(saved_stdout, STDOUT_FILENO);
 	close2(saved_stdin);
 	close2(saved_stdout);
-}
-
-/**
- * Exécute une commande en gérant les redirections et restaure l'état original.
- *
- * Cette fonction coordonne l'exécution d'une commande avec ses redirections
- * tout en préservant l'environnement du shell:
- * - Sauvegarde les descripteurs stdin/stdout originaux
- * - Configure toutes les redirections nécessaires
- * - Exécute la commande (built-in ou externe)
- * - Restaure l'état original des descripteurs
- * - Gère les erreurs de redirection
- *
- * Parameters :
- * - block - Bloc de commande contenant tokens et arguments
- * - env - Structure d'environnement pour l'exécution
- *
- * Return : Code de retour de la commande ou 1 si erreur de redirection
- */
-
-int	execute_with_redirections(t_cmd_block *block, t_env *env)
-{
-	int	result;
-	int	saved_std[2];
-
-	result = 0;
-	saved_std[0] = dup(STDIN_FILENO);
-	saved_std[1] = dup(STDOUT_FILENO);
-	block->is_here_doc = 0;
-	if (handle_redirections(env, env->arena, block->tokens,
-			block->t2.token_count) == -1)
-	{
-		block->is_here_doc = 1;
-		g_exit_status = 1;
-		return (1);
-	}
-	if (is_builtin(block->tokens[0].value))
-		result = execute_builtin_block(block, env);
-	else
-		execute_cmd_one(block, env);
-	restore_fds(saved_std[0], saved_std[1]);
-	return (result);
 }

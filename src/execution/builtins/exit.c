@@ -6,11 +6,23 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 17:51:31 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 19:02:25 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../includes/minishell.h"
+
+void	close_all_fds2(void)
+{
+	int	i;
+
+	i = 0;
+	while (i < 1024)
+	{
+		close2(i);
+		i++;
+	}
+}
 
 /**
  * Implémente la commande built-in exit pour quitter le shell.
@@ -30,11 +42,7 @@
 
 void	exit2(t_env *env)
 {
-	int	i;
-
-	i = 0;
-	while (i < 1024)
-		close2(i++);
+	close_all_fds2();
 	rl_clear_history();
 	free_arena(env->arena);
 	exit(g_exit_status);
