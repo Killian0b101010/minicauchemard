@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 20:59:59 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:46:34 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ int	process_input_line(char *input, t_env *env)
 			return (1);
 	}
 	process_token_expansion(tokens, t2.token_count, env);
+	if (preprocess_heredocs(env, tokens, t2.token_count) == -1)
+		return (0);
 	blocks = split_into_blocks(env->arena, tokens, t2, &block_count);
 	process_commands(blocks, env, block_count, i);
 	return (1);

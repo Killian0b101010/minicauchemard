@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/02 18:04:02 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:58:39 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ int	fill_block(t_arena *arena, t_cmd_block *block, t_token *tokens)
 	int	k;
 	int	count;
 
-	count = block->split_blocks_i - block->split_blocks_start;
-	block->args = build_cmd_args(arena, &tokens[block->split_blocks_start],
-			count);
+	count = block->split_blocks_i - block->split_start;
+	block->args = build_cmd_args(arena, &tokens[block->split_start], count);
 	block->tokens = arena_alloc(arena, (count) * sizeof(t_token));
 	if (!block->args || !block->tokens)
 		return (0);
@@ -45,9 +44,10 @@ int	fill_block(t_arena *arena, t_cmd_block *block, t_token *tokens)
 	while (++k < count)
 	{
 		block->tokens[k].value = ft_strdup_arena(arena,
-				tokens[block->split_blocks_start + k].value);
-		block->tokens[k].type = tokens[block->split_blocks_start + k].type;
-		block->tokens[k].quoted = tokens[block->split_blocks_start + k].quoted;
+				tokens[block->split_start + k].value);
+		block->tokens[k].type = tokens[block->split_start + k].type;
+		block->tokens[k].quoted = tokens[block->split_start + k].quoted;
+		block->tokens[k].heredoc_fd = tokens[block->split_start + k].heredoc_fd;
 	}
 	block->t2.token_count = count;
 	return (1);
@@ -83,7 +83,7 @@ t_cmd_block	*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 	if (!blocks)
 		return (NULL);
 	t((i = 0, j = 0, 0));
-	blocks[j].split_blocks_start = 0;
+	blocks[j].split_start = 0;
 	while (i <= t2.token_count)
 	{
 		if (i == t2.token_count || tokens[i].type == PIPE)
@@ -92,7 +92,7 @@ t_cmd_block	*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 			if (!fill_block(arena, &blocks[j], tokens))
 				return (NULL);
 			if (i < t2.token_count)
-				t((j++, blocks[j].split_blocks_start = i + 1, 0));
+				t((j++, blocks[j].split_start = i + 1, 0));
 		}
 		i++;
 	}

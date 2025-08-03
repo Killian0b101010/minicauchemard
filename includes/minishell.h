@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 21:12:26 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:58:37 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_token
 	int				quoted;
 	char			*full_path;
 	char			*cmd_path;
+	int				heredoc_fd;
 }					t_token;
 
 typedef struct t2
@@ -98,7 +99,7 @@ typedef struct s_cmd_block
 	int				flag_access;
 	int				is_here_doc;
 	int				i;
-	int				split_blocks_start;
+	int				split_start;
 	int				split_blocks_i;
 	t_token			*tokens;
 	t_t2			t2;
@@ -259,13 +260,13 @@ int					expand_tokens(t_arena *arena, t_token **tokens,
 int					handle_input_redirection(t_token *tokens, int i);
 int					handle_output_redirection(t_token *tokens, int i);
 int					handle_append_redirection(t_token *tokens, int i);
-int					handle_heredoc_redirection(t_env *env, t_arena *arena,
-						t_token *tokens, int i);
+int					handle_heredoc_redirection(t_token *tokens, int i);
 
 // redirections.c
 int					setup_heredoc(t_env *env, t_arena *arena, char *delimiter);
-int					handle_redirections(t_env *env, t_arena *arena,
-						t_token *tokens, int token_count);
+int					handle_redirections(t_token *tokens, int token_count);
+int					preprocess_heredocs(t_env *env, t_token *tokens,
+						int token_count);
 void				restore_fds(int saved_stdin, int saved_stdout);
 
 // ===== src/signal/ =====

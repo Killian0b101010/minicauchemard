@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 20:18:22 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:57:32 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,7 @@ int	setup_heredoc(t_env *env, t_arena *arena, char *delimiter)
  *
  * Return : 0 en cas de succès, -1 si erreur
  */
-int	handle_redirections(t_env *env, t_arena *arena, t_token *tokens,
-		int token_count)
+int	handle_redirections(t_token *tokens, int token_count)
 {
 	int	i;
 
@@ -134,8 +133,48 @@ int	handle_redirections(t_env *env, t_arena *arena, t_token *tokens,
 				return (-1);
 		}
 		else if (tokens[i].type == HEREDOC && i + 1 < token_count)
-			if (handle_heredoc_redirection(env, arena, tokens, i) == -1)
+			if (handle_heredoc_redirection(tokens, i) == -1)
 				return (-1);
+	}
+	return (0);
+}
+
+/**
+ * Prétraite tous les heredocs dans les tokens avant la division en blocs.
+ *
+ * Cette fonction parcourt tous les tokens pour traiter les heredocs
+ * en une seule fois, évitant les conflits d'affichage entre blocs:
+ * - Traite tous les heredocs avant l'exécution des commandes
+ * - Stocke les descripteurs de fichier pour utilisation ultérieure
+ *
+ * - Évite les appels multiples à readline()
+ * qui causent des problèmes d'affichage
+ *
+ * Parameters:
+ * - env - Environnement contenant l'arena et les variables
+ * - tokens - Tableau de tous les tokens de la commande
+ * - token_count - Nombre total de tokens
+ *
+ * Return: 0 en cas de succès, -1 si erreur
+ */
+int	preprocess_heredocs(t_env *env, t_token *tokens, int token_count)
+{
+	int	i;
+	int	fd;
+
+	i = 0;
+	while (i < token_count)
+	{
+		if (tokens[i].type == HEREDOC && i + 1 < token_count)
+		{
+			fd = setup_heredoc(env, env->arena, tokens[i + 1].value);
+			if (fd == -1)
+				return (-1);
+			tokens[i].heredoc_fd = fd;
+		}
+		else
+			tokens[i].heredoc_fd = -1;
+		i++;
 	}
 	return (0);
 }

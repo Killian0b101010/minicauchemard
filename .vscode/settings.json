@@ -9,7 +9,8 @@
         "unistd.h": "c",
         "stdlib.h": "c",
         "history.h": "c",
-        "pipex.h": "c"
+        "pipex.h": "c",
+        "stat.h": "c"
     },
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#0055A4",         // Bleu

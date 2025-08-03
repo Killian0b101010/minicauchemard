@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/03 20:27:37 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:48:36 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,7 @@ void	child_redirection(int i, t_cmd_block *blocks, t_env *env)
 		t((close2(blocks->fd->pipefd[j][0]), close2(blocks->fd->pipefd[j++][1]),
 				0));
 	blocks[i].is_here_doc = 0;
-	if (handle_redirections(env, env->arena, blocks[i].tokens,
-			blocks[i].t2.token_count) == -1)
+	if (handle_redirections(blocks[i].tokens, blocks[i].t2.token_count) == -1)
 		t((blocks[i].is_here_doc = 1, exit(1), 0));
 	if (blocks[i].args[0] && blocks[i].args[0][0])
 		execute_cmd2(&blocks[i], env);
