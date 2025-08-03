@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/02 22:40:01 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:36:31 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,6 @@ void	close_all_fds(t_fd *fd)
 		close2(fd->pipefd[j][0]);
 		close2(fd->pipefd[j++][1]);
 	}
-	if (fd->fd_in > 0)
-		close2(fd->fd_in);
-	if (fd->fd_out > 0)
-		close2(fd->fd_out);
 }
 
 void	flagaccesscheck(t_cmd_block *blocks)
@@ -126,19 +122,8 @@ void	execute_cmd2(t_cmd_block *blocks, t_env *env)
 	if (!blocks->path)
 		exit((if_nopath(blocks->args[0]), 127));
 	t((blocks->i = 0, blocks->flag_access = 0, blocks->is_here_doc = 0, 0));
-	if (is_builtin(blocks->tokens[0].value))
-	{
-		if (ft_strcmp(blocks->tokens[0].value, "export") == 0
-			|| ft_strcmp(blocks->tokens[0].value, "unset") == 0
-			|| ft_strcmp(blocks->tokens[0].value, "cd") == 0)
-			exit(0);
-		exit(execute_builtin_block(blocks, env));
-	}
-	else
-	{
-		while (blocks->path[blocks->i])
-			exec_loop_one(blocks, env);
-	}
+	while (blocks->path[blocks->i])
+		exec_loop_one(blocks, env);
 	flagaccesscheck(blocks);
 	exit(0);
 }
@@ -174,14 +159,14 @@ void	child_redirection(int i, t_cmd_block *blocks, t_env *env)
 pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 {
 	pid_t	pid;
-	int		j;
 
 	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value)
 		&& blocks->fd->cmd_count == 1)
 	{
 		if (ft_strcmp(blocks[i].tokens[0].value, "export") == 0
 			|| ft_strcmp(blocks[i].tokens[0].value, "unset") == 0
-			|| ft_strcmp(blocks[i].tokens[0].value, "cd") == 0)
+			|| ft_strcmp(blocks[i].tokens[0].value, "cd") == 0
+			|| ft_strcmp(blocks->tokens[0].value, "exit") == 0)
 		{
 			execute_builtin_block(&blocks[i], env);
 			pid = fork();
@@ -190,7 +175,7 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 			return (pid);
 		}
 	}
-	t((j = 0, pid = fork(), 0));
+	t((pid = fork(), 0));
 	if (pid == 0)
 		child_redirection(i, blocks, env);
 	return (pid);
@@ -208,7 +193,7 @@ void	close_unused_pipes(t_fd *fd, int i)
 void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
 		int i)
 {
-		int status;
+	int	status;
 
 	blocks->fd = arena_alloc(env->arena, sizeof(t_fd));
 	if (!blocks->fd)
