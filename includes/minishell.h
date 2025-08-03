@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 16:25:43 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 17:51:21 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,5 +224,4 @@ int					get_shlvl_index(char **envp);
 int					*is_active_shell(int *value);
 void				if_negative_fd(int i, t_fd *fd);
 void				close_files(t_fd *fd);
-
 #endif

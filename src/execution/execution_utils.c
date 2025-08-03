@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 17:36:31 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 18:31:48 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,10 +169,7 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 			|| ft_strcmp(blocks->tokens[0].value, "exit") == 0)
 		{
 			execute_builtin_block(&blocks[i], env);
-			pid = fork();
-			if (pid == 0)
-				exit(0);
-			return (pid);
+			return (-1);
 		}
 	}
 	t((pid = fork(), 0));
@@ -210,6 +207,8 @@ void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
 	i = 0;
 	while (i < block_count)
 	{
+		if (blocks->fd->pid[i] == -1)
+			return ;
 		waitpid(blocks->fd->pid[i], &status, 0);
 		if (WIFEXITED(status))
 			g_exit_status = WEXITSTATUS(status);
