@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 01:58:21 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:05:23 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ int	expand_tokens(t_arena *arena, t_token **tokens, int *capacity)
 	int		i;
 
 	old_capacity = *capacity;
+	i = -1;
 	*capacity *= 2;
 	new_tokens = arena_alloc(arena, sizeof(t_token) * (*capacity));
 	if (!new_tokens)
 		return (0);
-	for (i = 0; i < old_capacity; i++)
+	while (++i < old_capacity)
 		new_tokens[i] = (*tokens)[i];
 	*tokens = new_tokens;
 	return (1);

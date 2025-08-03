@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 03:20:54 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/02 19:32:41 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # ifndef AREANA_DEFAULT_CAPACITY
 #  define ARENA_DEFAULT_CAPACITY 32
 # endif
+
 typedef struct arena_collector
 {
 	void			**arena_memory;
@@ -44,7 +45,6 @@ typedef struct t_env
 	char			*new_path;
 	char			*pwd;
 	t_arena			*arena;
-	;
 }					t_env;
 
 typedef enum e_token_type
@@ -83,6 +83,17 @@ typedef struct t2
 	int				color;
 }					t_t2;
 
+typedef struct t_fd
+{
+	int				fd_in;
+	int				fd_out;
+	int				**pipefd;
+	int				cmd_count;
+	int				*pid;
+	int				cmd_start;
+
+}					t_fd;
+
 typedef struct s_cmd_block
 {
 	char			**args;
@@ -94,9 +105,21 @@ typedef struct s_cmd_block
 	int				flag_access;
 	int				is_here_doc;
 	int				i;
+	int				split_blocks_start;
+	int				split_blocks_i;
 	t_token			*tokens;
 	t_t2			t2;
+	t_fd			*fd;
 }					t_cmd_block;
+
+typedef struct s_prompt_input
+{
+	char			cwd[10000];
+	char			*raw_prompt;
+	char			*styled_prompt;
+	char			*input;
+	char			*term;
+}					t_prompt;
 
 static inline void	put_color_char(char c, int r, int g, int b)
 {
@@ -131,7 +154,7 @@ void				free_cmd_blocks(t_cmd_block *cmds, int block_count);
 char				**build_cmd_args(t_arena *arena, t_token *tokens,
 						int count);
 int					fill_block(t_arena *arena, t_cmd_block *block,
-						t_token *tokens, int start, int end);
+						t_token *tokens);
 t_cmd_block			*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 						int *block_count);
 void				print_cmd_blocks(t_cmd_block *blocks, int block_count);
@@ -151,12 +174,14 @@ void				process_token_expansion(t_token *tokens, int token_count,
 void				restore_fds(int saved_stdin, int saved_stdout);
 int					execute_with_redirections(t_cmd_block *block, t_env *env);
 int					execute_builtin_block(t_cmd_block *block, t_env *env);
+int					handle_redirections(t_env *env, t_arena *arena,
+						t_token *tokens, int token_count);
 int					handle_input_redirection(t_token *tokens, int i);
 int					handle_output_redirection(t_token *tokens, int i);
 int					handle_append_redirection(t_token *tokens, int i);
-int					handle_heredoc_redirection(t_arena *arena, t_token *tokens,
-						int i);
-int					setup_heredoc(t_arena *arena, char *delimiter);
+int					handle_heredoc_redirection(t_env *env, t_arena *arena,
+						t_token *tokens, int i);
+int					setup_heredoc(t_env *env, t_arena *arena, char *delimiter);
 char				*process_expansion_loop(char *str, t_env *env);
 int					expand_variable_at_position(t_arena *arena, char *str,
 						int i);
@@ -194,6 +219,10 @@ void				*ft_realloc_arena(void *ptr, size_t old_size,
 						size_t new_size);
 void				execute_multiple_cmd(t_cmd_block *block, t_env *env);
 void				if_nopath(char *str);
+int					init_bc_no_env(t_env *env);
+int					get_shlvl_index(char **envp);
+int					*is_active_shell(int *value);
+void				if_negative_fd(int i, t_fd *fd);
+void				close_files(t_fd *fd);
 
-// t_cmd_block			*heredoc_setter(t_cmd_block *blocks);
 #endif

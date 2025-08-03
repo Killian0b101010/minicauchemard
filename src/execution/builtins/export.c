@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:51:49 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 22:23:41 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/02 21:29:38 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	add_new_var(t_env *env, char *var)
 	count = 0;
 	while (env->envp[count])
 		count++;
-	new_envp = arena_alloc(env -> arena, (count + 2) * sizeof(char *));
+	new_envp = arena_alloc(env->arena, (count + 2) * sizeof(char *));
 	if (!new_envp)
 		return (1);
 	i = 0;
@@ -84,7 +84,7 @@ static int	add_new_var(t_env *env, char *var)
 		new_envp[i] = env->envp[i];
 		i++;
 	}
-	new_envp[count] = ft_strdup_arena(env-> arena,var);
+	new_envp[count] = ft_strdup_arena(env->arena, var);
 	new_envp[count + 1] = NULL;
 	env->envp = new_envp;
 	return (0);
@@ -110,11 +110,11 @@ static int	process_export_variable(t_env *env, char *var_value)
 {
 	int	var_index;
 
-	if (ft_strchr(var_value, '=') == NULL)
+	if (var_value == NULL || ft_strchr(var_value, '=') == NULL)
 		return (0);
 	var_index = find_var_index(env, var_value);
 	if (var_index >= 0)
-		env->envp[var_index] = ft_strdup_arena(env->arena,var_value);
+		env->envp[var_index] = ft_strdup_arena(env->arena, var_value);
 	else
 	{
 		if (add_new_var(env, var_value) != 0)
@@ -149,6 +149,11 @@ int	export_builtin(t_env *env, t_token *tokens, int token_count)
 	i = 1;
 	while (i < token_count)
 	{
+		if (ft_strlen(tokens[i].value) > 500)
+		{
+			write(2, "export: variable too long (max 500 characters)\n", 48);
+			return (1);
+		}
 		if (process_export_variable(env, tokens[i].value) != 0)
 			return (1);
 		i++;

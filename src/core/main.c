@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/31 03:26:47 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/02 21:35:53 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+#include <sys/stat.h>
+#include <unistd.h>
 
 int			g_exit_status = 0;
 
@@ -50,35 +52,35 @@ static void	initialize_shell(t_env *env, char **envp)
  */
 static void	shell_main_loop(t_env *env)
 {
-	char	*input;
+	char	**input;
+	int		i;
 
 	while (1)
 	{
-		input = get_prompt_and_input();
+		i = -1;
+		input = ft_split_arena(env->arena, get_prompt_and_input(), '\n');
 		if (!input)
-			break ;
-		if (input)
-			add_history(input);
-		if (!process_input_line(input, env))
+			exit2(env);
+		while (input[++i])
 		{
-			continue ;
+			if (input[i])
+				add_history(input[i]);
+			if (!process_input_line(input[i], env))
+			{
+				continue ;
+			}
 		}
 	}
 }
 
-// t_cmd_block	*heredoc_setter(t_cmd_block *blocks)
-// {
-// 	static t_cmd_block	*block = NULL;
+int	*is_active_shell(int *bool)
+{
+	static int	isactive = 0;
 
-// 	if (!blocks)
-// 		return (block);
-// 	else
-// 	{
-// 		block = blocks;
-// 		return (block);
-// 	}
-// 	return (NULL);
-// }
+	if (bool)
+		isactive = *bool;
+	return (&isactive);
+}
 
 /**
  * Fonction principale qui initialise et exécute le minishell.
@@ -92,6 +94,7 @@ static void	shell_main_loop(t_env *env)
  *
  * Return : 0 en cas de succès
  */
+
 int	main(int ac, char **av, char **envp)
 {
 	t_env	env;
@@ -99,7 +102,14 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	arena = arena_init(1);
+	if (isatty(STDIN_FILENO) == 0)
+	{
+		write(2,
+			"\e[1;38;2;mDose sur tes tests stp et suis plutot la correction\n",
+			63);
+		return (1);
+	}
+	arena = arena_init(42);
 	if (!arena)
 		return (1);
 	env.arena = arena;

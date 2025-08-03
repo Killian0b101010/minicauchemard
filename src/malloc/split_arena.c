@@ -1,5 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_arena.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/01 19:07:04 by dnahon            #+#    #+#             */
+/*   Updated: 2025/08/01 19:08:04 by dnahon           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	*ft_strdup_arena(t_arena *arena, char const *src)
+{
+	char	*dest;
+
+	dest = NULL;
+	dest = arena_alloc(arena, ft_strlen(src) + 1);
+	if (!dest)
+		return (NULL);
+	return (ft_strcpy(dest, src));
+}
 
 static int	count_words(char const *s, char c)
 {
@@ -35,7 +57,6 @@ static char	*malloc_word(t_arena *arena, const char *s, char c)
 	return (word);
 }
 
-
 static char	**ft_minisplit(t_arena *arena, char const *s, char c)
 {
 	char	**tab;
@@ -55,8 +76,8 @@ static char	**ft_minisplit(t_arena *arena, char const *s, char c)
 		{
 			tab[j] = malloc_word(arena, &s[i], c);
 			if (!tab[j])
-				return(NULL);
-            j++;
+				return (NULL);
+			j++;
 		}
 		while (s[i] && s[i] != c)
 			i++;
@@ -67,7 +88,7 @@ static char	**ft_minisplit(t_arena *arena, char const *s, char c)
 
 char	**ft_split_arena(t_arena *arena, char const *s, char c)
 {
-	char **tab;
+	char	**tab;
 
 	if (!s)
 		return (NULL);

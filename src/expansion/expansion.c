@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:50:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 03:34:40 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:01:33 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ char	*expand_exit_status_in_string(t_arena *arena, char *str)
 
 	if (!str)
 		return (NULL);
-	t((result = ft_strdup_arena(arena, ""), exit_str = ft_itoa_arena(arena,g_exit_status),
-			i = 0, len = ft_strlen(str), 0));
+	t((result = ft_strdup_arena(arena, ""), exit_str = ft_itoa_arena(arena,
+				g_exit_status), i = 0, len = ft_strlen(str), 0));
 	while (i < len)
 	{
 		if (str[i] == '$' && i + 1 < len && str[i + 1] == '?')

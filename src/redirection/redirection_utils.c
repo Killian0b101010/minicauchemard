@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirection_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 02:24:58 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/01 19:05:35 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	handle_input_redirection(t_token *tokens, int i)
 		return (-1);
 	}
 	dup2(fd, STDIN_FILENO);
-	close(fd);
+	close2(fd);
 	return (0);
 }
 
@@ -73,7 +73,7 @@ int	handle_output_redirection(t_token *tokens, int i)
 		return (-1);
 	}
 	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	close2(fd);
 	return (0);
 }
 
@@ -105,7 +105,7 @@ int	handle_append_redirection(t_token *tokens, int i)
 		return (-1);
 	}
 	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	close2(fd);
 	return (0);
 }
 
@@ -127,14 +127,15 @@ int	handle_append_redirection(t_token *tokens, int i)
  *
  * Return : 0 en cas de succès, -1 si erreur
  */
-int	handle_heredoc_redirection(t_arena *arena, t_token *tokens, int i)
+int	handle_heredoc_redirection(t_env *env, t_arena *arena, t_token *tokens,
+		int i)
 {
 	int	fd;
 
-	fd = setup_heredoc(arena,tokens[i + 1].value);
+	fd = setup_heredoc(env, arena, tokens[i + 1].value);
 	if (fd == -1)
 		return (-1);
 	dup2(fd, STDIN_FILENO);
-	close(fd);
+	close2(fd);
 	return (0);
 }

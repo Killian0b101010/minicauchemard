@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/07/31 03:27:44 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/02 22:37:51 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,9 @@
 
 void	if_nopath(char *str)
 {
-	write(1, str, ft_strlen(str));
-	write(1, ": No such file or directory\n", 29);
+	write(2, str, ft_strlen(str));
+	write(2, ": No such file or directory\n", 29);
+	g_exit_status = 127;
 }
 
 void	execute_cmd_one(t_cmd_block *block, t_env *env)
@@ -110,14 +111,12 @@ void	execute_cmd_one(t_cmd_block *block, t_env *env)
 	if (!block->args[0] && block->is_here_doc == 0)
 		return ;
 	if ((!block->args || !block->args[0]))
-		return (write(2, "Error\n", 6), (void)0);
-	block->path = get_path_arena(env->arena, env->envp);
+		return (write(2, "Error\n", 7), (void)0);
 	if (!block->args || !block->args[0])
-		return (write(2, "testt\n", 7), (void)0);
-	block->path = get_path_arena(env->arena,env->envp);
+		return (write(2, "Error\n", 7), (void)0);
+	block->path = get_path_arena(env->arena, env->envp);
 	if (!block->path)
 		return (if_nopath(block->args[0]), (void)0);
-		exit((write(2, "test\n", 6), -1));
 	block->i = 0;
 	block->flag_access = 0;
 	block->is_here_doc = 0;
@@ -164,20 +163,17 @@ int	is_executable_file(const char *path)
 
 	if (stat(path, &s) == 0)
 	{
-		// C'est un dossier ? => interdit !
 		if (S_ISDIR(s.st_mode))
-			return (2); // Is a directory
-		// C'est un exécutable ?
+			return (2);
 		if ((s.st_mode & S_IXUSR) && !S_ISDIR(s.st_mode))
-			return (1); // C'est exécutable
+			return (1);
 	}
-	return (0); // Pas trouvé ou pas exécutable
+	return (0);
 }
 
 void	fork_loop_one(t_cmd_block *block, t_env *env)
 {
-	pid_t pid;
-	int stat_result;
+	int	stat_result;
 
 	stat_result = is_executable_file(block->full_cmd);
 	if (stat_result == 2)
@@ -188,16 +184,11 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 		write(2, "minicauchemar: ", 16);
 		write(2, block->args[0], ft_strlen(block->args[0]));
 		write(2, ": Is a directory\n", 17);
-		return ;
+		exit(g_exit_status);
 	}
 	if (stat_result == 1)
 	{
-		pid = fork();
-		if (pid == 0)
-		{
-			execve(block->full_cmd, block->args, env->envp);
-		}
-		waitpid(pid, NULL, 0);
-		ft_free(block->full_cmd);
+		g_exit_status = 0;
+		execve(block->full_cmd, block->args, env->envp);
 	}
 }
