@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:51:49 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 19:01:27 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/02 21:29:38 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,11 @@ int	export_builtin(t_env *env, t_token *tokens, int token_count)
 	i = 1;
 	while (i < token_count)
 	{
+		if (ft_strlen(tokens[i].value) > 500)
+		{
+			write(2, "export: variable too long (max 500 characters)\n", 48);
+			return (1);
+		}
 		if (process_export_variable(env, tokens[i].value) != 0)
 			return (1);
 		i++;

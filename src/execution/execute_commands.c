@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/01 21:09:05 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/02 22:37:51 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,8 +173,7 @@ int	is_executable_file(const char *path)
 
 void	fork_loop_one(t_cmd_block *block, t_env *env)
 {
-	pid_t	pid;
-	int		stat_result;
+	int	stat_result;
 
 	stat_result = is_executable_file(block->full_cmd);
 	if (stat_result == 2)
@@ -185,16 +184,11 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 		write(2, "minicauchemar: ", 16);
 		write(2, block->args[0], ft_strlen(block->args[0]));
 		write(2, ": Is a directory\n", 17);
-		return ;
+		exit(g_exit_status);
 	}
 	if (stat_result == 1)
 	{
 		g_exit_status = 0;
-		pid = fork();
-		if (pid == 0)
-		{
-			execve(block->full_cmd, block->args, env->envp);
-		}
-		waitpid(pid, NULL, 0);
+		execve(block->full_cmd, block->args, env->envp);
 	}
 }

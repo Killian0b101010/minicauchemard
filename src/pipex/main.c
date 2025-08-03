@@ -6,11 +6,11 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 15:53:10 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/29 17:58:06 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/02 17:04:06 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../../includes/pipex.h"
 
 void	t(int a)
 {
