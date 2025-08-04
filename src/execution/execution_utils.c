@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution_utils2.c                                 :+:      :+:    :+:   */
+/*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 18:46:10 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 20:33:15 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 13:52:09 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	verify_input(char *input, t_t2 t2)
+int	verify_input(char *input, int *single_quotes, int *double_quotes)
 {
 	if (is_empty_input(input))
 		return (0);
-	if (!count_quotes(input, &t2.single_quotes, &t2.double_quotes))
+	if (!count_quotes(input, single_quotes, double_quotes))
 		return (0);
 	return (1);
 }

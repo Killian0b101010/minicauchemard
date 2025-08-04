@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 23:53:27 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 14:01:41 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,6 @@ void	setup_interactive_signals(void)
  */
 void	setup_child_signals(void)
 {
-	signal(SIGINT, SIG_DFL);
+	signal(SIGINT, ft_handler);
 	signal(SIGQUIT, SIG_DFL);
 }

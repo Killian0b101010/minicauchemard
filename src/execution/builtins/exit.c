@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 19:02:25 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 15:08:27 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,49 @@ void	exit2(t_env *env)
 	rl_clear_history();
 	free_arena(env->arena);
 	exit(g_exit_status);
+}
+
+int	ft_isstring(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '+' || str[i] == '-')
+		i++;
+	while (str[i])
+	{
+		if (ft_isdigit(str[i]) == 1)
+			i++;
+		else
+			return (1);
+	}
+	return (0);
+}
+
+void	exit_builtin(t_cmd_block *block, t_env *env)
+{
+	if (block->t2.token_count >= 2)
+	{
+		if (ft_isstring(block->tokens[1].value) == 1)
+		{
+			write(2, "minicauchemar: exit: ", 22);
+			write(2, block->tokens[1].value, ft_strlen(block->tokens[1].value));
+			write(2, ": numeric argument required\n", 29);
+			g_exit_status = 2;
+			exit2(env);
+		}
+		else if (ft_isstring(block->tokens[1].value) == 0)
+		{
+			if (block->t2.token_count == 2)
+			{
+				g_exit_status = ft_atoi(block->tokens[1].value);
+				ft_printf("exit\n");
+				exit2(env);
+			}
+			else
+				write(2, "exit\nminicauchemar: exit: too many arguments\n", 46);
+		}
+	}
+	else
+		exit2(env);
 }

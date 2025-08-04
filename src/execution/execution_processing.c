@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 21:46:34 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 13:52:29 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	process_input_line(char *input, t_env *env)
 	int			block_count;
 
 	i = -1;
-	if (!verify_input(input, t2))
+	if (!verify_input(input, &t2.single_quotes, &t2.double_quotes))
 		return (0);
 	input = expand_exit_status_in_string(env->arena, input);
 	tokens = tokenizer(env->arena, input, &t2.token_count);

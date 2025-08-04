@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/03 21:58:37 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 14:31:24 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,7 @@
 #  define ARENA_DEFAULT_CAPACITY 32
 # endif
 
-typedef struct arena_collector
-{
-	void			**arena_memory;
-	size_t			capacity;
-	size_t			actual_size;
-	size_t			resize;
-	size_t			size;
-}					t_arena;
-
 extern int			g_exit_status;
-typedef struct t_env
-{
-	char			**envp;
-	char			*home_path;
-	char			*old_path;
-	char			*new_path;
-	char			*pwd;
-	t_arena			*arena;
-}					t_env;
 
 typedef enum e_token_type
 {
@@ -57,6 +39,14 @@ typedef enum e_token_type
 	HEREDOC,
 	SYNTAX_ERROR
 }					t_token_type;
+typedef struct arena_collector
+{
+	void			**arena_memory;
+	size_t			capacity;
+	size_t			actual_size;
+	size_t			resize;
+	size_t			size;
+}					t_arena;
 
 typedef struct s_token
 {
@@ -68,6 +58,16 @@ typedef struct s_token
 	int				heredoc_fd;
 }					t_token;
 
+typedef struct t_env
+{
+	char			**envp;
+	char			*home_path;
+	char			*old_path;
+	char			*new_path;
+	char			*pwd;
+	t_arena			*arena;
+	t_token			*tokens;
+}					t_env;
 typedef struct t2
 {
 	int				index;
@@ -101,6 +101,7 @@ typedef struct s_cmd_block
 	int				i;
 	int				split_start;
 	int				split_blocks_i;
+	t_env			*env;
 	t_token			*tokens;
 	t_t2			t2;
 	t_fd			*fd;
@@ -165,7 +166,8 @@ int					is_executable_file(const char *path);
 void				if_nopath(char *str);
 
 // execution_utils.c
-int					verify_input(char *input, t_t2 t2);
+int					verify_input(char *input, int *single_quotes,
+						int *double_quotes);
 void				flagaccesscheck(t_cmd_block *blocks);
 void				directory_error(char *cmd);
 int					is_command_valid_for_exec(t_cmd_block *block, t_env *env);
@@ -190,6 +192,7 @@ int					execute_builtin_block(t_cmd_block *block, t_env *env);
 
 // builtins/exit.c
 void				exit2(t_env *env);
+void				exit_builtin(t_cmd_block *block, t_env *env);
 
 // builtins/export.c
 int					export_builtin(t_env *env, t_token *tokens,

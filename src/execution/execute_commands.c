@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/03 21:48:36 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 15:07:30 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,12 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 	int		cmd_valid;
 
 	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value)
-		&& blocks->fd->cmd_count == 1)
+		&& blocks->fd->cmd_count >= 1)
 	{
 		if (ft_strcmp(blocks[i].tokens[0].value, "export") == 0
 			|| ft_strcmp(blocks[i].tokens[0].value, "unset") == 0
 			|| ft_strcmp(blocks[i].tokens[0].value, "cd") == 0
-			|| ft_strcmp(blocks->tokens[0].value, "exit") == 0)
+			|| ft_strcmp(blocks[i].tokens[0].value, "exit") == 0)
 			return (execute_builtin_block(&blocks[i], env), -1);
 	}
 	if (blocks[i].args[0])
@@ -93,6 +93,7 @@ void	exec_loop_one(t_cmd_block *block, t_env *env)
 		if (access(block->full_cmd, X_OK) == 0)
 			return (block->flag_access = 1, fork_loop_one(block, env));
 	}
+	setup_interactive_signals();
 	block->i++;
 }
 
@@ -113,6 +114,7 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 	}
 	if (stat_result == 1)
 	{
+		setup_child_signals();
 		g_exit_status = 0;
 		execve(block->full_cmd, block->args, env->envp);
 	}
