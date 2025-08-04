@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/29 22:19:15 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/04 21:41:39 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	is_space(char c)
 
 void	print_syntax_error(char *value)
 {
-	write(2, "minishell: syntax error near unexpected token '", 48);
+	write(2, "minicauchemar: syntax error near unexpected token '", 52);
 	write(2, value, ft_strlen(value));
 	write(2, "'\n", 2);
 }

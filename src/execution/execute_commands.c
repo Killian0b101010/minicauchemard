@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/04 15:07:30 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 21:12:31 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 		if (cmd_valid <= 0)
 			return (-1);
 	}
-	t((pid = fork(), 0));
+	if (!blocks[i].args[0])
+		return (-1);
+	pid = fork();
 	if (pid == 0)
 		child_redirection(i, blocks, env);
 	return (pid);
@@ -116,6 +118,10 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 	{
 		setup_child_signals();
 		g_exit_status = 0;
-		execve(block->full_cmd, block->args, env->envp);
+		if (execve(block->full_cmd, block->args, env->envp) == -1)
+		{
+			free_arena(env->arena);
+			exit(g_exit_status);
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 14:31:24 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 20:57:35 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@
 # endif
 # ifndef ARENA_DEFAULT_CAPACITY
 #  define ARENA_DEFAULT_CAPACITY 32
+# endif
+
+# ifndef NEWLINE_SYNTAX
+#  define NEWLINE_SYNTAX "minicauchemar: syntax error near unexpected token `newline\'\n"
+# endif
+
+# ifndef PIPE_SYNTAX
+#  define PIPE_SYNTAX "minicauchemar: syntax error near unexpected token `|\'\n"
 # endif
 
 extern int			g_exit_status;

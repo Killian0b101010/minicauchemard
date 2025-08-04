@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 15:08:27 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 17:05:33 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,5 +90,5 @@ void	exit_builtin(t_cmd_block *block, t_env *env)
 		}
 	}
 	else
-		exit2(env);
+		t((write(1, "exit\n", 6), exit2(env), 0));
 }

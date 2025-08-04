@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 14:01:41 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 17:12:14 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,19 @@ void	ft_handler(int sig)
 	}
 }
 
+void	ft_handlerSIGQUIT(int sig)
+{
+	int	*active_shell;
+
+	(void)sig;
+	g_exit_status = 131;
+	active_shell = is_active_shell(NULL);
+	if (*active_shell == 2)
+	{
+		exit(g_exit_status);
+	}
+}
+
 /**
  * Configure les gestionnaires de signaux pour le mode interactif du shell.
  *
@@ -46,7 +59,7 @@ void	ft_handler(int sig)
 void	setup_interactive_signals(void)
 {
 	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, ft_handlerSIGQUIT);
 }
 
 /**
@@ -67,5 +80,5 @@ void	setup_interactive_signals(void)
 void	setup_child_signals(void)
 {
 	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, SIG_DFL);
+	signal(SIGQUIT, ft_handlerSIGQUIT);
 }
