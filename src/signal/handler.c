@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 17:12:14 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 00:39:36 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_handler(int sig)
 	}
 }
 
-void	ft_handlerSIGQUIT(int sig)
+void	ft_handler_sigquit(int sig)
 {
 	int	*active_shell;
 
@@ -59,7 +59,7 @@ void	ft_handlerSIGQUIT(int sig)
 void	setup_interactive_signals(void)
 {
 	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, ft_handlerSIGQUIT);
+	signal(SIGQUIT, ft_handler_sigquit);
 }
 
 /**
@@ -80,5 +80,5 @@ void	setup_interactive_signals(void)
 void	setup_child_signals(void)
 {
 	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, ft_handlerSIGQUIT);
+	signal(SIGQUIT, ft_handler_sigquit);
 }

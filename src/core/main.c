@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 17:07:38 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 00:50:13 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,9 +104,8 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (isatty(STDIN_FILENO) == 0)
 	{
-		write(2,
-			"\e[1;38;2;mSoit plus sympa sur tes tests stp et suis plutot la correction\n",
-			74);
+		write(2, "\e[1;38;2;mSoit plus sympa sur tes tests", 40);
+		write(2, "stp et suis plutot la correction\n", 34);
 		return (1);
 	}
 	arena = arena_init(42);

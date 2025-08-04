@@ -6,13 +6,13 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/04 21:12:31 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 00:57:13 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	child_redirection(int i, t_cmd_block *blocks, t_env *env)
+void	setup_child_pipes(int i, t_cmd_block *blocks)
 {
 	int	j;
 
@@ -30,26 +30,34 @@ void	child_redirection(int i, t_cmd_block *blocks, t_env *env)
 	while (j < blocks->fd->cmd_count - 1)
 		t((close2(blocks->fd->pipefd[j][0]), close2(blocks->fd->pipefd[j++][1]),
 				0));
+	close_inherited_fds();
+}
+
+void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
+{
+	int	cmd_valid;
+
+	setup_child_pipes(i, blocks);
 	blocks[i].is_here_doc = 0;
 	if (handle_redirections(blocks[i].tokens, blocks[i].t2.token_count) == -1)
 		t((blocks[i].is_here_doc = 1, exit(1), 0));
 	if (blocks[i].args[0] && blocks[i].args[0][0])
-		execute_cmd2(&blocks[i], env);
+	{
+		cmd_valid = is_command_valid_for_exec(&blocks[i], env);
+		if (cmd_valid > 0)
+			execute_cmd2(&blocks[i], env);
+		else
+			t((write(2, blocks[i].args[0], ft_strlen(blocks[i].args[0])),
+					write(2, ": command not found\n", 21),
+					free_arena(env->arena), exit(127), 0));
+	}
 	else
-		exit(0);
-}
-
-static void	command_not_found(t_cmd_block *blocks)
-{
-	write(2, blocks->args[0], ft_strlen(blocks->args[0]));
-	write(2, ": command not found\n", 21);
-	g_exit_status = 127;
+		t((free_arena(env->arena), exit(0), 0));
 }
 
 pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 {
 	pid_t	pid;
-	int		cmd_valid;
 
 	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value)
 		&& blocks->fd->cmd_count >= 1)
@@ -60,19 +68,9 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 			|| ft_strcmp(blocks[i].tokens[0].value, "exit") == 0)
 			return (execute_builtin_block(&blocks[i], env), -1);
 	}
-	if (blocks[i].args[0])
-	{
-		cmd_valid = is_command_valid_for_exec(&blocks[i], env);
-		if (cmd_valid == 0)
-			command_not_found(&blocks[i]);
-		if (cmd_valid <= 0)
-			return (-1);
-	}
-	if (!blocks[i].args[0])
-		return (-1);
 	pid = fork();
 	if (pid == 0)
-		child_redirection(i, blocks, env);
+		execute_child_command(i, blocks, env);
 	return (pid);
 }
 
@@ -83,7 +81,7 @@ void	exec_loop_one(t_cmd_block *block, t_env *env)
 		if (access(block->args[0], X_OK) == 0)
 		{
 			block->full_cmd = ft_strdup_arena(env->arena, block->args[0]);
-			return (block->flag_access = 1, fork_loop_one(block, env));
+			return (block->flag_access = 1, exec_if_executable(block, env));
 		}
 	}
 	else
@@ -93,13 +91,13 @@ void	exec_loop_one(t_cmd_block *block, t_env *env)
 		block->full_cmd = ft_strjoin_arena(env->arena, block->cmd_path,
 				block->args[0]);
 		if (access(block->full_cmd, X_OK) == 0)
-			return (block->flag_access = 1, fork_loop_one(block, env));
+			return (block->flag_access = 1, exec_if_executable(block, env));
 	}
 	setup_interactive_signals();
 	block->i++;
 }
 
-void	fork_loop_one(t_cmd_block *block, t_env *env)
+void	exec_if_executable(t_cmd_block *block, t_env *env)
 {
 	int	stat_result;
 
@@ -121,7 +119,7 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 		if (execve(block->full_cmd, block->args, env->envp) == -1)
 		{
 			free_arena(env->arena);
-			exit(g_exit_status);
+			exit(127);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 20:57:35 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 01:11:50 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@
 # endif
 
 # ifndef NEWLINE_SYNTAX
-#  define NEWLINE_SYNTAX "minicauchemar: syntax error near unexpected token `newline\'\n"
+#  define NEWLINE_ERR_PRE "minicauchemar: syntax error near unexpected token "
+#  define NEWLINE_ERR_SUF "`newline\'\n"
 # endif
 
 # ifndef PIPE_SYNTAX
@@ -153,10 +154,12 @@ int					get_shlvl_index(char **envp);
 
 // ===== src/execution/ =====
 // execute_commands.c
-void				child_redirection(int i, t_cmd_block *blocks, t_env *env);
+void				setup_child_pipes(int i, t_cmd_block *blocks);
+void				execute_child_command(int i, t_cmd_block *blocks,
+						t_env *env);
 pid_t				child_process2(int i, t_cmd_block *blocks, t_env *env);
 void				exec_loop_one(t_cmd_block *block, t_env *env);
-void				fork_loop_one(t_cmd_block *block, t_env *env);
+void				exec_if_executable(t_cmd_block *block, t_env *env);
 
 // execution_pipes.c
 void				init_pipes2(int i, t_fd *fd, t_arena *arena);
@@ -261,6 +264,10 @@ void				tokenize(char *str, t_t2 *t2);
 void				tokenize2(char *str, t_t2 *t2);
 t_token				*tokenizer(t_arena *arena, char *str, int *token_count);
 
+// syntax_parsing.c
+int					parse_syntax(t_token *tokens, int token_count);
+int					pipe_syntax(t_token *tokens, t_t2 t2);
+
 // tokenizer_utils.c
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
 int					expand_tokens(t_arena *arena, t_token **tokens,
@@ -300,7 +307,7 @@ int					fill_block(t_arena *arena, t_cmd_block *block,
 t_cmd_block			*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 						int *block_count);
 void				print_cmd_blocks(t_cmd_block *blocks, int block_count);
-void				free_cmd_blocks(t_cmd_block *cmds, int block_count);
+void				close_inherited_fds(void);
 
 // utils3.c
 char				**build_cmd_args(t_arena *arena, t_token *tokens,

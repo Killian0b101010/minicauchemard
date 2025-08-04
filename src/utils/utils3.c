@@ -6,24 +6,11 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 19:17:32 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 01:07:49 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// void	free_cmd_blocks(t_cmd_block *cmds, int block_count)
-// {
-// 	int	i;
-
-// 	i = -1;
-// 	while (++i < block_count)
-// 	{
-// 		ft_free_split(cmds[i].args);
-// 		ft_free(cmds[i].tokens);
-// 	}
-// 	ft_free(cmds);
-// }
 
 /**
 

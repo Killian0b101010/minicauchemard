@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 21:48:28 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 01:18:40 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,6 @@ void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
 	}
 }
 
-int	parse_syntax(t_cmd_block *blocks, int token_count)
-{
-	int				i;
-	t_token_type	type;
-
-	i = -1;
-	if (token_count >= 1)
-	{
-		while (++i < token_count)
-		{
-			type = blocks->tokens[i].type;
-			if (type == REDIRECT_IN)
-			{
-				if (i + 1 >= token_count || blocks->tokens[i + 1].type != WORD)
-					return (write(2, NEWLINE_SYNTAX, ft_strlen(NEWLINE_SYNTAX)),
-						1);
-			}
-			else if (type == REDIRECT_OUT || type == HEREDOC || type == APPEND)
-			{
-				if (i + 1 >= token_count || blocks->tokens[i + 1].type != WORD)
-					return (write(2, NEWLINE_SYNTAX, ft_strlen(NEWLINE_SYNTAX)),
-						1);
-			}
-		}
-	}
-	return (0);
-}
-
 int	process_input_line(char *input, t_env *env)
 {
 	t_token		*tokens;
@@ -106,17 +78,13 @@ int	process_input_line(char *input, t_env *env)
 		if (tokens)
 			return (1);
 	process_token_expansion(tokens, t2.token_count, env);
+	if (parse_syntax(tokens, t2.token_count) == 1)
+		return (1);
+	if (pipe_syntax(tokens, t2) == 1)
+		return (1);
 	if (preprocess_heredocs(env, tokens, t2.token_count) == -1)
 		return (0);
 	blocks = split_into_blocks(env->arena, tokens, t2, &block_count);
-	while (++i < block_count)
-	{
-		if (!blocks[i].args[0])
-			return (write(2, PIPE_SYNTAX, ft_strlen(PIPE_SYNTAX)), 1);
-	}
-	i = -1;
-	if (parse_syntax(blocks, t2.token_count) == 1)
-		return (1);
 	process_commands(blocks, env, block_count, i);
 	return (1);
 }
