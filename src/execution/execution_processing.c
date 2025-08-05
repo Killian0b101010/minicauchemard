@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_processing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 14:55:07 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:14:08 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void	execute_cmd2(t_cmd_block *blocks, t_env *env)
 void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
 		int i)
 {
-	int	status;
-
 	blocks->fd = arena_alloc(env->arena, sizeof(t_fd));
 	if (!blocks->fd)
 		return ;
@@ -51,12 +49,7 @@ void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
 	i = 0;
 	while (i < block_count)
 	{
-		if (blocks->fd->pid[i] != -1)
-		{
-			waitpid(blocks->fd->pid[i], &status, 0);
-			if (WIFEXITED(status))
-				g_exit_status = WEXITSTATUS(status);
-		}
+		process_commands_signal(blocks, i);
 		i++;
 	}
 }
