@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/05 13:42:58 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:19:25 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 {
 	pid_t	pid;
 
+	setup_child_signals();
 	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value)
 		&& blocks->fd->cmd_count >= 1)
 	{
@@ -78,7 +79,9 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 	}
 	pid = fork();
 	if (pid == 0)
+	{
 		execute_child_command(i, blocks, env);
+	}
 	return (pid);
 }
 
@@ -101,7 +104,6 @@ void	exec_loop_one(t_cmd_block *block, t_env *env)
 		if (access(block->full_cmd, X_OK) == 0)
 			return (block->flag_access = 1, exec_if_executable(block, env));
 	}
-	setup_interactive_signals();
 	block->i++;
 }
 
@@ -122,7 +124,6 @@ void	exec_if_executable(t_cmd_block *block, t_env *env)
 	}
 	if (stat_result == 1)
 	{
-		setup_child_signals();
 		g_exit_status = 0;
 		if (execve(block->full_cmd, block->args, env->envp) == -1)
 		{

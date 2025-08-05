@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 14:29:57 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:13:23 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -292,6 +292,7 @@ void				restore_fds(int saved_stdin, int saved_stdout);
 void				ft_handler(int sig);
 void				setup_interactive_signals(void);
 void				setup_child_signals(void);
+void				process_commands_signal(t_cmd_block *blocks, int i);
 
 // ===== src/utils/ =====
 // utils.c

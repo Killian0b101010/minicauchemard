@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handler.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 13:51:19 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 18:17:34 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,26 @@ void	ft_handler_sigquit(int sig)
 	{
 		write(1, "Quit (core dumped)\n", 19);
 		exit(g_exit_status);
+	}
+}
+
+void	process_commands_signal(t_cmd_block *blocks, int i)
+{
+	int	status;
+
+	if (blocks->fd->pid[i] != -1)
+	{
+		waitpid(blocks->fd->pid[i], &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+		{
+			g_exit_status = 128 + WTERMSIG(status);
+			if (WTERMSIG(status) == SIGQUIT)
+				write(2, "Quit (core dumped)\n", 19);
+			else if (WTERMSIG(status) == SIGINT)
+				write(2, "\n", 1);
+		}
 	}
 }
 
