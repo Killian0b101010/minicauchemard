@@ -6,39 +6,21 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/05 20:13:31 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 21:05:53 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	setup_child_pipes(int i, t_cmd_block *blocks)
+void	ifcmd_notvalid(int i, t_cmd_block *blocks, t_env *env)
 {
-	int	j;
-	int	has_heredoc;
-
-	t((j = 0, has_heredoc = has_heredoc_in_block(blocks[i].tokens,
-				blocks[i].t2.token_count), 0));
-	if (i == 0)
-	{
-		if (blocks->fd->cmd_count > 1)
-			dup2(blocks->fd->pipefd[0][1], 1);
-	}
-	else if (i == blocks->fd->cmd_count - 1)
-	{
-		if (!has_heredoc)
-			dup2(blocks->fd->pipefd[i - 1][0], 0);
-	}
+	if (!is_abs_path(blocks[i].args[0]) && !get_path_arena(env->arena,
+			env->envp))
+		t((if_nopath(blocks[i].args[0]), free_arena(env->arena), exit(127), 0));
 	else
-	{
-		if (!has_heredoc)
-			dup2(blocks->fd->pipefd[i - 1][0], 0);
-		dup2(blocks->fd->pipefd[i][1], 1);
-	}
-	while (j < blocks->fd->cmd_count - 1)
-		t((close2(blocks->fd->pipefd[j][0]), close2(blocks->fd->pipefd[j++][1]),
-				0));
-	close_inherited_fds();
+		t((write(2, blocks[i].args[0], ft_strlen(blocks[i].args[0])), write(2,
+					": command not found\n", 21), free_arena(env->arena),
+				exit(127), 0));
 }
 
 void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
@@ -58,16 +40,7 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 		if (cmd_valid > 0)
 			execute_cmd2(&blocks[i], env);
 		else
-		{
-			if (!is_abs_path(blocks[i].args[0]) && !get_path_arena(env->arena,
-					env->envp))
-				t((if_nopath(blocks[i].args[0]), free_arena(env->arena),
-						exit(127), 0));
-			else
-				t((write(2, blocks[i].args[0], ft_strlen(blocks[i].args[0])),
-						write(2, ": command not found\n", 21),
-						free_arena(env->arena), exit(127), 0));
-		}
+			ifcmd_notvalid(i, blocks, env);
 	}
 	else
 		t((free_arena(env->arena), exit(0), 0));
