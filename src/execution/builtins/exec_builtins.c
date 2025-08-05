@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:45:09 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 19:17:25 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/05 20:12:16 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	execute_builtin_block(t_cmd_block *block, t_env *env)
 		return (1);
 	if (ft_strcmp(block->tokens[0].value, "pwd") == 0)
 	{
-		dprintf(2, "ici\n");
 		result = pwd(&block->t2);
 	}
 	else if (ft_strcmp(block->tokens[0].value, "echo") == 0)
