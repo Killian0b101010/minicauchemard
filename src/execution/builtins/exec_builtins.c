@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:45:09 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 15:29:35 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 14:58:42 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	execute_builtin_block(t_cmd_block *block, t_env *env)
 	else if (ft_strcmp(block->tokens[0].value, "exit") == 0
 		&& block->t2.block_count == 1)
 		return (exit_builtin(block, env), 0);
-	result = 127;
+	else
+		result = 127;
 	return (g_exit_status = result, result);
 }
