@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 18:13:23 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/05 19:47:37 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,7 +179,7 @@ void				if_nopath(char *str);
 // execution_utils.c
 int					verify_input(char *input, int *single_quotes,
 						int *double_quotes);
-void				flagaccesscheck(t_cmd_block *blocks);
+void				flagaccesscheck(t_cmd_block *blocks, t_env *env);
 int					is_command_valid_for_exec(t_cmd_block *block, t_env *env);
 int					has_heredoc_in_block(t_token *tokens, int token_count);
 
@@ -189,6 +189,7 @@ int					is_abs_path(char *cmd);
 
 // builtins/cd.c
 int					cd_builtin(t_token *tokens, int token_count, t_env *env);
+
 
 // builtins/echo.c
 int					echo(t_token *tokens, int token_count);
@@ -200,6 +201,7 @@ void				ft_set_env(t_env *env, char **envp);
 // builtins/exec_builtins.c
 int					is_builtin(char *cmd);
 int					execute_builtin_block(t_cmd_block *block, t_env *env);
+
 
 // builtins/exit.c
 void				exit2(t_env *env);

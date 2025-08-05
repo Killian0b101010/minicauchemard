@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 18:46:10 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 14:29:07 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 19:47:50 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ int	verify_input(char *input, int *single_quotes, int *double_quotes)
 	return (1);
 }
 
-void	flagaccesscheck(t_cmd_block *blocks)
+void	flagaccesscheck(t_cmd_block *blocks, t_env *env)
 {
 	if (blocks->flag_access == 0)
 	{
-		write(2, blocks->args[0], ft_strlen(blocks->args[0]));
-		write(2, ": command not found\n", 21);
+		if_nopath(blocks->args[0]);
+		free_arena(env->arena);
 		exit(127);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 18:14:08 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/05 19:54:21 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	execute_cmd2(t_cmd_block *blocks, t_env *env)
 	t((blocks->i = 0, blocks->flag_access = 0, blocks->is_here_doc = 0, 0));
 	while (blocks->path[blocks->i])
 		exec_loop_one(blocks, env);
-	flagaccesscheck(blocks);
+	flagaccesscheck(blocks, env);
 	exit(0);
 }
 

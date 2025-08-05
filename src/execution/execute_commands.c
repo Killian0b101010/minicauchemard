@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/05 18:19:25 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/05 19:52:51 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,22 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 	int	cmd_valid;
 
 	blocks[i].is_here_doc = 0;
+	setup_child_pipes(i, blocks);
 	if (handle_redirections(blocks[i].tokens, blocks[i].t2.token_count) == -1)
 		t((blocks[i].is_here_doc = 1, free_arena(env->arena), exit(1), 0));
-	setup_child_pipes(i, blocks);
 	if (blocks[i].args[0] && blocks[i].args[0][0])
 	{
+		// if (is_builtin(blocks[i].args[0]))
+		// {
+		// 	execute_builtin_block(blocks, env);
+		// 	free_arena(env->arena);
+		// 	exit(g_exit_status);
+		// }
 		cmd_valid = is_command_valid_for_exec(&blocks[i], env);
 		if (cmd_valid > 0)
+		{
 			execute_cmd2(&blocks[i], env);
+		}
 		else
 			t((write(2, blocks[i].args[0], ft_strlen(blocks[i].args[0])),
 					write(2, ": command not found\n", 21),
@@ -79,9 +87,7 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 	}
 	pid = fork();
 	if (pid == 0)
-	{
 		execute_child_command(i, blocks, env);
-	}
 	return (pid);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 17:45:09 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 14:58:42 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 19:17:25 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ int	execute_builtin_block(t_cmd_block *block, t_env *env)
 	if (!block->tokens || block->t2.token_count == 0)
 		return (1);
 	if (ft_strcmp(block->tokens[0].value, "pwd") == 0)
+	{
+		dprintf(2, "ici\n");
 		result = pwd(&block->t2);
+	}
 	else if (ft_strcmp(block->tokens[0].value, "echo") == 0)
 		result = echo(block->tokens, block->t2.token_count);
 	else if (ft_strcmp(block->tokens[0].value, "env") == 0)
