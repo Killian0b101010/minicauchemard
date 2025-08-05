@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 21:41:39 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 14:29:52 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,44 +22,15 @@ int	is_space(char c)
 	return (c == ' ' || c == '\t' || c == '\n');
 }
 
-/**
- * Réalloue un bloc mémoire avec une nouvelle taille en copiant les données.
- *
- * Cette fonction personnalisée remplace realloc() en offrant un contrôle
- * explicite sur la taille des données à copier:
- * - Gère le cas où ptr est NULL (allocation simple)
- * - Libère la mémoire si new_size est 0
- * - Copie les données existantes dans le nouveau bloc
- * - Utilise la plus petite taille entre old_size et new_size
- *
- * Parameters :
- * - ptr - Pointeur vers le bloc mémoire à réallouer
- * - old_size - Taille actuelle du bloc mémoire
- * - new_size - Nouvelle taille désirée
- *
- * Return : Pointeur vers le nouveau bloc mémoire ou NULL si échec
- */
-// void	*realloc2(void *ptr, size_t old_size, size_t new_size)
-// {
-// 	void	*new_ptr;
-
-// 	if (!ptr)
-// 		return (ft_malloc(new_size));
-// 	if (new_size == 0)
-// 	{
-// 		ft_free(ptr);
-// 		return (NULL);
-// 	}
-// 	new_ptr = ft_malloc(new_size);
-// 	if (!new_ptr)
-// 		return (NULL);
-// 	if (old_size < new_size)
-// 		ft_memcpy(new_ptr, ptr, old_size);
-// 	else
-// 		ft_memcpy(new_ptr, ptr, new_size);
-// 	ft_free(ptr);
-// 	return (new_ptr);
-// }
+void	directory_error(char *cmd)
+{
+	if (cmd[0] == '\0')
+		return (write(2, "minicauchemar: Command '' not found\n", 37), (void)0);
+	write(2, "minicauchemar: ", 16);
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": Is a directory\n", 17);
+	g_exit_status = 127;
+}
 
 void	print_syntax_error(char *value)
 {

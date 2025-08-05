@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 01:11:50 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 14:29:57 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,8 @@ void				if_nopath(char *str);
 int					verify_input(char *input, int *single_quotes,
 						int *double_quotes);
 void				flagaccesscheck(t_cmd_block *blocks);
-void				directory_error(char *cmd);
 int					is_command_valid_for_exec(t_cmd_block *block, t_env *env);
+int					has_heredoc_in_block(t_token *tokens, int token_count);
 
 // path.c
 char				**get_path_arena(t_arena *arena, char **envp);
@@ -297,7 +297,7 @@ void				setup_child_signals(void);
 // utils.c
 void				t(int a);
 int					is_space(char c);
-void				*realloc2(void *ptr, size_t old_size, size_t new_size);
+void				directory_error(char *cmd);
 void				print_syntax_error(char *value);
 int					count_pipes(t_token *tokens, int token_count);
 

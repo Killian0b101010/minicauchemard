@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/05 00:57:13 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 13:42:58 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,26 @@
 void	setup_child_pipes(int i, t_cmd_block *blocks)
 {
 	int	j;
+	int	has_heredoc;
 
-	j = 0;
+	t((j = 0, has_heredoc = has_heredoc_in_block(blocks[i].tokens,
+				blocks[i].t2.token_count), 0));
 	if (i == 0)
 	{
 		if (blocks->fd->cmd_count > 1)
 			dup2(blocks->fd->pipefd[0][1], 1);
 	}
 	else if (i == blocks->fd->cmd_count - 1)
-		dup2(blocks->fd->pipefd[i - 1][0], 0);
+	{
+		if (!has_heredoc)
+			dup2(blocks->fd->pipefd[i - 1][0], 0);
+	}
 	else
-		t((dup2(blocks->fd->pipefd[i - 1][0], 0), dup2(blocks->fd->pipefd[i][1],
-					1), 0));
+	{
+		if (!has_heredoc)
+			dup2(blocks->fd->pipefd[i - 1][0], 0);
+		dup2(blocks->fd->pipefd[i][1], 1);
+	}
 	while (j < blocks->fd->cmd_count - 1)
 		t((close2(blocks->fd->pipefd[j][0]), close2(blocks->fd->pipefd[j++][1]),
 				0));
@@ -37,10 +45,10 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 {
 	int	cmd_valid;
 
-	setup_child_pipes(i, blocks);
 	blocks[i].is_here_doc = 0;
 	if (handle_redirections(blocks[i].tokens, blocks[i].t2.token_count) == -1)
-		t((blocks[i].is_here_doc = 1, exit(1), 0));
+		t((blocks[i].is_here_doc = 1, free_arena(env->arena), exit(1), 0));
+	setup_child_pipes(i, blocks);
 	if (blocks[i].args[0] && blocks[i].args[0][0])
 	{
 		cmd_valid = is_command_valid_for_exec(&blocks[i], env);

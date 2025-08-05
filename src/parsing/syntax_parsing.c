@@ -12,6 +12,12 @@
 
 #include "../../includes/minishell.h"
 
+static int	is_redir_type(t_token_type type)
+{
+	return (type == REDIRECT_IN || type == REDIRECT_OUT || type == HEREDOC
+		|| type == APPEND);
+}
+
 int	parse_syntax(t_token *tokens, int token_count)
 {
 	int				i;
@@ -23,12 +29,9 @@ int	parse_syntax(t_token *tokens, int token_count)
 		while (++i < token_count)
 		{
 			type = tokens[i].type;
-			if (type == REDIRECT_IN || type == REDIRECT_OUT || type == HEREDOC
-				|| type == APPEND)
+			if (is_redir_type(type))
 			{
-				if (i + 1 < token_count && (tokens[i + 1].type == REDIRECT_IN
-						|| tokens[i + 1].type == REDIRECT_OUT || tokens[i
-						+ 1].type == HEREDOC || tokens[i + 1].type == APPEND))
+				if (i + 1 < token_count && is_redir_type(tokens[i + 1].type))
 					return (print_syntax_error(tokens[i + 1].value), 1);
 				if (i + 1 >= token_count || tokens[i + 1].type != WORD)
 					return (write(2, NEWLINE_ERR_PRE NEWLINE_ERR_SUF,

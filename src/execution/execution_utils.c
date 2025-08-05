@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 18:46:10 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 13:52:09 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 14:29:07 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,6 @@ void	flagaccesscheck(t_cmd_block *blocks)
 		write(2, ": command not found\n", 21);
 		exit(127);
 	}
-}
-
-void	directory_error(char *cmd)
-{
-	if (cmd[0] == '\0')
-		return (write(2, "minicauchemar: Command '' not found\n", 37), (void)0);
-	write(2, "minicauchemar: ", 16);
-	write(2, cmd, ft_strlen(cmd));
-	write(2, ": Is a directory\n", 17);
-	g_exit_status = 127;
 }
 
 static int	check_command_in_path(char **path, t_cmd_block *block, t_env *env)
@@ -82,4 +72,18 @@ int	is_command_valid_for_exec(t_cmd_block *block, t_env *env)
 	if (!path)
 		return (0);
 	return (check_command_in_path(path, block, env));
+}
+
+int	has_heredoc_in_block(t_token *tokens, int token_count)
+{
+	int	i;
+
+	i = 0;
+	while (i < token_count)
+	{
+		if (tokens[i].type == HEREDOC)
+			return (1);
+		i++;
+	}
+	return (0);
 }
