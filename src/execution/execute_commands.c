@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/05 21:05:53 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 22:13:59 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,11 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 			ifcmd_notvalid(i, blocks, env);
 	}
 	else
-		t((free_arena(env->arena), exit(0), 0));
+	{
+		free_arena(env->arena);
+		write(1, "Command '' not found\n", 22);
+		exit(0);
+	}
 }
 
 pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
@@ -102,6 +106,7 @@ void	exec_if_executable(t_cmd_block *block, t_env *env)
 		write(2, "minicauchemar: ", 16);
 		write(2, block->args[0], ft_strlen(block->args[0]));
 		write(2, ": Is a directory\n", 17);
+		free_arena(env->arena);
 		exit(g_exit_status);
 	}
 	if (stat_result == 1)
