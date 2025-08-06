@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 18:34:56 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 18:51:52 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 
 # ifndef PIPE_SYNTAX
 #  define PIPE_SYNTAX "minicauchemar: syntax error near unexpected token `|\'\n"
+# endif
+
+# ifndef CMD_NOT_FOUND
+#  define CMD_NOT_FOUND "minicauchemar: Command '' not found\n"
 # endif
 
 extern int			g_exit_status;

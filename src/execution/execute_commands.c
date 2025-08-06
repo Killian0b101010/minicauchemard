@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/06 18:03:31 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 18:52:06 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,7 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 	else
 	{
 		if (blocks[i].is_here_doc == 0)
-			t((free_arena(env->arena), write(1,
-						"Minicauchemar: Command '' not found\n", 37), exit(127),
+			t((free_arena(env->arena), write(1, CMD_NOT_FOUND, 37), exit(127),
 					0));
 		t((free_arena(env->arena), exit(0), 0));
 	}
