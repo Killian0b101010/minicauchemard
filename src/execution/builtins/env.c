@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 19:55:27 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/06 02:32:00 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2)
 	{
 		write(2, "env: \'", 7);
 		write(2, tokens[index + 1].value, ft_strlen(tokens[index + 1].value));
-		write(2, "\': No such file or directory\n", 31);
+		write(2, "\': No such file or directory\n", 30);
 		return (1);
 	}
 	else if (!env->envp[i])
