@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/06 13:43:21 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 15:37:39 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 {
 	int	cmd_valid;
 
-	blocks[i].is_here_doc = 0;
-	setup_child_pipes(i, blocks);
+	t((blocks[i].is_here_doc = has_heredoc_in_block(blocks[i].tokens,
+				blocks[i].t2.token_count), setup_child_pipes(i, blocks), 0));
 	if (handle_redirections(blocks[i].tokens, blocks[i].t2.token_count) == -1)
-		t((blocks[i].is_here_doc = 1, free_arena(env->arena), exit(1), 0));
+		t((free_arena(env->arena), exit(1), 0));
 	if (blocks[i].args[0] && blocks[i].args[0][0])
 	{
 		if (is_builtin(blocks[i].args[0]))
@@ -44,9 +44,11 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 	}
 	else
 	{
-		free_arena(env->arena);
-		write(1, "Command '' not found\n", 22);
-		exit(0);
+		if (blocks[i].is_here_doc == 0)
+			t((free_arena(env->arena), write(1,
+						"Minicauchemar: Command '' not found\n", 37), exit(127),
+					0));
+		t((free_arena(env->arena), exit(0), 0));
 	}
 }
 
