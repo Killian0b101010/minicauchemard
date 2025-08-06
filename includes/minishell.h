@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 15:34:48 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 18:34:56 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ t_token				*tokenizer(t_arena *arena, char *str, int *token_count);
 // syntax_parsing.c
 int					parse_syntax(t_token *tokens, int token_count);
 int					pipe_syntax(t_token *tokens, t_t2 t2);
+int					verify_token_syntax(t_token *tokens, t_t2 *t2);
 
 // tokenizer_utils.c
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
