@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/05 22:13:59 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/06 13:43:21 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,7 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 	setup_child_signals();
 	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value))
 	{
-		if (ft_strcmp(blocks[i].tokens[0].value, "export") == 0
-			|| ft_strcmp(blocks[i].tokens[0].value, "unset") == 0
-			|| ft_strcmp(blocks[i].tokens[0].value, "cd") == 0
-			|| ft_strcmp(blocks[i].tokens[0].value, "exit") == 0)
-			return (execute_builtin_block(&blocks[i], env), -1);
-		else if (blocks->fd->cmd_count == 1)
+		if (blocks->fd->cmd_count == 1)
 			return (execute_builtin_block(&blocks[i], env), -1);
 	}
 	pid = fork();
