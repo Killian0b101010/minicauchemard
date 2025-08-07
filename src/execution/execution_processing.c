@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execution_processing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 19:54:21 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/07 10:05:09 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <stdio.h>
 
 void	execute_cmd2(t_cmd_block *blocks, t_env *env)
 {
@@ -71,15 +70,16 @@ int	process_input_line(char *input, t_env *env)
 		if (tokens)
 			return (1);
 	process_token_expansion(tokens, t2.token_count, env);
+	if (verify_token_syntax(tokens, &t2) == 1)
+		return (g_exit_status = 2, 1);
 	if (parse_syntax(tokens, t2.token_count) == 1)
-		return (1);
+		return (g_exit_status = 2, 1);
 	if (pipe_syntax(tokens, t2) == 1)
-		return (1);
+		return (g_exit_status = 2, 1);
 	if (preprocess_heredocs(env, tokens, t2.token_count) == -1)
 		return (0);
 	blocks = split_into_blocks(env->arena, tokens, t2, &block_count);
-	process_commands(blocks, env, block_count, i);
-	return (1);
+	return (process_commands(blocks, env, block_count, i), 1);
 }
 
 int	is_executable_file(const char *path)

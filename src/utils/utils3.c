@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 01:07:49 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 13:43:46 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,12 @@ void	close2(int fd)
 {
 	if (fd >= 2)
 		close(fd);
+}
+
+void	restore_fds(int saved_stdin, int saved_stdout)
+{
+	dup2(saved_stdin, STDIN_FILENO);
+	dup2(saved_stdout, STDOUT_FILENO);
+	close2(saved_stdin);
+	close2(saved_stdout);
 }

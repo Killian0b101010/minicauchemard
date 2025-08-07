@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 15:34:46 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 12:55:39 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,20 @@ void	process_commands_signal(t_cmd_block *blocks, int i)
 void	setup_interactive_signals(void)
 {
 	signal(SIGINT, ft_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+void	ft_handler_heredoc(int sig)
+{
+	(void)sig;
+	g_exit_status = 130;
+	write(STDOUT_FILENO, "\n", 1);
+	close(STDIN_FILENO);
+}
+
+void	setup_heredoc_signals(void)
+{
+	signal(SIGINT, ft_handler_heredoc);
 	signal(SIGQUIT, SIG_IGN);
 }
 

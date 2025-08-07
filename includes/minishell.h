@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 15:34:48 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 13:43:57 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 
 # ifndef PIPE_SYNTAX
 #  define PIPE_SYNTAX "minicauchemar: syntax error near unexpected token `|\'\n"
+# endif
+
+# ifndef CMD_NOT_FOUND
+#  define CMD_NOT_FOUND "minicauchemar: Command '' not found\n"
 # endif
 
 extern int			g_exit_status;
@@ -268,6 +272,7 @@ t_token				*tokenizer(t_arena *arena, char *str, int *token_count);
 // syntax_parsing.c
 int					parse_syntax(t_token *tokens, int token_count);
 int					pipe_syntax(t_token *tokens, t_t2 t2);
+int					verify_token_syntax(t_token *tokens, t_t2 *t2);
 
 // tokenizer_utils.c
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
@@ -286,12 +291,12 @@ int					setup_heredoc(t_env *env, t_arena *arena, char *delimiter);
 int					handle_redirections(t_token *tokens, int token_count);
 int					preprocess_heredocs(t_env *env, t_token *tokens,
 						int token_count);
-void				restore_fds(int saved_stdin, int saved_stdout);
 
 // ===== src/signal/ =====
 // handler.c
 void				ft_handler(int sig);
 void				setup_interactive_signals(void);
+void				setup_heredoc_signals(void);
 void				setup_child_signals(void);
 void				process_commands_signal(t_cmd_block *blocks, int i);
 
@@ -316,5 +321,6 @@ char				**build_cmd_args(t_arena *arena, t_token *tokens,
 						int count);
 int					is_empty_input(char *input);
 void				close2(int fd);
+void				restore_fds(int saved_stdin, int saved_stdout);
 
 #endif
