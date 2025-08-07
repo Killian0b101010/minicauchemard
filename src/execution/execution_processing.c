@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_processing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 18:11:38 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/07 18:41:27 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int	process_input_line(char *input, t_env *env)
 	if (preprocess_heredocs(env, tokens, t2.token_count) == -1)
 		return (0);
 	blocks = split_into_blocks(env->arena, tokens, t2, &block_count);
-	print_cmd_blocks(blocks, block_count);
 	return (process_commands(blocks, env, block_count, i), 1);
 }
 
