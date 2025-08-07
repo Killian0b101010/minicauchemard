@@ -6,7 +6,7 @@
 #    By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/15 14:05:47 by dnahon            #+#    #+#              #
-#    Updated: 2025/08/05 01:12:19 by dnahon           ###   ########.fr        #
+#    Updated: 2025/08/07 15:37:25 by dnahon           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ SRC 		= 	./src/core/main.c ./src/core/main_utils.c ./src/core/main_utils2.c\
 				./src/redirection/redirections.c ./src/redirection/redirection_utils.c \
 				./src/utils/utils.c ./src/utils/utils2.c ./src/utils/utils3.c \
 				./src/malloc/arena_collector.c ./src/malloc/split_arena.c ./src/malloc/utils_arena.c \
-				./src/signal/handler.c \
+				./src/signal/handler.c ./src/signal/handler2.c \
 
 LIBFT 		= 	./libft/libft.a
 INCLUDES	= 	./includes/minishell.h ./libft/includes/libft.h
