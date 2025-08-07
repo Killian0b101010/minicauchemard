@@ -59,7 +59,10 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 	setup_child_signals();
 	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value))
 	{
-		if (blocks->fd->cmd_count == 1)
+		if (blocks->fd->cmd_count == 1 && (ft_strcmp(blocks[i].args[0],
+					"exit") == 0 || ft_strcmp(blocks[i].args[0], "cd") == 0
+				|| ft_strcmp(blocks[i].args[0], "export") == 0
+				|| ft_strcmp(blocks[i].args[0], "unset") == 0))
 			return (execute_builtin_block(&blocks[i], env), -1);
 	}
 	pid = fork();

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 18:26:28 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 18:06:54 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ t_token	*tokenizer(t_arena *arena, char *str, int *token_count)
 	t_t2	t2;
 	int		capacity;
 
-	capacity = 10;
-	t((t2.index = 0, t2.i = 0, t2.j = 0, 0));
+	t((t2.index = 0, t2.i = 0, t2.j = 0, capacity = 10, 0));
 	tokens = arena_alloc(arena, (capacity) * sizeof(t_token));
 	if (!tokens)
 		return (NULL);
@@ -87,18 +86,39 @@ t_token	*tokenizer(t_arena *arena, char *str, int *token_count)
 		tokenize3(arena, tokens, &t2);
 	}
 	*token_count = t2.j;
+	remove_first_null_tokens(tokens, token_count);
 	return (tokens);
+}
+
+void	remove_first_null_tokens(t_token *tokens, int *token_count)
+{
+	int	i;
+	int	shift;
+
+	shift = 0;
+	while (shift < *token_count && tokens[shift].value[0] == '\0')
+		shift++;
+	if (shift == 0)
+		return ;
+	i = 0;
+	while (i < *token_count - shift)
+	{
+		tokens[i] = tokens[i + shift];
+		i++;
+	}
+	*token_count -= shift;
 }
 
 /**
  * Vérifie l'équilibrage des guillemets dans une chaîne de caractères.
  *
- * Cette fonction analyse une chaîne pour s'assurer que tous les guillemets
- * sont correctement fermés:
- * - Compte les guillemets simples et doubles séparément
- * - Vérifie que chaque type de guillemet est en nombre pair
- * - Affiche une erreur de syntaxe si des guillemets ne sont pas fermés
- * - Essentiel pour la validation de l'entrée utilisateur
+ * Cette version améliorée tient compte du contexte des guillemets:
+ *
+	- Un guillemet à l'intérieur d'une autre paire de guillemets n'est pas compté
+ * - Utilise un état (state) pour suivre le contexte actuel
+ * - STATE_NORMAL: en dehors de tout guillemet
+ * - STATE_SINGLE: dans des guillemets simples
+ * - STATE_DOUBLE: dans des guillemets doubles
  *
  * Parameters :
  * - str - Chaîne de caractères à analyser
@@ -107,26 +127,51 @@ t_token	*tokenizer(t_arena *arena, char *str, int *token_count)
  *
  * Return : 1 si les guillemets sont équilibrés, 0 sinon
  */
-int	count_quotes(char *str, int *single_quotes, int *double_quotes)
+
+int	count_quotes(char *str, int *single_quote, int *double_quote)
 {
+	int	state;
 	int	i;
 
-	i = 0;
-	*single_quotes = 0;
-	*double_quotes = 0;
-	while (str[i])
-	{
-		if (str[i] == '\'')
-			(*single_quotes)++;
-		else if (str[i] == '"')
-			(*double_quotes)++;
-		i++;
-	}
-	if (*single_quotes % 2 != 0 || *double_quotes % 2 != 0)
+	i = -1;
+	state = STATE_NORMAL;
+	*single_quote = 0;
+	*double_quote = 0;
+	while (str[++i])
+		update_quote_state(str[i], &state, single_quote, double_quote);
+	if (state != STATE_NORMAL)
 	{
 		print_syntax_error("unexpected EOF");
 		g_exit_status = 2;
 		return (0);
 	}
 	return (1);
+}
+
+void	update_quote_state(char c, int *state, int *single_quote,
+		int *double_quote)
+{
+	if (*state == STATE_NORMAL)
+	{
+		if (c == '\'')
+		{
+			*state = STATE_SINGLE;
+			(*single_quote)++;
+		}
+		else if (c == '"')
+		{
+			*state = STATE_DOUBLE;
+			(*double_quote)++;
+		}
+	}
+	else if (*state == STATE_SINGLE && c == '\'')
+	{
+		*state = STATE_NORMAL;
+		(*single_quote)++;
+	}
+	else if (*state == STATE_DOUBLE && c == '"')
+	{
+		*state = STATE_NORMAL;
+		(*double_quote)++;
+	}
 }
