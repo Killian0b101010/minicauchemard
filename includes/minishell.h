@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
 /*   Updated: 2025/08/07 18:07:13 by dnahon           ###   ########.fr       */
@@ -322,6 +322,8 @@ void				setup_interactive_signals(void);
 void				setup_heredoc_signals(void);
 void				setup_child_signals(void);
 void				process_commands_signal(t_cmd_block *blocks, int i);
+void				ft_handler_sigquit(int sig);
+void				ft_handler_heredoc(int sig);
 
 // ===== src/utils/ =====
 // utils.c
