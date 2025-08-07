@@ -6,12 +6,38 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/02 19:32:38 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 13:43:39 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <fcntl.h>
+
+static char	*process_heredoc_lines(t_arena *arena, char *delimiter, int *n_line)
+{
+	char	*input;
+	char	*line;
+	char	*temp;
+
+	input = ft_strdup_arena(arena, "");
+	while (input && ++(*n_line))
+	{
+		line = readline("heredoc> ");
+		if (!line || g_exit_status == 130)
+		{
+			if (g_exit_status == 130)
+				return (NULL);
+			ft_printf("minicauchemar: warning: here-document at line");
+			ft_printf(" %d delimited by end-of-file (wanted `%s\')\n", *n_line,
+				delimiter);
+			break ;
+		}
+		if (ft_strcmp(line, delimiter) == 0)
+			break ;
+		temp = ft_strjoin_arena(arena, input, line);
+		input = ft_strjoin_arena(arena, temp, "\n");
+	}
+	return (input);
+}
 
 /**
  * Lit l'entrée utilisateur pour un heredoc jusqu'au délimiteur spécifié.
@@ -28,32 +54,20 @@
  *
  * Return : Chaîne contenant tout l'input du heredoc ou NULL si erreur
  */
+
 static char	*get_heredoc_input(t_env *env, t_arena *arena, char *delimiter)
 {
 	char		*input;
-	char		*line;
-	char		*temp;
+	int			stdin_copy;
 	static int	n_line = 0;
 
 	(void)env;
-	input = ft_strdup_arena(arena, "");
-	if (!input)
-		return (NULL);
-	while (1)
-	{
-		t((n_line++, line = readline("heredoc> "), 0));
-		if (!line)
-		{
-			ft_printf("minicauchemar : warning: here-document at line");
-			ft_printf(" %d delimited by end-of-file (wanted `%s\')\n", n_line,
-				delimiter);
-			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-			break ;
-		temp = ft_strjoin_arena(arena, input, line);
-		input = ft_strjoin_arena(arena, temp, "\n");
-	}
+	stdin_copy = dup(STDIN_FILENO);
+	setup_heredoc_signals();
+	input = process_heredoc_lines(arena, delimiter, &n_line);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	setup_interactive_signals();
 	return (input);
 }
 
@@ -110,8 +124,7 @@ int	setup_heredoc(t_env *env, t_arena *arena, char *delimiter)
  *
  * Return : 0 en cas de succès, -1 si erreur
  */
-int	handle_redirections(t_env *env, t_arena *arena, t_token *tokens,
-		int token_count)
+int	handle_redirections(t_token *tokens, int token_count)
 {
 	int	i;
 
@@ -134,58 +147,48 @@ int	handle_redirections(t_env *env, t_arena *arena, t_token *tokens,
 				return (-1);
 		}
 		else if (tokens[i].type == HEREDOC && i + 1 < token_count)
-			if (handle_heredoc_redirection(env, arena, tokens, i) == -1)
+			if (handle_heredoc_redirection(tokens, i) == -1)
 				return (-1);
 	}
 	return (0);
 }
 
-void	restore_fds(int saved_stdin, int saved_stdout)
-{
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close2(saved_stdin);
-	close2(saved_stdout);
-}
-
 /**
- * Exécute une commande en gérant les redirections et restaure l'état original.
+ * Prétraite tous les heredocs dans les tokens avant la division en blocs.
  *
- * Cette fonction coordonne l'exécution d'une commande avec ses redirections
- * tout en préservant l'environnement du shell:
- * - Sauvegarde les descripteurs stdin/stdout originaux
- * - Configure toutes les redirections nécessaires
- * - Exécute la commande (built-in ou externe)
- * - Restaure l'état original des descripteurs
- * - Gère les erreurs de redirection
+ * Cette fonction parcourt tous les tokens pour traiter les heredocs
+ * en une seule fois, évitant les conflits d'affichage entre blocs:
+ * - Traite tous les heredocs avant l'exécution des commandes
+ * - Stocke les descripteurs de fichier pour utilisation ultérieure
  *
- * Parameters :
- * - block - Bloc de commande contenant tokens et arguments
- * - env - Structure d'environnement pour l'exécution
+ * - Évite les appels multiples à readline()
+ * qui causent des problèmes d'affichage
  *
- * Return : Code de retour de la commande ou 1 si erreur de redirection
+ * Parameters:
+ * - env - Environnement contenant l'arena et les variables
+ * - tokens - Tableau de tous les tokens de la commande
+ * - token_count - Nombre total de tokens
+ *
+ * Return: 0 en cas de succès, -1 si erreur
  */
-
-int	execute_with_redirections(t_cmd_block *block, t_env *env)
+int	preprocess_heredocs(t_env *env, t_token *tokens, int token_count)
 {
-	int	result;
-	int	saved_std[2];
+	int	i;
+	int	fd;
 
-	result = 0;
-	saved_std[0] = dup(STDIN_FILENO);
-	saved_std[1] = dup(STDOUT_FILENO);
-	block->is_here_doc = 0;
-	if (handle_redirections(env, env->arena, block->tokens,
-			block->t2.token_count) == -1)
+	i = 0;
+	while (i < token_count)
 	{
-		block->is_here_doc = 1;
-		g_exit_status = 1;
-		return (1);
+		if (tokens[i].type == HEREDOC && i + 1 < token_count)
+		{
+			fd = setup_heredoc(env, env->arena, tokens[i + 1].value);
+			if (fd == -1)
+				return (-1);
+			tokens[i].heredoc_fd = fd;
+		}
+		else
+			tokens[i].heredoc_fd = -1;
+		i++;
 	}
-	if (is_builtin(block->tokens[0].value))
-		result = execute_builtin_block(block, env);
-	else
-		execute_cmd_one(block, env);
-	restore_fds(saved_std[0], saved_std[1]);
-	return (result);
+	return (0);
 }

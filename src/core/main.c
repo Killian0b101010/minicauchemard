@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/02 21:35:53 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 15:16:53 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,17 @@ static void	shell_main_loop(t_env *env)
 {
 	char	**input;
 	int		i;
+	int		signal_received;
 
 	while (1)
 	{
+		signal_received = 0;
+		get_signal_received(&signal_received);
+		setup_interactive_signals();
 		i = -1;
 		input = ft_split_arena(env->arena, get_prompt_and_input(), '\n');
 		if (!input)
-			exit2(env);
+			t((write(1, "exit\n", 6), exit2(env), 0));
 		while (input[++i])
 		{
 			if (input[i])
@@ -80,6 +84,15 @@ int	*is_active_shell(int *bool)
 	if (bool)
 		isactive = *bool;
 	return (&isactive);
+}
+
+int	*get_signal_received(int *signal_received)
+{
+	static int	signal = 0;
+
+	if (signal_received)
+		signal = *signal_received;
+	return (&signal);
 }
 
 /**
@@ -104,9 +117,8 @@ int	main(int ac, char **av, char **envp)
 	(void)av;
 	if (isatty(STDIN_FILENO) == 0)
 	{
-		write(2,
-			"\e[1;38;2;mDose sur tes tests stp et suis plutot la correction\n",
-			63);
+		write(2, "\e[1;38;2;mSoit plus sympa sur tes tests", 40);
+		write(2, "stp et suis plutot la correction\n", 34);
 		return (1);
 	}
 	arena = arena_init(42);

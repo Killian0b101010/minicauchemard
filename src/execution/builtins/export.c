@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:51:49 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/02 21:29:38 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/04 17:13:34 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ static int	process_export_variable(t_env *env, char *var_value)
 {
 	int	var_index;
 
-	if (var_value == NULL || ft_strchr(var_value, '=') == NULL)
+	if (var_value == NULL || ft_strchr(var_value, '=') == NULL
+		|| ft_strlen(var_value) < 2)
 		return (0);
 	var_index = find_var_index(env, var_value);
 	if (var_index >= 0)

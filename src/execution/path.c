@@ -6,11 +6,11 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 15:44:19 by dnahon            #+#    #+#             */
-/*   Updated: 2025/07/30 22:33:34 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/03 21:12:58 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/pipex.h"
+#include "../../includes/minishell.h"
 
 int	is_abs_path(char *cmd)
 {

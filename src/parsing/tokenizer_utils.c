@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:07:11 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 19:05:30 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 18:26:09 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,15 @@ void	tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2)
 {
 	tokens[t2->j].value = ft_strdup_arena(arena, t2->buff);
 	tokens[t2->j].quoted = t2->quoted;
+	tokens[t2->j].heredoc_fd = -1;
 	if (t2->quoted)
 		tokens[t2->j].type = WORD;
 	else
 		tokens[t2->j].type = get_token_type(t2->buff);
 	if (tokens[t2->j].type == SYNTAX_ERROR)
+	{
 		print_syntax_error(t2->buff);
+		g_exit_status = 2;
+	}
 	t2->j++;
 }

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 16:40:24 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 23:53:27 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 15:37:06 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,12 @@
 void	ft_handler(int sig)
 {
 	int	*active_shell;
+	int	signal_received;
 
 	(void)sig;
 	g_exit_status = 130;
+	signal_received = 1;
+	get_signal_received(&signal_received);
 	active_shell = is_active_shell(NULL);
 	if (*active_shell == 2)
 	{
@@ -28,44 +31,24 @@ void	ft_handler(int sig)
 	}
 }
 
-/**
- * Configure les gestionnaires de signaux pour le mode interactif du shell.
- *
- * Cette fonction initialise la gestion des signaux lors que le shell
- * est en mode interactif (en attente d'entrée utilisateur):
- * - SIGINT (Ctrl+C) : Utilise ft_handler pour une gestion propre
- * - SIGQUIT (Ctrl+\) : Ignoré pour éviter la terminaison
- * - Maintient l'interface utilisateur responsive
- * - Assure un comportement cohérent avec les shells standards
- *
- * Parameters :
- * - Aucun
- *
- * Return : Aucun (void)
- */
-void	setup_interactive_signals(void)
+void	ft_handler_sigquit(int sig)
 {
-	signal(SIGINT, ft_handler);
-	signal(SIGQUIT, SIG_IGN);
+	int	*active_shell;
+	int	signal_received;
+
+	(void)sig;
+	g_exit_status = 131;
+	signal_received = 2;
+	get_signal_received(&signal_received);
+	active_shell = is_active_shell(NULL);
+	if (*active_shell == 2)
+		exit(g_exit_status);
 }
 
-/**
- * Configure les gestionnaires de signaux pour les processus enfants.
- *
- * Cette fonction restaure le comportement par défaut des signaux
- * pour les processus enfants exécutant des commandes:
- * - SIGINT (Ctrl+C) : Comportement par défaut (terminaison)
- * - SIGQUIT (Ctrl+\) : Comportement par défaut (core dump)
- * - Permet aux commandes d'être interrompues normalement
- * - Respecte les attentes des programmes externes
- *
- * Parameters :
- * - Aucun
- *
- * Return : Aucun (void)
- */
-void	setup_child_signals(void)
+void	ft_handler_heredoc(int sig)
 {
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	(void)sig;
+	g_exit_status = 130;
+	write(STDOUT_FILENO, "\n", 1);
+	close(STDIN_FILENO);
 }

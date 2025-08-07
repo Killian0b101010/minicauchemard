@@ -3,136 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/02 22:37:51 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 17:32:10 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-// void	execute_piped_commands(t_cmd_block *blocks, int block_count, t_env *env)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (i < block_count)
-// 	{
-// 		execute_builtin_in_block(&blocks[i], env);
-// 		i++;
-// 	}
-// }
-
-// void	ft_error(char *cmd)
-// {
-// 	write(2, cmd, ft_strlen(cmd));
-// 	write(2, ": command not found\n", 21);
-// 	exit(127);
-// }
-
-// void	close_unused_pipes(t_fd *fd, int i)
-// {
-// 	if (i > 0)
-// 	{
-// 		close2(fd->pipefd[i - 1][0]);
-// 		close2(fd->pipefd[i - 1][1]);
-// 	}
-// }
-
-// void	cleanup_and_exit(t_fd *fd, int code)
-// {
-// 	close_all_fds(fd);
-// 	free_all(fd);
-// 	exit(code);
-// }
-
-// void	if_negative_fd(int i, t_fd *fd)
-// {
-// 	if (i == 0 && fd->fd_in == -1)
-// 		cleanup_and_exit(fd, 1);
-// 	if (i == fd->cmd_count - 1 && fd->fd_out == -1)
-// 		cleanup_and_exit(fd, 1);
-// }
-
-// pid_t	child_process(int i, char **av, char **envp, t_fd *fd)
-// {
-// 	pid_t	pid;
-// 	int		j;
-
-// 	t((j = 0, pid = fork(), 0));
-// 	if (pid == 0)
-// 	{
-// 		if_negative_fd(i, fd);
-// 		t((dup2(fd->pipefd[i - 1][0], 0), dup2(fd->pipefd[i][1], 1), 0));
-// 		while (j < fd->cmd_count - 1)
-// 			t((close2(fd->pipefd[j][0]), close2(fd->pipefd[j++][1]), 0));
-// 		close_files(fd);
-// 		if (av[i + fd->cmd_start] && av[i + fd->cmd_start][0])
-// 			t((execute_cmd(av[i + fd->cmd_start], envp), free_all(fd),
-// 					ft_error(av[i + fd->cmd_start]), 0));
-// 		else
-// 			t((close_all_fds(fd), free_all(fd), ft_error(av[i + 2]), 0));
-// 	}
-// 	return (pid);
-// }
-
-// void	execute_multiple_cmd(t_cmd_block *block, t_env *env)
-// {
-// 	if (!block->args || !block->args[0])
-// 		return (write(2, "Error\n", 6), (void)0);
-// 	block->path = get_path(env->envp);
-// 	if (!block->path)
-// 		exit((write(2, "Error\n", 6), -1));
-// 	block->i = 0;
-// 	block->flag_access = 0;
-// 	if (is_builtin(block->tokens[0].value))
-// 		return (execute_builtin_block(block, env), ft_free_split(block->path),
-// 			(void)0);
-// 	else
-// 	{
-// 		while (block->path[block->i] && block->flag_access == 0)
-// 			exec_loop_one(block, env);
-// 	}
-// 	if (block->flag_access == 0)
-// 		write(2, "Command not found\n", 18);
-// 	t((ft_free_split(block->args), ft_free_split(block->path), 0));
-// }
-
-void	if_nopath(char *str)
+void	ifcmd_notvalid(int i, t_cmd_block *blocks, t_env *env)
 {
-	write(2, str, ft_strlen(str));
-	write(2, ": No such file or directory\n", 29);
-	g_exit_status = 127;
+	if (!is_abs_path(blocks[i].args[0]) && !get_path_arena(env->arena,
+			env->envp))
+		t((if_nopath(blocks[i].args[0]), free_arena(env->arena), exit(127), 0));
+	else
+		t((write(2, blocks[i].args[0], ft_strlen(blocks[i].args[0])), write(2,
+					": command not found\n", 21), free_arena(env->arena),
+				exit(127), 0));
 }
 
-void	execute_cmd_one(t_cmd_block *block, t_env *env)
+void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 {
-	if (!block->args[0] && block->is_here_doc == 0)
-		return ;
-	if ((!block->args || !block->args[0]))
-		return (write(2, "Error\n", 7), (void)0);
-	if (!block->args || !block->args[0])
-		return (write(2, "Error\n", 7), (void)0);
-	block->path = get_path_arena(env->arena, env->envp);
-	if (!block->path)
-		return (if_nopath(block->args[0]), (void)0);
-	block->i = 0;
-	block->flag_access = 0;
-	block->is_here_doc = 0;
-	if (is_builtin(block->tokens[0].value))
-		return (execute_builtin_block(block, env), (void)0);
+	int	cmd_valid;
+
+	t((blocks[i].is_here_doc = has_heredoc_in_block(blocks[i].tokens,
+				blocks[i].t2.token_count), 0));
+	if (handle_redirections(blocks[i].tokens, blocks[i].t2.token_count) == -1)
+		t((free_arena(env->arena), exit(1), 0));
+	setup_child_pipes(i, blocks);
+	if (blocks[i].args[0] && blocks[i].args[0][0])
+	{
+		if (is_builtin(blocks[i].args[0]))
+			t((execute_builtin_block(&blocks[i], env), free_arena(env->arena),
+					exit(g_exit_status), 0));
+		cmd_valid = is_command_valid_for_exec(&blocks[i], env);
+		if (cmd_valid > 0)
+			execute_cmd2(&blocks[i], env);
+		else
+			ifcmd_notvalid(i, blocks, env);
+	}
 	else
 	{
-		while (block->path[block->i] && block->flag_access == 0)
-			exec_loop_one(block, env);
+		if (blocks[i].is_here_doc == 0)
+			t((free_arena(env->arena), write(1, CMD_NOT_FOUND, 37), exit(127),
+					0));
+		t((free_arena(env->arena), exit(0), 0));
 	}
-	if (block->flag_access == 0)
+}
+
+pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
+{
+	pid_t	pid;
+
+	setup_child_signals();
+	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value))
 	{
-		write(2, block->args[0], ft_strlen(block->args[0]));
-		write(2, ": command not found\n", 21);
-		g_exit_status = 127;
+		if (blocks->fd->cmd_count == 1)
+			return (execute_builtin_block(&blocks[i], env), -1);
 	}
+	pid = fork();
+	if (pid == 0)
+		execute_child_command(i, blocks, env);
+	return (pid);
 }
 
 void	exec_loop_one(t_cmd_block *block, t_env *env)
@@ -142,7 +75,7 @@ void	exec_loop_one(t_cmd_block *block, t_env *env)
 		if (access(block->args[0], X_OK) == 0)
 		{
 			block->full_cmd = ft_strdup_arena(env->arena, block->args[0]);
-			return (block->flag_access = 1, fork_loop_one(block, env));
+			return (block->flag_access = 1, exec_if_executable(block, env));
 		}
 	}
 	else
@@ -152,26 +85,12 @@ void	exec_loop_one(t_cmd_block *block, t_env *env)
 		block->full_cmd = ft_strjoin_arena(env->arena, block->cmd_path,
 				block->args[0]);
 		if (access(block->full_cmd, X_OK) == 0)
-			return (block->flag_access = 1, fork_loop_one(block, env));
+			return (block->flag_access = 1, exec_if_executable(block, env));
 	}
 	block->i++;
 }
 
-int	is_executable_file(const char *path)
-{
-	struct stat	s;
-
-	if (stat(path, &s) == 0)
-	{
-		if (S_ISDIR(s.st_mode))
-			return (2);
-		if ((s.st_mode & S_IXUSR) && !S_ISDIR(s.st_mode))
-			return (1);
-	}
-	return (0);
-}
-
-void	fork_loop_one(t_cmd_block *block, t_env *env)
+void	exec_if_executable(t_cmd_block *block, t_env *env)
 {
 	int	stat_result;
 
@@ -184,11 +103,16 @@ void	fork_loop_one(t_cmd_block *block, t_env *env)
 		write(2, "minicauchemar: ", 16);
 		write(2, block->args[0], ft_strlen(block->args[0]));
 		write(2, ": Is a directory\n", 17);
+		free_arena(env->arena);
 		exit(g_exit_status);
 	}
 	if (stat_result == 1)
 	{
 		g_exit_status = 0;
-		execve(block->full_cmd, block->args, env->envp);
+		if (execve(block->full_cmd, block->args, env->envp) == -1)
+		{
+			free_arena(env->arena);
+			exit(127);
+		}
 	}
 }

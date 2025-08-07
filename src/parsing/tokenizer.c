@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 19:05:23 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 18:26:28 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
  *
  * Cette fonction gère l'expansion dynamique du tableau de tokens lorsque
  * la capacité initiale est atteinte:
- * - Double la capacité du tableau
- * - Réalloue la mémoire avec realloc2()
  * - Copie les données existantes dans le nouveau tableau
  * - Met à jour le pointeur et la capacité
  *
@@ -127,6 +125,7 @@ int	count_quotes(char *str, int *single_quotes, int *double_quotes)
 	if (*single_quotes % 2 != 0 || *double_quotes % 2 != 0)
 	{
 		print_syntax_error("unexpected EOF");
+		g_exit_status = 2;
 		return (0);
 	}
 	return (1);
