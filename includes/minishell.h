@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 18:51:52 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 15:33:29 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,11 @@ static inline int	get_color(int i, int len)
 {
 	return (76 + (180. * (float)i / (float)len));
 }
+
 // ===== src/core/ =====
 // main.c
 int					*is_active_shell(int *value);
+int					*get_signal_received(int *signal_received);
 
 // main_utils.c
 void				print_minicauchemar(void);

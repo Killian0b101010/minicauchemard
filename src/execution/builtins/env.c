@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:41:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 02:32:00 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 15:11:16 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	ft_set_env(t_env *env, char **envp)
 	int	shlvl_index;
 
 	t((i = 0, j = -1, 0));
+	if (!envp || !envp[0])
+		return (init_bc_no_env(env), (void)0);
 	while (envp[i])
 		i++;
 	shlvl_index = get_shlvl_index(envp);
@@ -114,11 +116,6 @@ int	env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2)
 		write(2, "\': No such file or directory\n", 30);
 		return (1);
 	}
-	else if (!env->envp[i])
-	{
-		init_bc_no_env(env);
-		return (0);
-	}
 	else
 	{
 		while (env->envp[i])
@@ -132,7 +129,6 @@ int	env_cmd(int index, t_env *env, t_token *tokens, t_t2 *t2)
 
 int	init_bc_no_env(t_env *env)
 {
-	int		i;
 	char	tmp[1000];
 	char	*pwd_env;
 
@@ -145,11 +141,5 @@ int	init_bc_no_env(t_env *env)
 	env->envp[1] = ft_strdup_arena(env->arena, "SHLVL=1");
 	env->envp[2] = ft_strdup_arena(env->arena, "_=/usr/bin/env");
 	env->envp[3] = NULL;
-	i = 0;
-	while (env->envp[i])
-	{
-		ft_printf("%s\n", env->envp[i]);
-		i++;
-	}
 	return (0);
 }

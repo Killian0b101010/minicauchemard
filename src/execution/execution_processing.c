@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 18:52:18 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 15:25:08 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	execute_cmd2(t_cmd_block *blocks, t_env *env)
 void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
 		int i)
 {
+	int	*signal_received;
+
 	blocks->fd = arena_alloc(env->arena, sizeof(t_fd));
 	if (!blocks->fd)
 		return ;
@@ -45,12 +47,14 @@ void	process_commands(t_cmd_block *blocks, t_env *env, int block_count,
 		close_unused_pipes(blocks->fd, i);
 	}
 	close_all_fds(blocks->fd);
-	i = 0;
-	while (i < block_count)
-	{
+	i = -1;
+	while (++i < block_count)
 		process_commands_signal(blocks, i);
-		i++;
-	}
+	signal_received = get_signal_received(NULL);
+	if (signal_received && *signal_received == 1)
+		write(1, "\n", 1);
+	else if (signal_received && *signal_received == 2)
+		write(1, "Quit (core dumped)\n", 19);
 }
 
 int	process_input_line(char *input, t_env *env)
