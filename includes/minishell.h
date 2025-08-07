@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 15:33:29 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 18:07:13 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,18 @@
 
 # ifndef CMD_NOT_FOUND
 #  define CMD_NOT_FOUND "minicauchemar: Command '' not found\n"
+# endif
+
+# ifndef STATE_NORMAL
+#  define STATE_NORMAL 0
+# endif
+
+# ifndef STATE_SINGLE
+#  define STATE_SINGLE 1
+# endif
+
+# ifndef STATE_DOUBLE
+#  define STATE_DOUBLE 2
 # endif
 
 extern int			g_exit_status;
@@ -280,6 +292,11 @@ int					verify_token_syntax(t_token *tokens, t_t2 *t2);
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
 int					expand_tokens(t_arena *arena, t_token **tokens,
 						int *capacity);
+void				remove_first_null_tokens(t_token *tokens, int *token_count);
+int					count_quotes(char *str, int *single_quote,
+						int *double_quote);
+void				update_quote_state(char c, int *state, int *single_quote,
+						int *double_quote);
 
 // ===== src/redirection/ =====
 // redirection_utils.c
@@ -297,6 +314,10 @@ int					preprocess_heredocs(t_env *env, t_token *tokens,
 // ===== src/signal/ =====
 // handler.c
 void				ft_handler(int sig);
+void				ft_handler_sigquit(int sig);
+void				ft_handler_heredoc(int sig);
+
+// handler2.c
 void				setup_interactive_signals(void);
 void				setup_heredoc_signals(void);
 void				setup_child_signals(void);
