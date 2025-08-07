@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 00:57:24 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/05 21:46:45 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ t_cmd_block	*split_into_blocks(t_arena *arena, t_token *tokens, t_t2 t2,
 	*block_count = count_pipes(tokens, t2.token_count) + 1;
 	blocks = arena_alloc(arena, *block_count * sizeof(t_cmd_block));
 	t2.block_count = *block_count;
+	ft_bzero(blocks, *block_count * sizeof(t_cmd_block));
 	if (!blocks)
 		return (NULL);
 	t((i = 0, j = 0, 0));

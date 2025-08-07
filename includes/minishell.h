@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 18:13:23 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:51:52 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,10 @@
 
 # ifndef PIPE_SYNTAX
 #  define PIPE_SYNTAX "minicauchemar: syntax error near unexpected token `|\'\n"
+# endif
+
+# ifndef CMD_NOT_FOUND
+#  define CMD_NOT_FOUND "minicauchemar: Command '' not found\n"
 # endif
 
 extern int			g_exit_status;
@@ -154,7 +158,7 @@ int					get_shlvl_index(char **envp);
 
 // ===== src/execution/ =====
 // execute_commands.c
-void				setup_child_pipes(int i, t_cmd_block *blocks);
+void				ifcmd_notvalid(int i, t_cmd_block *blocks, t_env *env);
 void				execute_child_command(int i, t_cmd_block *blocks,
 						t_env *env);
 pid_t				child_process2(int i, t_cmd_block *blocks, t_env *env);
@@ -162,6 +166,7 @@ void				exec_loop_one(t_cmd_block *block, t_env *env);
 void				exec_if_executable(t_cmd_block *block, t_env *env);
 
 // execution_pipes.c
+void				setup_child_pipes(int i, t_cmd_block *blocks);
 void				init_pipes2(int i, t_fd *fd, t_arena *arena);
 void				init_pipex(t_arena *arena, t_cmd_block *blocks, t_t2 t2,
 						t_fd *fd);
@@ -179,7 +184,7 @@ void				if_nopath(char *str);
 // execution_utils.c
 int					verify_input(char *input, int *single_quotes,
 						int *double_quotes);
-void				flagaccesscheck(t_cmd_block *blocks);
+void				flagaccesscheck(t_cmd_block *blocks, t_env *env);
 int					is_command_valid_for_exec(t_cmd_block *block, t_env *env);
 int					has_heredoc_in_block(t_token *tokens, int token_count);
 
@@ -267,6 +272,7 @@ t_token				*tokenizer(t_arena *arena, char *str, int *token_count);
 // syntax_parsing.c
 int					parse_syntax(t_token *tokens, int token_count);
 int					pipe_syntax(t_token *tokens, t_t2 t2);
+int					verify_token_syntax(t_token *tokens, t_t2 *t2);
 
 // tokenizer_utils.c
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
@@ -285,12 +291,12 @@ int					setup_heredoc(t_env *env, t_arena *arena, char *delimiter);
 int					handle_redirections(t_token *tokens, int token_count);
 int					preprocess_heredocs(t_env *env, t_token *tokens,
 						int token_count);
-void				restore_fds(int saved_stdin, int saved_stdout);
 
 // ===== src/signal/ =====
 // handler.c
 void				ft_handler(int sig);
 void				setup_interactive_signals(void);
+void				setup_heredoc_signals(void);
 void				setup_child_signals(void);
 void				process_commands_signal(t_cmd_block *blocks, int i);
 
@@ -315,5 +321,6 @@ char				**build_cmd_args(t_arena *arena, t_token *tokens,
 						int count);
 int					is_empty_input(char *input);
 void				close2(int fd);
+void				restore_fds(int saved_stdin, int saved_stdout);
 
 #endif

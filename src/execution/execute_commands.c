@@ -3,64 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/05 18:19:25 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/06 18:52:06 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	setup_child_pipes(int i, t_cmd_block *blocks)
+void	ifcmd_notvalid(int i, t_cmd_block *blocks, t_env *env)
 {
-	int	j;
-	int	has_heredoc;
-
-	t((j = 0, has_heredoc = has_heredoc_in_block(blocks[i].tokens,
-				blocks[i].t2.token_count), 0));
-	if (i == 0)
-	{
-		if (blocks->fd->cmd_count > 1)
-			dup2(blocks->fd->pipefd[0][1], 1);
-	}
-	else if (i == blocks->fd->cmd_count - 1)
-	{
-		if (!has_heredoc)
-			dup2(blocks->fd->pipefd[i - 1][0], 0);
-	}
+	if (!is_abs_path(blocks[i].args[0]) && !get_path_arena(env->arena,
+			env->envp))
+		t((if_nopath(blocks[i].args[0]), free_arena(env->arena), exit(127), 0));
 	else
-	{
-		if (!has_heredoc)
-			dup2(blocks->fd->pipefd[i - 1][0], 0);
-		dup2(blocks->fd->pipefd[i][1], 1);
-	}
-	while (j < blocks->fd->cmd_count - 1)
-		t((close2(blocks->fd->pipefd[j][0]), close2(blocks->fd->pipefd[j++][1]),
-				0));
-	close_inherited_fds();
+		t((write(2, blocks[i].args[0], ft_strlen(blocks[i].args[0])), write(2,
+					": command not found\n", 21), free_arena(env->arena),
+				exit(127), 0));
 }
 
 void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 {
 	int	cmd_valid;
 
-	blocks[i].is_here_doc = 0;
+	t((blocks[i].is_here_doc = has_heredoc_in_block(blocks[i].tokens,
+				blocks[i].t2.token_count), 0));
 	if (handle_redirections(blocks[i].tokens, blocks[i].t2.token_count) == -1)
-		t((blocks[i].is_here_doc = 1, free_arena(env->arena), exit(1), 0));
+		t((free_arena(env->arena), exit(1), 0));
 	setup_child_pipes(i, blocks);
 	if (blocks[i].args[0] && blocks[i].args[0][0])
 	{
+		if (is_builtin(blocks[i].args[0]))
+			t((execute_builtin_block(&blocks[i], env), free_arena(env->arena),
+					exit(g_exit_status), 0));
 		cmd_valid = is_command_valid_for_exec(&blocks[i], env);
 		if (cmd_valid > 0)
 			execute_cmd2(&blocks[i], env);
 		else
-			t((write(2, blocks[i].args[0], ft_strlen(blocks[i].args[0])),
-					write(2, ": command not found\n", 21),
-					free_arena(env->arena), exit(127), 0));
+			ifcmd_notvalid(i, blocks, env);
 	}
 	else
+	{
+		if (blocks[i].is_here_doc == 0)
+			t((free_arena(env->arena), write(1, CMD_NOT_FOUND, 37), exit(127),
+					0));
 		t((free_arena(env->arena), exit(0), 0));
+	}
 }
 
 pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
@@ -68,20 +57,14 @@ pid_t	child_process2(int i, t_cmd_block *blocks, t_env *env)
 	pid_t	pid;
 
 	setup_child_signals();
-	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value)
-		&& blocks->fd->cmd_count >= 1)
+	if (blocks[i].args[0] && is_builtin(blocks[i].tokens[0].value))
 	{
-		if (ft_strcmp(blocks[i].tokens[0].value, "export") == 0
-			|| ft_strcmp(blocks[i].tokens[0].value, "unset") == 0
-			|| ft_strcmp(blocks[i].tokens[0].value, "cd") == 0
-			|| ft_strcmp(blocks[i].tokens[0].value, "exit") == 0)
+		if (blocks->fd->cmd_count == 1)
 			return (execute_builtin_block(&blocks[i], env), -1);
 	}
 	pid = fork();
 	if (pid == 0)
-	{
 		execute_child_command(i, blocks, env);
-	}
 	return (pid);
 }
 
@@ -120,6 +103,7 @@ void	exec_if_executable(t_cmd_block *block, t_env *env)
 		write(2, "minicauchemar: ", 16);
 		write(2, block->args[0], ft_strlen(block->args[0]));
 		write(2, ": Is a directory\n", 17);
+		free_arena(env->arena);
 		exit(g_exit_status);
 	}
 	if (stat_result == 1)

@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/05 14:29:52 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 18:19:48 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	directory_error(char *cmd)
 
 void	print_syntax_error(char *value)
 {
+	g_exit_status = 2;
 	write(2, "minicauchemar: syntax error near unexpected token '", 52);
 	write(2, value, ft_strlen(value));
 	write(2, "'\n", 2);

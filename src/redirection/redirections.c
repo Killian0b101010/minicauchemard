@@ -6,12 +6,38 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 18:58:28 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/07 13:43:39 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-#include <fcntl.h>
+
+static char	*process_heredoc_lines(t_arena *arena, char *delimiter, int *n_line)
+{
+	char	*input;
+	char	*line;
+	char	*temp;
+
+	input = ft_strdup_arena(arena, "");
+	while (input && ++(*n_line))
+	{
+		line = readline("heredoc> ");
+		if (!line || g_exit_status == 130)
+		{
+			if (g_exit_status == 130)
+				return (NULL);
+			ft_printf("minicauchemar: warning: here-document at line");
+			ft_printf(" %d delimited by end-of-file (wanted `%s\')\n", *n_line,
+				delimiter);
+			break ;
+		}
+		if (ft_strcmp(line, delimiter) == 0)
+			break ;
+		temp = ft_strjoin_arena(arena, input, line);
+		input = ft_strjoin_arena(arena, temp, "\n");
+	}
+	return (input);
+}
 
 /**
  * Lit l'entrée utilisateur pour un heredoc jusqu'au délimiteur spécifié.
@@ -28,32 +54,20 @@
  *
  * Return : Chaîne contenant tout l'input du heredoc ou NULL si erreur
  */
+
 static char	*get_heredoc_input(t_env *env, t_arena *arena, char *delimiter)
 {
 	char		*input;
-	char		*line;
-	char		*temp;
+	int			stdin_copy;
 	static int	n_line = 0;
 
 	(void)env;
-	input = ft_strdup_arena(arena, "");
-	if (!input)
-		return (NULL);
-	while (1)
-	{
-		t((n_line++, line = readline("heredoc> "), 0));
-		if (!line)
-		{
-			ft_printf("minicauchemar : warning: here-document at line");
-			ft_printf(" %d delimited by end-of-file (wanted `%s\')\n", n_line,
-				delimiter);
-			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-			break ;
-		temp = ft_strjoin_arena(arena, input, line);
-		input = ft_strjoin_arena(arena, temp, "\n");
-	}
+	stdin_copy = dup(STDIN_FILENO);
+	setup_heredoc_signals();
+	input = process_heredoc_lines(arena, delimiter, &n_line);
+	dup2(stdin_copy, STDIN_FILENO);
+	close(stdin_copy);
+	setup_interactive_signals();
 	return (input);
 }
 
@@ -177,12 +191,4 @@ int	preprocess_heredocs(t_env *env, t_token *tokens, int token_count)
 		i++;
 	}
 	return (0);
-}
-
-void	restore_fds(int saved_stdin, int saved_stdout)
-{
-	dup2(saved_stdin, STDIN_FILENO);
-	dup2(saved_stdout, STDOUT_FILENO);
-	close2(saved_stdin);
-	close2(saved_stdout);
 }

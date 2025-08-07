@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:07:11 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 15:46:51 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/06 18:26:09 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,9 @@ void	tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2)
 	else
 		tokens[t2->j].type = get_token_type(t2->buff);
 	if (tokens[t2->j].type == SYNTAX_ERROR)
+	{
 		print_syntax_error(t2->buff);
+		g_exit_status = 2;
+	}
 	t2->j++;
 }
