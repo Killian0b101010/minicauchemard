@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 19:30:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/01 19:04:33 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 17:18:28 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,12 @@ char	*append_char_to_result(t_arena *arena, char *result, char c)
 		return (temp);
 	}
 	return (result);
+}
+
+int	is_escaped_exit_status(const char *str, int i, int len)
+{
+	if (str[i] == '\\')
+		if (i + 2 < len && str[i + 1] == '$' && str[i + 2] == '?')
+			return (1);
+	return (0);
 }

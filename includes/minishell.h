@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/08 16:53:20 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 17:16:33 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -254,6 +254,11 @@ char				*append_char_to_result(t_arena *arena, char *result,
 int					expand_variable_at_position(t_arena *arena, char *str,
 						int i);
 char				*expand_exit_status_in_string(t_arena *arena, char *str);
+int					append_escaped_exit_status(t_arena *arena, char **result,
+						int i);
+int					append_expanded_exit_status(t_arena *arena, char **result,
+						char *exit_str, int i);
+int					is_escaped_exit_status(const char *str, int i, int len);
 
 // expansion_utils2.c
 char				*get_variable_value(char *var_name, t_env *env);

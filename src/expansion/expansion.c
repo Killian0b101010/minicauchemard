@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:50:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/08 16:54:36 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 17:16:50 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,31 +96,31 @@ char	*get_expanded_variable_value(char *str, t_env *env, int i)
  *
  * Return : Nouvelle chaîne avec $? expansé ou NULL si erreur
  */
+
 char	*expand_exit_status_in_string(t_arena *arena, char *str)
 {
 	char	*result;
-	char	*temp;
 	char	*exit_str;
 	int		i;
 	int		len;
+	char	*temp;
 
 	if (!str)
 		return (NULL);
-	t((result = ft_strdup_arena(arena, ""), exit_str = ft_itoa_arena(arena,
-				g_exit_status), i = 0, len = ft_strlen(str), 0));
+	result = ft_strdup_arena(arena, "");
+	exit_str = ft_itoa_arena(arena, g_exit_status);
+	t((i = 0, len = ft_strlen(str), 0));
 	while (i < len)
 	{
-		if (str[i] == '$' && i + 1 < len && str[i + 1] == '?')
-			t((temp = ft_strjoin_arena(arena, result, exit_str), result = temp,
-					i += 2, 0));
+		if (is_escaped_exit_status(str, i, len))
+			i = append_escaped_exit_status(arena, &result, i);
+		else if (str[i] == '$' && i + 1 < len && str[i + 1] == '?' && !(i > 0
+				&& str[i - 1] == '\\'))
+			i = append_expanded_exit_status(arena, &result, exit_str, i);
 		else
-		{
-			temp = arena_alloc(arena, (ft_strlen(result) + 2));
-			ft_strcpy(temp, result);
-			temp[ft_strlen(result)] = str[i];
-			temp[ft_strlen(result) + 1] = '\0';
-			t((result = temp, i++, 0));
-		}
+			t((temp = arena_alloc(arena, ft_strlen(result) + 2), ft_strcpy(temp,
+						result), temp[ft_strlen(result)] = str[i],
+					temp[ft_strlen(result) + 1] = '\0', result = temp, i++, 0));
 	}
 	return (result);
 }
