@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 18:07:13 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 16:53:20 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -244,6 +244,8 @@ void				process_token_expansion(t_token *tokens, int token_count,
 char				*process_variable_expansion(char *str, t_env *env, int *i,
 						char *result);
 char				*process_expansion_loop(char *str, t_env *env);
+char				*copy_escaped_variable(char *str, int *i, t_env *env,
+						char *result);
 
 // expansion_utils.c
 char				*get_expanded_variable_value(char *str, t_env *env, int i);
@@ -292,7 +294,7 @@ int					verify_token_syntax(t_token *tokens, t_t2 *t2);
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
 int					expand_tokens(t_arena *arena, t_token **tokens,
 						int *capacity);
-void				remove_first_null_tokens(t_token *tokens, int *token_count);
+void				rm_null_tokens(t_token *tokens, int *token_count);
 int					count_quotes(char *str, int *single_quote,
 						int *double_quote);
 void				update_quote_state(char c, int *state, int *single_quote,

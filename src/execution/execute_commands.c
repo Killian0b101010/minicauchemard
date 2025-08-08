@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/24 21:13:26 by kiteixei          #+#    #+#             */
-/*   Updated: 2025/08/07 17:32:10 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:20:29 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	execute_child_command(int i, t_cmd_block *blocks, t_env *env)
 		cmd_valid = is_command_valid_for_exec(&blocks[i], env);
 		if (cmd_valid > 0)
 			execute_cmd2(&blocks[i], env);
-		else
+		else if (g_exit_status != 126)
 			ifcmd_notvalid(i, blocks, env);
 	}
 	else

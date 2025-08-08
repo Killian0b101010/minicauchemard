@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/06 18:19:48 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 14:19:04 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	directory_error(char *cmd)
 	write(2, "minicauchemar: ", 16);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, ": Is a directory\n", 17);
-	g_exit_status = 127;
+	g_exit_status = 126;
 }
 
 void	print_syntax_error(char *value)

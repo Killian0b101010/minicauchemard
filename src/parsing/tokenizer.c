@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 18:06:54 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 15:21:12 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ t_token	*tokenizer(t_arena *arena, char *str, int *token_count)
 		return (NULL);
 	while (str[t2.index])
 	{
+		if (str[0] == '!' || str[0] == ':' || str[0] == '#')
+			t2.index++;
 		while (str[t2.index] && is_space(str[t2.index]))
 			t2.index++;
 		if (!str[t2.index])
@@ -85,12 +87,10 @@ t_token	*tokenizer(t_arena *arena, char *str, int *token_count)
 			return (NULL);
 		tokenize3(arena, tokens, &t2);
 	}
-	*token_count = t2.j;
-	remove_first_null_tokens(tokens, token_count);
-	return (tokens);
+	return (*token_count = t2.j, rm_null_tokens(tokens, token_count), tokens);
 }
 
-void	remove_first_null_tokens(t_token *tokens, int *token_count)
+void	rm_null_tokens(t_token *tokens, int *token_count)
 {
 	int	i;
 	int	shift;
