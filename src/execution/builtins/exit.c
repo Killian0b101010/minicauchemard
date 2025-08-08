@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 19:32:04 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 17:05:33 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 16:14:17 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	ft_isstring(char *str)
 		i++;
 	while (str[i])
 	{
-		if (ft_isdigit(str[i]) == 1)
+		if ((str[i]) == 1)
 			i++;
 		else
 			return (1);
