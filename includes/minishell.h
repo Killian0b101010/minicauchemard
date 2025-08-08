@@ -3,11 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
 /*   Updated: 2025/08/08 18:29:56 by kiteixei         ###   ########.fr       */
-/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -245,6 +244,8 @@ void				process_token_expansion(t_token *tokens, int token_count,
 char				*process_variable_expansion(char *str, t_env *env, int *i,
 						char *result);
 char				*process_expansion_loop(char *str, t_env *env);
+char				*copy_escaped_variable(char *str, int *i, t_env *env,
+						char *result);
 
 // expansion_utils.c
 char				*get_expanded_variable_value(char *str, t_env *env, int i);
@@ -253,6 +254,11 @@ char				*append_char_to_result(t_arena *arena, char *result,
 int					expand_variable_at_position(t_arena *arena, char *str,
 						int i);
 char				*expand_exit_status_in_string(t_arena *arena, char *str);
+int					append_escaped_exit_status(t_arena *arena, char **result,
+						int i);
+int					append_expanded_exit_status(t_arena *arena, char **result,
+						char *exit_str, int i);
+int					is_escaped_exit_status(const char *str, int i, int len);
 
 // expansion_utils2.c
 char				*get_variable_value(char *var_name, t_env *env);
@@ -293,7 +299,7 @@ int					verify_token_syntax(t_token *tokens, t_t2 *t2);
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
 int					expand_tokens(t_arena *arena, t_token **tokens,
 						int *capacity);
-void				remove_first_null_tokens(t_token *tokens, int *token_count);
+void				rm_null_tokens(t_token *tokens, int *token_count);
 int					count_quotes(char *str, int *single_quote,
 						int *double_quote);
 void				update_quote_state(char c, int *state, int *single_quote,
