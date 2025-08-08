@@ -6,7 +6,7 @@
 /*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 18:07:13 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 18:29:56 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ void				exit_builtin(t_cmd_block *block, t_env *env);
 // builtins/export.c
 int					export_builtin(t_env *env, t_token *tokens,
 						int token_count);
+void				ft_error_export(char *var_name);
 
 // builtins/pwd.c
 int					pwd(t_t2 *t2);
