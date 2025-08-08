@@ -6,7 +6,8 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/08 18:29:56 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/08 18:45:37 by dnahon           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
@@ -22,6 +23,7 @@
 # ifndef BUFFER_SIZE_CD
 #  define BUFFER_SIZE_CD 4096
 # endif
+
 # ifndef ARENA_DEFAULT_CAPACITY
 #  define ARENA_DEFAULT_CAPACITY 32
 # endif
