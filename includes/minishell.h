@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 15:05:06 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 17:07:16 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/08 18:45:37 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # ifndef BUFFER_SIZE_CD
 #  define BUFFER_SIZE_CD 4096
 # endif
+
 # ifndef ARENA_DEFAULT_CAPACITY
 #  define ARENA_DEFAULT_CAPACITY 32
 # endif
@@ -38,6 +39,18 @@
 
 # ifndef CMD_NOT_FOUND
 #  define CMD_NOT_FOUND "minicauchemar: Command '' not found\n"
+# endif
+
+# ifndef STATE_NORMAL
+#  define STATE_NORMAL 0
+# endif
+
+# ifndef STATE_SINGLE
+#  define STATE_SINGLE 1
+# endif
+
+# ifndef STATE_DOUBLE
+#  define STATE_DOUBLE 2
 # endif
 
 extern int			g_exit_status;
@@ -215,6 +228,7 @@ void				exit_builtin(t_cmd_block *block, t_env *env);
 // builtins/export.c
 int					export_builtin(t_env *env, t_token *tokens,
 						int token_count);
+void				ft_error_export(char *var_name);
 
 // builtins/pwd.c
 int					pwd(t_t2 *t2);
@@ -232,6 +246,8 @@ void				process_token_expansion(t_token *tokens, int token_count,
 char				*process_variable_expansion(char *str, t_env *env, int *i,
 						char *result);
 char				*process_expansion_loop(char *str, t_env *env);
+char				*copy_escaped_variable(char *str, int *i, t_env *env,
+						char *result);
 
 // expansion_utils.c
 char				*get_expanded_variable_value(char *str, t_env *env, int i);
@@ -240,6 +256,11 @@ char				*append_char_to_result(t_arena *arena, char *result,
 int					expand_variable_at_position(t_arena *arena, char *str,
 						int i);
 char				*expand_exit_status_in_string(t_arena *arena, char *str);
+int					append_escaped_exit_status(t_arena *arena, char **result,
+						int i);
+int					append_expanded_exit_status(t_arena *arena, char **result,
+						char *exit_str, int i);
+int					is_escaped_exit_status(const char *str, int i, int len);
 
 // expansion_utils2.c
 char				*get_variable_value(char *var_name, t_env *env);
@@ -280,6 +301,11 @@ int					verify_token_syntax(t_token *tokens, t_t2 *t2);
 void				tokenize3(t_arena *arena, t_token *tokens, t_t2 *t2);
 int					expand_tokens(t_arena *arena, t_token **tokens,
 						int *capacity);
+void				rm_null_tokens(t_token *tokens, int *token_count);
+int					count_quotes(char *str, int *single_quote,
+						int *double_quote);
+void				update_quote_state(char c, int *state, int *single_quote,
+						int *double_quote);
 
 // ===== src/redirection/ =====
 // redirection_utils.c
@@ -297,6 +323,10 @@ int					preprocess_heredocs(t_env *env, t_token *tokens,
 // ===== src/signal/ =====
 // handler.c
 void				ft_handler(int sig);
+void				ft_handler_sigquit(int sig);
+void				ft_handler_heredoc(int sig);
+
+// handler2.c
 void				setup_interactive_signals(void);
 void				setup_heredoc_signals(void);
 void				setup_child_signals(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 13:09:52 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 13:43:46 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 18:35:49 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,11 @@ void	restore_fds(int saved_stdin, int saved_stdout)
 	dup2(saved_stdout, STDOUT_FILENO);
 	close2(saved_stdin);
 	close2(saved_stdout);
+}
+
+void	ft_error_export(char *var_name)
+{
+	write(2, "export:", 8);
+	write(2, var_name, ft_strlen(var_name));
+	write(2, ": not a valid identifier\n", 25);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_processing.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/07 18:11:38 by kiteixei         ###   ########.fr       */
+/*   Updated: 2025/08/08 14:16:40 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,9 @@ void	execute_cmd2(t_cmd_block *blocks, t_env *env)
 	if (!blocks->path)
 	{
 		if (ft_strchr(blocks->args[0], '/'))
-		{
 			exec_loop_one(blocks, env);
-		}
 		else
-		{
 			exit((if_nopath(blocks->args[0]), free_arena(env->arena), 127));
-		}
 	}
 	t((blocks->i = 0, blocks->flag_access = 0, blocks->is_here_doc = 0, 0));
 	while (blocks->path[blocks->i])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 17:51:49 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/04 17:13:34 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/08 18:30:19 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,40 @@
  *
  * Return : Index de la variable si trouvée, -1 sinon
  */
+
+char	*ft_search_after_egal(char *str, char *dest)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != '=')
+		{
+			dest[i] = str[i];
+			i++;
+		}
+		if (str[i] == '=')
+		{
+			dest[i] = '\0';
+			return (dest);
+		}
+	}
+	return (0);
+}
+
 static int	find_var_index(t_env *env, char *var_name)
 {
 	int		i;
 	int		name_len;
 	char	*eq_pos;
+	char	after_egale[1000];
 
+	ft_search_after_egal(var_name, after_egale);
 	eq_pos = ft_strchr(var_name, '=');
+	if (ft_isdigit(var_name[0]) || ft_strchr(after_egale, '#')
+		|| ft_strchr(after_egale, '@') || ft_strchr(after_egale, '+'))
+		return (ft_error_export(var_name), 0);
 	if (!eq_pos)
 		return (-1);
 	name_len = eq_pos - var_name;
