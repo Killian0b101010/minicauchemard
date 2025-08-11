@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 19:00:00 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/08 14:16:40 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/11 14:51:01 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,6 @@ int	is_executable_file(const char *path)
 void	if_nopath(char *str)
 {
 	write(2, str, ft_strlen(str));
-	write(2, ": No such file or directoryy\n", 30);
+	write(2, ": No such file or directory\n", 29);
 	g_exit_status = 127;
 }
