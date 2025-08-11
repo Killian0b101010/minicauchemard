@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: kiteixei <kiteixei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 20:40:27 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/08 16:15:59 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/11 17:45:17 by kiteixei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static void	shell_main_loop(t_env *env)
 
 	while (1)
 	{
-		signal_received = 0;
-		get_signal_received(&signal_received);
 		setup_interactive_signals();
 		i = -1;
 		input = ft_split_arena(env->arena, get_prompt_and_input(), '\n');
@@ -69,6 +67,8 @@ static void	shell_main_loop(t_env *env)
 		{
 			if (input[i])
 				add_history(input[i]);
+			signal_received = 0;
+			get_signal_received(&signal_received);
 			if (!process_input_line(input[i], env))
 			{
 				continue ;
