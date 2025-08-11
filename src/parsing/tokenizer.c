@@ -6,7 +6,7 @@
 /*   By: dnahon <dnahon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/10 14:18:43 by dnahon            #+#    #+#             */
-/*   Updated: 2025/08/08 15:21:12 by dnahon           ###   ########.fr       */
+/*   Updated: 2025/08/11 15:14:03 by dnahon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,39 +94,49 @@ void	rm_null_tokens(t_token *tokens, int *token_count)
 {
 	int	i;
 	int	shift;
+	int	isnotallempty;
 
-	shift = 0;
-	while (shift < *token_count && tokens[shift].value[0] == '\0')
-		shift++;
-	if (shift == 0)
-		return ;
-	i = 0;
-	while (i < *token_count - shift)
+	t((isnotallempty = 0, shift = 0, i = 0, 0));
+	while (i < *token_count && tokens[i].value)
 	{
-		tokens[i] = tokens[i + shift];
-		i++;
+		if (tokens[i++].value[0] != '\0')
+			isnotallempty = 1;
 	}
-	*token_count -= shift;
+	i = 0;
+	if (isnotallempty == 1)
+	{
+		while (shift < *token_count && tokens[shift].value[0] == '\0')
+			shift++;
+		if (shift == 0)
+			return ;
+		i = 0;
+		while (i < *token_count - shift)
+		{
+			tokens[i] = tokens[i + shift];
+			i++;
+		}
+		*token_count -= shift;
+	}
 }
 
 /**
- * Vérifie l'équilibrage des guillemets dans une chaîne de caractères.
- *
- * Cette version améliorée tient compte du contexte des guillemets:
- *
+	* Vérifie l'équilibrage des guillemets dans une chaîne de caractères.
+	*
+	* Cette version améliorée tient compte du contexte des guillemets:
+	*
 	- Un guillemet à l'intérieur d'une autre paire de guillemets n'est pas compté
- * - Utilise un état (state) pour suivre le contexte actuel
- * - STATE_NORMAL: en dehors de tout guillemet
- * - STATE_SINGLE: dans des guillemets simples
- * - STATE_DOUBLE: dans des guillemets doubles
- *
- * Parameters :
- * - str - Chaîne de caractères à analyser
- * - single_quotes - Pointeur vers le compteur de guillemets simples
- * - double_quotes - Pointeur vers le compteur de guillemets doubles
- *
- * Return : 1 si les guillemets sont équilibrés, 0 sinon
- */
+	* - Utilise un état (state) pour suivre le contexte actuel
+	* - STATE_NORMAL: en dehors de tout guillemet
+	* - STATE_SINGLE: dans des guillemets simples
+	* - STATE_DOUBLE: dans des guillemets doubles
+	*
+	* Parameters :
+	* - str - Chaîne de caractères à analyser
+	* - single_quotes - Pointeur vers le compteur de guillemets simples
+	* - double_quotes - Pointeur vers le compteur de guillemets doubles
+	*
+	* Return : 1 si les guillemets sont équilibrés, 0 sinon
+	*/
 
 int	count_quotes(char *str, int *single_quote, int *double_quote)
 {
